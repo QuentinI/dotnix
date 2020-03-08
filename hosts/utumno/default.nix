@@ -13,6 +13,7 @@
     ../../services/tor
     ../../services/libvirtd
     ../../services/udev/st-link.nix
+    ../../services/zerotierone
   ];
 
   # Nix-related settings

@@ -34,11 +34,11 @@ in
         ./programs
         ./services
       ];
-    
+
       nixpkgs.config = {
-	allowUnfree = true;
-  	android_sdk.accept_license = true;
-  	oraclejdk.accept_license = true;
+        allowUnfree = true;
+        android_sdk.accept_license = true;
+        oraclejdk.accept_license = true;
       };
 
       home = {
@@ -54,7 +54,7 @@ in
           options = [ "grp:caps_toggle" ];
         };
       };
-    
+
       gtk = {
         enable = true;
         iconTheme = {
@@ -64,9 +64,9 @@ in
         theme = rec {
           name = "Materia-Custom";
           package = (pkgs.materia-theme.overrideAttrs (base: {
-    
+
             buildInputs = base.buildInputs ++ [ pkgs.sassc pkgs.inkscape pkgs.optipng ];
-    
+
             installPhase = ''
               patchShebangs *.sh scripts/*.sh src/*/*.sh
               sed -i install.sh \
@@ -85,7 +85,7 @@ in
                                                            MATERIA_STYLE_COMPACT=True")
               rm $out/share/themes/*/COPYING
             '';
-    
+
           }));
         };
         gtk3.extraConfig = {
@@ -93,14 +93,12 @@ in
           # gtk-cursor-theme-name = "Paper";
         };
       };
-    
+
       programs = {
-    
         home-manager.enable = true;
         home-manager.path = https://github.com/rycee/home-manager/archive/master.tar.gz;
-    
       };
-    
+
       home.extraProfileCommands = ''
         if [[ -d "$out/share/applications" ]] ; then
           ${pkgs.desktop-file-utils}/bin/update-desktop-database $out/share/applications

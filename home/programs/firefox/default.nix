@@ -44,7 +44,7 @@ in {
           "dom.battery.enabled" = false;
           "dom.enable_performance" = false;
           "dom.enable_user_timing" = false;
-          "dom.event.contextmenu.enabled" =	false; # This may actually break some sites, but I hate RMB highjacking
+          "dom.event.contextmenu.enabled" = false; # This may actually break some sites, but I hate RMB highjacking
           "dom.gamepad.enabled" = false;
           "dom.netinfo.enabled" = false;
           "dom.network.enabled" = false;
@@ -55,8 +55,8 @@ in {
           "media.webspeech.recognition.enable" = false;
 
           # WebRTC leaks internal IP
-          "media.peerconnection.ice.default_address_only" =	true;
-          "media.peerconnection.ice.no_host" =	true;
+          "media.peerconnection.ice.default_address_only" = true;
+          "media.peerconnection.ice.no_host" = true;
 
           # JS leaks locale
           "javascript.use_us_english_locale" = true;
@@ -79,7 +79,7 @@ in {
           "toolkit.telemetry.bhrPing.enabled"= false;
           "toolkit.telemetry.firstShutdownPing.enabled"= false;
           "toolkit.telemetry.hybridContent.enabled"= false;
-          "experiments.supported" =	false;
+          "experiments.supported" = false;
           "experiments.enabled" = false;
           "experiments.manifest.uri" = "";
           "network.allow-experiments" = false;
@@ -107,33 +107,34 @@ in {
           "app.shield.optoutstudies.enabled" = false;
 
           # Disable all sorts of auto-connections
-          "network.prefetch-next" =	false;
-          "network.dns.disablePrefetch" =	true;
+          "network.prefetch-next" = false;
+          "network.dns.disablePrefetch" = true;
           "network.dns.disablePrefetchFromHTTPS" = true;
-          "network.predictor.enabled" =	false;
-          "browser.casting.enabled" =	false;
-          "media.gmp-gmpopenh264.enabled" =	false;
-          "media.gmp-manager.url" =	"";
-          "network.http.speculative-parallel-limit" =	0;
-          "browser.search.update" =	false;
+          "network.predictor.enabled" = false;
+          "browser.casting.enabled" = false;
+          "media.gmp-gmpopenh264.enabled" = false;
+          "media.gmp-manager.url" = "";
+          "network.http.speculative-parallel-limit" = 0;
+          "browser.search.update" = false;
 
           # Spoof referrer
           "network.http.referer.spoofSource" = true;
 
           # Disable third-party cookies
-          "network.cookie.cookieBehavior" =	1;
+          "network.cookie.cookieBehavior" = 1;
 
           # Enable first-party isolation
           "privacy.firstparty.isolate" = true;
 
           # Disable built-in password manager and autofill
           "signon.rememberSignons" = false;
-          "browser.formfill.enable" =	false;
+          "browser.formfill.enable" = false;
 
           # Stop communicating with Google
           # I mean, I don't use Chrome for a reason
           "geo.wifi.uri" = "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%";
-          "browser.safebrowsing.downloads.remote.enabled" =	false;
+          "browser.safebrowsing.downloads.remote.enabled" = false;
+          "browser.safebrowsing.enabled" = false;
 
           # Disable auto-update
           "app.update.enabled" = false;

@@ -78,16 +78,16 @@
     };
     cpu.intel.updateMicrocode = true;
     pulseaudio = {
-    	enable = true;
-    	package = pkgs.pulseaudioFull;
-    	support32Bit = true;
-	extraModules = [ pkgs.pulseaudio-modules-bt ];
+      enable = true;
+      package = pkgs.pulseaudioFull;
+      support32Bit = true;
+      extraModules = [ pkgs.pulseaudio-modules-bt ];
     };
     bluetooth.enable = true;
     bluetooth.config = {
-    	General = {
-		Enable="Source,Sink,Media,Socket";
-	};
+      General = {
+        Enable="Source,Sink,Media,Socket";
+      };
     };
     nvidia = {
       prime = {

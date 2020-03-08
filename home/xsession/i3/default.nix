@@ -123,6 +123,7 @@ rec {
 
   home.packages = [
     pkgs.maim # For screenshotstrue
+    pkgs.xclip
     pkgs.i3lock
     pkgs.flashfocus
   ];

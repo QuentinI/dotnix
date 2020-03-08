@@ -1,5 +1,9 @@
-{ config, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 
+let 
+  theme = import ./themes { inherit pkgs; };
+  stripHash = (s: builtins.substring 1 (-1) s);
+in
 {
   users.defaultUserShell = pkgs.zsh;
   users.users.quentin = {
@@ -17,11 +21,13 @@
     ];
     description = "Quentin Inkling";
   };
-  home-manager.users.quentin = { lib, pkgs, ... }:
-    let 
-      theme = import ./themes { inherit pkgs; };
-      stripHash = (s: builtins.substring 1 (-1) s);
-    in {
+
+  # Workaround by regnat for https://github.com/rycee/home-manager/issues/948
+  systemd.services.home-manager-quentin.preStart = ''
+        ${pkgs.nix}/bin/nix-env -i -E
+  '';
+
+  home-manager.users.quentin = {
       imports = [
         ./xsession
         ./packages

@@ -9,7 +9,17 @@
       package = pkgs.i3-gaps;
     };
     videoDrivers = [ "nvidia" ];
-    displayManager.sddm.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      autoLogin = {
+        enable = true;
+        user = "quentin";
+      };
+      extraConfig = ''
+        [Users]
+        HideUsers=jupyter
+      '';
+    };
     config = "";
     layout = "us,ru";
   };

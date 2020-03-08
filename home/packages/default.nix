@@ -18,8 +18,7 @@ with pkgs; {
 
       ## Compilers/interpreters
       (python3.withPackages (ps: with ps; [ virtualenv pip tkinter python-language-server pyls-mypy pyls-isort pyls-black setuptools ]))
-      # TODO: Borked?
-      # poetry
+      poetry
       (python2.withPackages (ps: with ps; [ virtualenv pip ]))
       (ghc.withPackages (ps: with ps; [ tidal ]))
       nodejs yarn
@@ -27,7 +26,8 @@ with pkgs; {
       llvm llvmPackages.clang-unwrapped
       elixir
       shellcheck
-      nixfmt
+      # FIXME: Borked?
+      # nixfmt
       gcc
 
       jetbrains.jdk # Jetbrains JDK is more convinient generally

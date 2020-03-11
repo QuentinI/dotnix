@@ -7,7 +7,7 @@
   imports = [
     ./hardware.nix
     ../../home/quentin.nix
-    ../../services/gdm
+    ../../services/xserver/sway.nix
     ../../services/jupyter
     ../../services/docker
     ../../services/tor

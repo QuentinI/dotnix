@@ -74,7 +74,9 @@
     ];
     opengl = {
       enable = true;
+      driSupport = true;
       driSupport32Bit = true;
+      extraPackages = [ pkgs.xorg.xf86videonouveau  ];
     };
     cpu.intel.updateMicrocode = true;
     pulseaudio = {

@@ -5,9 +5,9 @@ let
 in
 {
   imports = [
-    ./i3
+    ./sway
     ./mime.nix
   ];
-  xsession.enable = true;
+  # xsession.enable = true;
   xresources.extraConfig = theme.xresources;
 }

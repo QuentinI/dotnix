@@ -7,7 +7,7 @@
   imports = [
     ./hardware.nix
     ../../home/quentin.nix
-    ../../services/xserver/i3.nix
+    ../../services/gdm
     ../../services/jupyter
     ../../services/docker
     ../../services/tor
@@ -55,6 +55,7 @@
 
   # Obscure fixes for something
   systemd.extraConfig = "DefaultLimitNOFILE=1048576";
+  security.pam.services.swaylock = {};
   security.pam.loginLimits = [{
     domain = "*";
     type = "hard";

@@ -306,6 +306,11 @@ rec {
     focus_wrapping workspace
     exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | ${pkgs.wob}/bin/wob -a bottom -M 40 -t 500
 
+    # I'm looking at you, telegram
+    for_window [title="Choose files"] floating enable
+    for_window [title="Choose files"] resize width 900 height 550
+    for_window [title="Choose files"] move center
+
     bindsym --to-code ${modifier}+Shift+q kill
 
     bindsym --to-code ${modifier}+h           focus left

@@ -134,6 +134,11 @@ rec {
     pkgs.libappindicator
   ];
 
+  # Get rid of Qt filepickers, etc
+  home.sessionVariables = {
+    "XDG_CURRENT_DESKTOP" = "XFCE";
+  };
+
   # Waybar works with libappindicator tray icons only
   xsession.preferStatusNotifierItems = true;
 

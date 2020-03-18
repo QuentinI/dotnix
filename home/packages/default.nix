@@ -87,8 +87,10 @@ with pkgs; {
       aspellDicts.en-computers
       aspellDicts.en-science
       aspellDicts.ru
+
       # Screen
       arandr
+
       # Sound
       pavucontrol
       (speechd.override { withPulse = true; })
@@ -104,7 +106,7 @@ with pkgs; {
       # anydesk
       ntfsprogs ntfs3g
       # Nixos housekeeping
-      # vulnix # NixOS vulnerability scanner
+      vulnix # NixOS vulnerability scanner
       nox    # Apt-cache, kinda
 
       # Unsorted. Fuck it.

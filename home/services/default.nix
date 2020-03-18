@@ -11,5 +11,6 @@
        ./memory
        ./keybase
        ./compton
+       ./syncthing
   ];
 }

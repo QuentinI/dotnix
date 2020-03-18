@@ -223,7 +223,7 @@ rec {
     assigns = {
       "1" = [{ class = "Firefox"; } { class = "Chromium-browser"; } { class = "Deluge"; }];
       "2" = [{ title = "Atom"; } { class = "jetbrains"; } { class = "Emacs"; }];
-      "3" = [{ class = "TelegramDesktop"; } { class = "discord"; } { class = "Keybase"; }];
+      "3" = [{ class = "TelegramDesktop"; } { class = "discord"; } { class = "Keybase"; } {class = "Daily";} ];
       "5" = [{ class = "Steam"; } { class = "wesnoth"; } { class = "xonotic-(glx|sdl)"; }];
     };
 
@@ -257,8 +257,8 @@ rec {
         text        = "#ffffff";
       };
       unfocused = {
-        background  = mkOpaque theme.colors.background.primary;
-        border      = mkOpaque theme.colors.background.primary;
+        background  = mkOpaque theme.colors.background.secondary;
+        border      = mkOpaque theme.colors.background.secondary;
         childBorder = theme.colors.background.primary;
         indicator   = "#484e50";
         text        = theme.colors.text.primary;

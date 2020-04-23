@@ -24,7 +24,7 @@ in
     text = builtins.readFile (
       pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim";
-        sha256 = "1wqbcqriba20khlx1khj1ndxbffcppd1ffw6an8n644zg1gv5r29";
+        sha256 = "1jj8kbc8ly6y51m7cxabhvvkdwa4n7c9qbkjxb84181khw6jsvvj";
       }
     );
     target = ".local/share/nvim/site/autoload/plug.vim";

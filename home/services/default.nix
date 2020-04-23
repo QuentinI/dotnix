@@ -10,7 +10,6 @@
        ./udiskie
        ./memory
        ./keybase
-       ./compton
        ./syncthing
   ];
 }

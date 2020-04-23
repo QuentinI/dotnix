@@ -18,7 +18,7 @@ with pkgs; {
 
       ## Compilers/interpreters
       (python3.withPackages (ps: with ps; [ virtualenv pip tkinter python-language-server pyls-mypy pyls-isort pyls-black setuptools ]))
-      poetry
+      poetry pipenv
       (python2.withPackages (ps: with ps; [ virtualenv pip ]))
       (ghc.withPackages (ps: with ps; [ tidal ]))
       nodejs yarn
@@ -26,8 +26,7 @@ with pkgs; {
       llvm llvmPackages.clang-unwrapped
       elixir
       shellcheck
-      # FIXME: Borked?
-      # nixfmt
+      nixfmt
       gcc
 
       jetbrains.jdk # Jetbrains JDK is more convinient generally
@@ -38,10 +37,11 @@ with pkgs; {
 
       ## Editors and stuff
       emacs irony-server # TODO move to own package with deps
-      # jetbrains.clion
+      jetbrains.clion
       # jetbrains.idea-ultimate
       pencil   # UML editing
       insomnia # API testing
+      anki
 
       ## Games
       steam
@@ -56,6 +56,7 @@ with pkgs; {
       discord
       wire-desktop
       gitter
+      zoom-us
 
       ## Media
       lollypop

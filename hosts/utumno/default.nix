@@ -17,7 +17,7 @@
   ];
 
   # Nix-related settings
-  system.stateVersion = "19.09";
+  system.stateVersion = "20.03";
   nix.autoOptimiseStore = true;
   system.autoUpgrade.enable = true;
   nixpkgs.config.allowUnfree = true;
@@ -66,5 +66,4 @@
   services.journald.extraConfig = ''
     SystemMaxUse=16M
   '';
-
 }

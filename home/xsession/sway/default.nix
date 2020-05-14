@@ -340,6 +340,7 @@ rec {
     bindsym ${modifier}+Shift+6     move container to workspace 6
     bindsym ${modifier}+Shift+grave move container to workspace 7
 
+    bindsym --to-code ${modifier}+n           exec telegram-desktop; exec Discord; exec vk; exec thunderbird; exec skypeforlinux; exec wire-desktop
     bindsym --to-code ${modifier}+f           exec kitty -T=lf lf
     bindsym --to-code ${modifier}+w           layout tabbed
     bindsym --to-code ${modifier}+e           layout toggle split

@@ -19,6 +19,7 @@ in
       width=580
       height=150
       format=%s\n<small>%b</small>
+      default-timeout=60000
     '';
     target = "mako/config";
   };

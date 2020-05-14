@@ -11,5 +11,7 @@
        ./memory
        ./keybase
        ./syncthing
+       ./jackett
+       ./sonarr
   ];
 }

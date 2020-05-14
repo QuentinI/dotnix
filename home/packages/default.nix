@@ -57,13 +57,16 @@ with pkgs; {
       wire-desktop
       gitter
       zoom-us
+      vk-messenger
+      skype
 
       ## Media
       lollypop
       (gnome-podcasts.overrideAttrs (base: with pkgs.gst_all_1; { buildInputs = base.buildInputs ++ [ gst-plugins-good gst-plugins-ugly ]; }))
       feh
       mpv
-      pulseeffects
+      # FIXME: broken
+      # pulseeffects
       sox
 
       ## Documents

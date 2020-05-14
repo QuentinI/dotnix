@@ -18,6 +18,8 @@ in
       "video"
       "docker"
       "dialout"
+      "cdrom"
+      "wireshark"
     ];
     description = "Quentin Inkling";
   };
@@ -63,7 +65,15 @@ in
         };
         theme = rec {
           name = "Materia-Custom";
-          package = (pkgs.materia-theme.overrideAttrs (base: {
+          package = (pkgs.materia-theme.overrideAttrs (base: rec {
+            version = "20200320";
+
+            src = pkgs.fetchFromGitHub {
+              owner = "nana-4";
+              repo = base.pname;
+              rev = "v${version}";
+              sha256 = "0g4b7363hzs7z9xghldlz9aakmzzp18hhx32frb6qxy04lna2lwk";
+            };
 
             buildInputs = base.buildInputs ++ [ pkgs.sassc pkgs.inkscape pkgs.optipng ];
 

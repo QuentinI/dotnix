@@ -43,7 +43,7 @@ in {
   home.packages = with pkgs; [
     z-lua
     # For file previews
-    exiftool mupdf p7zip unrar atool libarchive
+    exiftool mupdf unrar atool libarchive
   ];
 
   programs.zsh = {

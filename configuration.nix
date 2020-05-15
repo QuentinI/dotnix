@@ -1,6 +1,7 @@
 { config, pkgs, options, ... }:
 
-{
+let sources = import ./nix/sources.nix;
+in {
   imports = [
     <home-manager/nixos>
     ./hosts/utumno

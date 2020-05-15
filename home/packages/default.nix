@@ -112,6 +112,7 @@ with pkgs; {
       # Nixos housekeeping
       vulnix # NixOS vulnerability scanner
       nox    # Apt-cache, kinda
+      niv
 
       # Unsorted. Fuck it.
       # TODO maybe?..

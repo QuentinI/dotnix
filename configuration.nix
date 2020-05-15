@@ -2,14 +2,10 @@
 
 let sources = import ./nix/sources.nix;
 in {
-  imports = [
-    <home-manager/nixos>
-    ./hosts/utumno
-  ];
+  imports = [ <home-manager/nixos> ./hosts/utumno ];
 
-  nix.nixPath =
-    options.nix.nixPath.default ++ 
-    [ "nixpkgs-overlays=/etc/nixos/overlays/" ];
+  nix.nixPath = options.nix.nixPath.default
+    ++ [ "nixpkgs-overlays=/etc/nixos/overlays/" ];
 
   nixpkgs.config.allowUnfree = true;
 

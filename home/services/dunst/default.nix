@@ -1,9 +1,7 @@
-{ pkgs, ...}:
+{ pkgs, ... }:
 
-let
-  theme = import ../../themes { inherit pkgs; };
-in
-{
+let theme = import ../../themes { inherit pkgs; };
+in {
   services.dunst = {
     enable = true;
 
@@ -31,7 +29,7 @@ in
         frame_color = theme.colors.background.accent;
         separator_color = theme.colors.background.accent;
         font = "Fira Code 16";
-        format = ''%s\n<small>%b</small>'';
+        format = "%s\\n<small>%b</small>";
         word_wrap = "yes";
 
         icon_position = "left";
@@ -61,7 +59,7 @@ in
       # Displays only header to show nice centered progress bars
       func = {
         category = "func";
-        format = ''<big>%b</big>'';
+        format = "<big>%b</big>";
         fullscreen = "show";
       };
     };

@@ -2,12 +2,12 @@
 
 let
   modifier = "Mod4";
-  theme    = import ../../themes { inherit pkgs; };
+  theme = import ../../themes { inherit pkgs; };
   mkOpaque = import ../../themes/lib/mkOpaque.nix;
-  waybar   = (pkgs.waybar.override {
-                pulseSupport = true;
-                traySupport  = true;
-             });
+  waybar = (pkgs.waybar.override {
+    pulseSupport = true;
+    traySupport = true;
+  });
 
   # TODO
   lock = pkgs.writeShellScriptBin "lock.sh" ''
@@ -44,88 +44,85 @@ let
 
   mpdByTitle = pkgs.writeShellScriptBin "mpdByTitle.sh" ''
 
-  JQ=${pkgs.jq}/bin/jq
-  MPC=${pkgs.mpc_cli}/bin/mpc
+    JQ=${pkgs.jq}/bin/jq
+    MPC=${pkgs.mpc_cli}/bin/mpc
 
-  # function by Fikri Omar
-  # https://github.com/fikriomar16/rofi-mpd/blob/master/rofi-mpd
-  addaftercurrentandplay(){
+    # function by Fikri Omar
+    # https://github.com/fikriomar16/rofi-mpd/blob/master/rofi-mpd
+    addaftercurrentandplay(){
 
-        #playlist is empty, just add the song
-        if [ "$($MPC playlist | wc -l)" == "0" ]; then
-                $MPC add "$1"
-                sleep 0.3
-                $MPC play
+          #playlist is empty, just add the song
+          if [ "$($MPC playlist | wc -l)" == "0" ]; then
+                  $MPC add "$1"
+                  sleep 0.3
+                  $MPC play
 
-        #there is no current song so mpd is stopped
-        #it seems to be impossible to determine the current songs' position when 
-        #mpd is stopped, so just add to the end
-        elif [ -z "$($MPC current)" ]; then 
-                END_POS=$($MPC playlist | wc -l)
-                $MPC add "$1"
-                sleep 0.3
-                $MPC play $(($END_POS+1))
+          #there is no current song so mpd is stopped
+          #it seems to be impossible to determine the current songs' position when 
+          #mpd is stopped, so just add to the end
+          elif [ -z "$($MPC current)" ]; then 
+                  END_POS=$($MPC playlist | wc -l)
+                  $MPC add "$1"
+                  sleep 0.3
+                  $MPC play $(($END_POS+1))
 
-        #at least 1 song is in the playlist, determine the position of the 
-        #currently played song and add $1 after it
-        else
-                CUR_POS=$($MPC | tail -2 | head -1 | awk '{print $2}' | sed 's/#//' | awk -F/ '{print $1}')
-                END_POS=$($MPC playlist | wc -l)
-                $MPC add "$1"
-                sleep 0.3
-                $MPC move $(($END_POS+1)) $(($CUR_POS+1))
-                sleep 0.3
-                $MPC play $(($CUR_POS+1))
+          #at least 1 song is in the playlist, determine the position of the 
+          #currently played song and add $1 after it
+          else
+                  CUR_POS=$($MPC | tail -2 | head -1 | awk '{print $2}' | sed 's/#//' | awk -F/ '{print $1}')
+                  END_POS=$($MPC playlist | wc -l)
+                  $MPC add "$1"
+                  sleep 0.3
+                  $MPC move $(($END_POS+1)) $(($CUR_POS+1))
+                  sleep 0.3
+                  $MPC play $(($CUR_POS+1))
+          fi
+    }
+
+    addalbum() {
+      titles=("$@")
+      IFS=$'\n' sorted=($(sort <<<"${"$"}{titles[*]}"))
+      unset IFS
+      addaftercurrentandplay ${"$"}{sorted[0]};
+      COUNT=0;
+      CUR_POS=$($MPC | tail -2 | head -1 | awk '{print $2}' | sed 's/#//' | awk -F/ '{print $1}')
+      for i in "${"$"}{sorted[@]:1}"
+      do
+        END_POS=$($MPC playlist | wc -l)
+        $MPC add "$i"
+        sleep 0.3
+        $MPC move $(($END_POS+1)) $(($CUR_POS+1+$COUNT))
+        sleep 0.3
+        COUNT=$(($COUNT+1))
+      done
+    }
+
+    case $1 in
+      track)
+        title=$(gzip -d -c ~/.local/share/mopidy/local/library.json.gz | $JQ -r ".tracks[] | .name + \" <small>(\"  + .artists[0].name + \", \" + .album.name + \")</small>\" " | sort | rofi -dmenu -markup-rows -matching normal -i | sed 's/<small>.*//' | xargs -I % $MPC find Title "%" | cut -d " " -f1)
+        if [ "$title" ]; then
+          addaftercurrentandplay $title;
         fi
-  }
-
-  addalbum() {
-    titles=("$@")
-    IFS=$'\n' sorted=($(sort <<<"${"$"}{titles[*]}"))
-    unset IFS
-    addaftercurrentandplay ${"$"}{sorted[0]};
-    COUNT=0;
-    CUR_POS=$($MPC | tail -2 | head -1 | awk '{print $2}' | sed 's/#//' | awk -F/ '{print $1}')
-    for i in "${"$"}{sorted[@]:1}"
-    do
-      END_POS=$($MPC playlist | wc -l)
-      $MPC add "$i"
-      sleep 0.3
-      $MPC move $(($END_POS+1)) $(($CUR_POS+1+$COUNT))
-      sleep 0.3
-      COUNT=$(($COUNT+1))
-    done
-  }
-
-  case $1 in
-    track)
-      title=$(gzip -d -c ~/.local/share/mopidy/local/library.json.gz | $JQ -r ".tracks[] | .name + \" <small>(\"  + .artists[0].name + \", \" + .album.name + \")</small>\" " | sort | rofi -dmenu -markup-rows -matching normal -i | sed 's/<small>.*//' | xargs -I % $MPC find Title "%" | cut -d " " -f1)
-      if [ "$title" ]; then
-        addaftercurrentandplay $title;
-      fi
-      ;;
-    album)
-      titles=$(gzip -d -c ~/.local/share/mopidy/local/library.json.gz | $JQ -r ".tracks[].album | .name + \" <small>(\" + .artists[0].name + \")</small>\"" | sort | uniq | rofi -dmenu -markup-rows -matching normal -i | sed 's/<small>.*//' | xargs -I % $MPC find Album "%")
-      if [ "$titles" ]; then
-        addalbum $titles;
-      fi
-      ;;
-    *)
-  esac
+        ;;
+      album)
+        titles=$(gzip -d -c ~/.local/share/mopidy/local/library.json.gz | $JQ -r ".tracks[].album | .name + \" <small>(\" + .artists[0].name + \")</small>\"" | sort | uniq | rofi -dmenu -markup-rows -matching normal -i | sed 's/<small>.*//' | xargs -I % $MPC find Album "%")
+        if [ "$titles" ]; then
+          addalbum $titles;
+        fi
+        ;;
+      *)
+    esac
 
   '';
-in
 
-rec {
-  imports = [
-    ../../programs/rofi
-    ../../services/mako
-  ];
+in rec {
+  imports = [ ../../programs/rofi ../../services/mako ];
 
   home.packages = [
     pkgs.sway
     pkgs.swaylock
-    pkgs.grim pkgs.slurp
+    pkgs.grim
+    pkgs.slurp
     pkgs.wl-clipboard
     pkgs.pamixer
     pkgs.wob
@@ -135,9 +132,7 @@ rec {
   ];
 
   # Get rid of Qt filepickers, etc
-  home.sessionVariables = {
-    "XDG_CURRENT_DESKTOP" = "XFCE";
-  };
+  home.sessionVariables = { "XDG_CURRENT_DESKTOP" = "XFCE"; };
 
   # Waybar works with libappindicator tray icons only
   xsession.preferStatusNotifierItems = true;
@@ -221,47 +216,59 @@ rec {
   wayland.windowManager.sway.enable = true;
   wayland.windowManager.sway.config = {
     assigns = {
-      "1" = [{ class = "Firefox"; } { class = "Chromium-browser"; } { class = "Deluge"; }];
-      "2" = [{ title = "Atom"; } { class = "jetbrains"; } { class = "Emacs"; }];
-      "3" = [{ class = "TelegramDesktop"; } { class = "discord"; } { class = "Keybase"; } {class = "Daily";} ];
-      "5" = [{ class = "Steam"; } { class = "wesnoth"; } { class = "xonotic-(glx|sdl)"; }];
+      "1" = [
+        { class = "Firefox"; }
+        { class = "Chromium-browser"; }
+        { class = "Deluge"; }
+      ];
+      "2" =
+        [ { title = "Atom"; } { class = "jetbrains"; } { class = "Emacs"; } ];
+      "3" = [
+        { class = "TelegramDesktop"; }
+        { class = "discord"; }
+        { class = "Keybase"; }
+        { class = "Daily"; }
+      ];
+      "5" = [
+        { class = "Steam"; }
+        { class = "wesnoth"; }
+        { class = "xonotic-(glx|sdl)"; }
+      ];
     };
 
-    bars = [
-      {
-        command = "${waybar}/bin/waybar";
-        position = "bottom";
-      }
-    ];
+    bars = [{
+      command = "${waybar}/bin/waybar";
+      position = "bottom";
+    }];
 
     colors = rec {
       focused = {
-        background  = theme.colors.background.primary;
-        border      = theme.colors.background.primary; 
+        background = theme.colors.background.primary;
+        border = theme.colors.background.primary;
         childBorder = theme.colors.background.accent;
-        indicator   = "#2e9ef4";  # TODO
-        text        = theme.colors.text.primary;
+        indicator = "#2e9ef4"; # TODO
+        text = theme.colors.text.primary;
       };
       focusedInactive = {
-        background  = mkOpaque theme.colors.background.primary;
-        border      = mkOpaque theme.colors.background.primary;
+        background = mkOpaque theme.colors.background.primary;
+        border = mkOpaque theme.colors.background.primary;
         childBorder = mkOpaque theme.colors.background.primary;
-        indicator   = "#484e50";
-        text        = theme.colors.text.primary;
+        indicator = "#484e50";
+        text = theme.colors.text.primary;
       };
       placeholder = {
-        background  = "#0000005a";
-        border      = "#0000005a";
+        background = "#0000005a";
+        border = "#0000005a";
         childBorder = "#0c0c0c";
-        indicator   = "#000000";
-        text        = "#ffffff";
+        indicator = "#000000";
+        text = "#ffffff";
       };
       unfocused = {
-        background  = mkOpaque theme.colors.background.secondary;
-        border      = mkOpaque theme.colors.background.secondary;
+        background = mkOpaque theme.colors.background.secondary;
+        border = mkOpaque theme.colors.background.secondary;
         childBorder = theme.colors.background.primary;
-        indicator   = "#484e50";
-        text        = theme.colors.text.primary;
+        indicator = "#484e50";
+        text = theme.colors.text.primary;
       };
       urgent = placeholder;
     };
@@ -277,17 +284,17 @@ rec {
 
     fonts = [ "Fira Code 10" ];
 
-    keybindings = {};
+    keybindings = { };
 
     modes = {
-          resize = {
-                 h      = "resize shrink width 10 px or 10 ppt";
-                 j      = "resize grow height 10 px or 10 ppt";
-                 k      = "resize shrink height 10 px or 10 ppt";
-                 l      = "resize grow width 10 px or 10 ppt";
-                 Return = "mode default";
-                 Escape = "mode default";
-          };
+      resize = {
+        h = "resize shrink width 10 px or 10 ppt";
+        j = "resize grow height 10 px or 10 ppt";
+        k = "resize shrink height 10 px or 10 ppt";
+        l = "resize grow width 10 px or 10 ppt";
+        Return = "mode default";
+        Escape = "mode default";
+      };
     };
 
     input = {

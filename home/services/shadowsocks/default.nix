@@ -18,16 +18,13 @@ let
     TAIL=${pkgs.coreutils}/bin/tail
     $SS -c ${cfg} -k $($PASS show Shadowsocks/Elijah | $HEAD -n 1) $($PASS show Shadowsocks/Elijah | $TAIL -n 1)
   '';
-in
 
-{
+in {
   systemd.user.services.shadowsocks = {
-      Install = {
-          WantedBy = [ "graphical-session.target" ];
-      };
-      Service = {
-          ExecStart = "${startScript}/bin/shadowsocks.sh";
-          Restart = "on-abort";
-      };
+    Install = { WantedBy = [ "graphical-session.target" ]; };
+    Service = {
+      ExecStart = "${startScript}/bin/shadowsocks.sh";
+      Restart = "on-abort";
+    };
   };
 }

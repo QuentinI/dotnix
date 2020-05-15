@@ -1,5 +1,4 @@
-self:
-super:
+self: super:
 
 {
   redasm = super.stdenv.mkDerivation rec {
@@ -13,8 +12,8 @@ super:
       fetchSubmodules = true;
     };
 
-    buildInputs = with self; [cmake qt5.qtbase qt5.qtwebengine busybox];
-    cmakeFlags = with self; ["-DCMAKE_BUILD_TYPE=Release"];
+    buildInputs = with self; [ cmake qt5.qtbase qt5.qtwebengine busybox ];
+    cmakeFlags = with self; [ "-DCMAKE_BUILD_TYPE=Release" ];
 
     postInstall = ''
       mkdir -p $out/bin

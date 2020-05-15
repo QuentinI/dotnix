@@ -1,8 +1,8 @@
-{ config, pkgs, ...}:
+{ config, pkgs, ... }:
 
 {
-   virtualisation.docker = {
-     enable = true;
-     enableOnBoot = false;
-   };
+  virtualisation.docker = {
+    enable = true;
+    enableOnBoot = false;
+  };
 }

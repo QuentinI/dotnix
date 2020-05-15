@@ -4,10 +4,9 @@ let
   theme = import ../../themes { inherit pkgs; };
   mkINI = import ../../themes/lib/mkINI.nix;
   cfg = builtins.readFile ./config;
-in
-{
+in {
   services.polybar = {
-    enable  = true;
+    enable = true;
     package = pkgs.polybar.override {
       i3GapsSupport = true;
       alsaSupport = true;
@@ -22,8 +21,7 @@ in
   xdg.configFile.mpris = {
     target = "polybar/mpris.sh";
     executable = true;
-    text =
-      ''
+    text = ''
       #!${pkgs.bash}/bin/bash
       # Specifying the icon(s) in the script
       # This allows us to change its appearance conditionally
@@ -43,6 +41,6 @@ in
       else
           echo "%{F#65737E}$icon"                 # Greyed out icon when stopped
       fi
-      '';
+    '';
   };
 }

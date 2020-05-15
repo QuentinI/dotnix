@@ -1,6 +1,6 @@
-{...}:
+{ ... }:
 
-{ 
+{
   xdg.configFile."mimeapps.list".text = ''
     [Default Applications]
     # Doc viewer
@@ -20,5 +20,5 @@
     image/jpeg=feh.desktop;
     # Text viewer
     text/plain=emacs.desktop;
-    '';
+  '';
 }

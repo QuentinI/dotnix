@@ -1,9 +1,8 @@
-{ config, pkgs, ...}:
+{ config, pkgs, ... }:
 
 {
   home.packages = [ pkgs.most ];
-  home.file.".mostrc".text = 
-    ''
+  home.file.".mostrc".text = ''
     % Keybindings
     unsetkey "^K"
     setkey up "^K"
@@ -34,5 +33,5 @@
     setkey goto_mark "'"
     setkey find_file "E"
     setkey edit "v"
-    '';
+  '';
 }

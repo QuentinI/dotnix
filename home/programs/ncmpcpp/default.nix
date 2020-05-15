@@ -17,8 +17,8 @@
       now_playing_suffix = $/u
 
       main_window_color = white
-   '';
-   target = ".ncmpcpp/config";
+    '';
+    target = ".ncmpcpp/config";
   };
 
   home.file.ncmpcpp_bindings = {
@@ -27,7 +27,7 @@
               show_clock
       def_key "="
           volume_up
-      
+
       def_key "j"
           scroll_down
       def_key "k"
@@ -36,30 +36,30 @@
           previous_column
       def_key "l"
           next_column
-      
+
       def_key "ctrl-u"
           page_up
-      
+
       def_key "ctrl-d"
           page_down
-      
-      
+
+
       def_key "."
           show_lyrics
-      
+
       def_key "n"
           next_found_item
       def_key "N"
           previous_found_item
-      
+
       def_key "J"
           move_sort_order_down
       def_key "K"
           move_sort_order_up
-      
+
       def_key "d"
         delete_playlist_items
-      
+
       def_key "d"
         delete_browser_items
     '';

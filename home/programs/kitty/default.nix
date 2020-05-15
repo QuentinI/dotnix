@@ -1,12 +1,8 @@
 { config, pkgs, ... }:
 
-let
-  theme = import ../../themes {inherit pkgs; };
-in
-{
-  home.packages = [
-    pkgs.kitty
-  ];
+let theme = import ../../themes { inherit pkgs; };
+in {
+  home.packages = [ pkgs.kitty ];
 
   # TODO: what are those color{0..15} thingies and why do i have them
   xdg.configFile.kitty_config = {

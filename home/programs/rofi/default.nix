@@ -1,17 +1,14 @@
 # TODO theme
-{ config, pkgs, ...}:
+{ config, pkgs, ... }:
 
-let
-  theme = import ../../themes { inherit pkgs; };
-in
+let theme = import ../../themes { inherit pkgs; };
 
-{
+in {
   programs.rofi = {
     enable = true;
     lines = 7;
     font = "Fira Code 16";
-    extraConfig =
-      ''
+    extraConfig = ''
       rofi.modi:                drun
       rofi.matching:            fuzzy
       rofi.drun-match-fields:   name
@@ -20,7 +17,7 @@ in
       rofi.kb-cancel:           Menu,Escape,alt+r
       rofi.show-icons:          true
       rofi.kb-row-tab:          shift+Tab
-      '';
+    '';
     colors = {
       window = {
         background = "${theme.colors.background.secondary}";

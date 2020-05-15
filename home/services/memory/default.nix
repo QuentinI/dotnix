@@ -40,17 +40,14 @@ let
       $SLEEP 1
     done
   '';
-in
 
-{
+in {
   home.packages = with pkgs; [ gawk procps notify-desktop ];
   systemd.user.services.memory = {
-      Install = {
-          WantedBy = [ "graphical-session.target" ];
-      };
-      Service = {
-          ExecStart = "${startScript}/bin/memory.sh";
-          Restart = "on-abort";
-      };
+    Install = { WantedBy = [ "graphical-session.target" ]; };
+    Service = {
+      ExecStart = "${startScript}/bin/memory.sh";
+      Restart = "on-abort";
+    };
   };
 }

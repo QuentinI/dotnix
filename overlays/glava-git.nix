@@ -1,5 +1,4 @@
-self:
-super:
+self: super:
 
 let
   inherit (super.stdenv.lib) optional makeLibraryPath;
@@ -18,9 +17,8 @@ let
         exec @out@/bin/.glava-unwrapped "$@"
     esac
   '';
-in
 
-{
+in {
   glava-git = super.stdenv.mkDerivation rec {
     name = "glava-git-${version}";
     version = "1.6.3";
@@ -42,9 +40,7 @@ in
       glfw
     ];
 
-    nativeBuildInputs = [
-      self.python3
-    ];
+    nativeBuildInputs = [ self.python3 ];
 
     preConfigure = ''
       export CFLAGS="-march=native"
@@ -55,9 +51,7 @@ in
       sed -e "s@/etc/xdg/glava@$out/etc/xdg/glava@" -i glava.c
     '';
 
-    installFlags = [
-      "DESTDIR=$(out)"
-    ];
+    installFlags = [ "DESTDIR=$(out)" ];
 
     fixupPhase = ''
       mkdir -p $out/bin
@@ -65,7 +59,9 @@ in
       rm -rf $out/usr
 
       patchelf \
-        --set-rpath "$(patchelf --print-rpath $out/bin/.glava-unwrapped):${makeLibraryPath [ super.libGL ]}" \
+        --set-rpath "$(patchelf --print-rpath $out/bin/.glava-unwrapped):${
+          makeLibraryPath [ super.libGL ]
+        }" \
         $out/bin/.glava-unwrapped
 
       substitute ${wrapperScript} $out/bin/glava --subst-var out
@@ -76,9 +72,9 @@ in
       description = ''
         OpenGL audio spectrum visualizer
       '';
-      homepage = https://github.com/wacossusca34/glava;
+      homepage = "https://github.com/wacossusca34/glava";
       platforms = platforms.linux;
       license = licenses.gpl3;
-    };  
+    };
   };
 }

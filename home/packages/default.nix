@@ -1,142 +1,173 @@
-## A list of packages requiring little to no configuration
+# # A list of packages requiring little to no configuration
 ## Just adds them to home.packages
 { pkgs, ... }:
 
 with pkgs; {
-   home.packages =
-    [
-      # Command-line essentials
-      atool unrar unzip bzip2 # Archive management
-      bat exa fd ripgrep      # Bloatware instead of ol' good unix tools
-      htop most pv
-      tldr
-      lf
-      file
-      git
-      telnet picocom
-      gopass
+  home.packages = [
+    # Command-line essentials
+    atool
+    unrar
+    unzip
+    bzip2 # Archive management
+    bat
+    exa
+    fd
+    ripgrep # Bloatware instead of ol' good unix tools
+    htop
+    most
+    pv
+    tldr
+    lf
+    file
+    git
+    telnet
+    picocom
+    gopass
 
-      ## Compilers/interpreters
-      (python3.withPackages (ps: with ps; [ virtualenv pip tkinter python-language-server pyls-mypy pyls-isort pyls-black setuptools ]))
-      poetry pipenv
-      (python2.withPackages (ps: with ps; [ virtualenv pip ]))
-      (ghc.withPackages (ps: with ps; [ tidal ]))
-      nodejs yarn
-      rustup
-      llvm llvmPackages.clang-unwrapped
-      elixir
-      shellcheck
-      nixfmt
-      gcc
+    ## Compilers/interpreters
+    (python3.withPackages (ps:
+      with ps; [
+        virtualenv
+        pip
+        tkinter
+        python-language-server
+        pyls-mypy
+        pyls-isort
+        pyls-black
+        setuptools
+      ]))
+    poetry
+    pipenv
+    (python2.withPackages (ps: with ps; [ virtualenv pip ]))
+    (ghc.withPackages (ps: with ps; [ tidal ]))
+    nodejs
+    yarn
+    rustup
+    llvm
+    llvmPackages.clang-unwrapped
+    elixir
+    shellcheck
+    nixfmt
+    gcc
 
-      jetbrains.jdk # Jetbrains JDK is more convinient generally
+    jetbrains.jdk # Jetbrains JDK is more convinient generally
 
-      ## Docker
-      docker
-      docker_compose
+    ## Docker
+    docker
+    docker_compose
 
-      ## Editors and stuff
-      emacs irony-server # TODO move to own package with deps
-      jetbrains.clion
-      # jetbrains.idea-ultimate
-      pencil   # UML editing
-      insomnia # API testing
-      anki
+    ## Editors and stuff
+    emacs
+    irony-server # TODO move to own package with deps
+    jetbrains.clion
+    # jetbrains.idea-ultimate
+    pencil # UML editing
+    insomnia # API testing
+    anki
 
-      ## Games
-      steam
-      xonotic
-      wesnoth
+    ## Games
+    steam
+    xonotic
+    wesnoth
 
-      ## Image editing
-      imagemagick pinta krita gimp
-      ffmpeg
+    ## Image editing
+    imagemagick
+    pinta
+    krita
+    gimp
+    ffmpeg
 
-      ## Messaging
-      discord
-      wire-desktop
-      gitter
-      zoom-us
-      vk-messenger
-      skype
+    ## Messaging
+    discord
+    wire-desktop
+    gitter
+    zoom-us
+    vk-messenger
+    skype
 
-      ## Media
-      lollypop
-      (gnome-podcasts.overrideAttrs (base: with pkgs.gst_all_1; { buildInputs = base.buildInputs ++ [ gst-plugins-good gst-plugins-ugly ]; }))
-      feh
-      mpv
-      # FIXME: broken
-      # pulseeffects
-      sox
+    ## Media
+    lollypop
+    (gnome-podcasts.overrideAttrs (base:
+      with pkgs.gst_all_1; {
+        buildInputs = base.buildInputs ++ [ gst-plugins-good gst-plugins-ugly ];
+      }))
+    feh
+    mpv
+    # FIXME: broken
+    # pulseeffects
+    sox
 
-      ## Documents
-      texlive.combined.scheme-full
-      calibre
-      zathura
-      libreoffice-unwrapped
-      pdftk
-      pandoc
+    ## Documents
+    texlive.combined.scheme-full
+    calibre
+    zathura
+    libreoffice-unwrapped
+    pdftk
+    pandoc
 
-      ## Browsing
-      firefox chromium
+    ## Browsing
+    firefox
+    chromium
 
-      ## Download management
-      aria2 uget
-      qbittorrent
+    ## Download management
+    aria2
+    uget
+    qbittorrent
 
-      ## Dictionaries
-      hunspell
-      hunspellDicts.en-us
-      aspellDicts.en
-      aspellDicts.en-computers
-      aspellDicts.en-science
-      aspellDicts.ru
+    ## Dictionaries
+    hunspell
+    hunspellDicts.en-us
+    aspellDicts.en
+    aspellDicts.en-computers
+    aspellDicts.en-science
+    aspellDicts.ru
 
-      # Screen
-      arandr
+    # Screen
+    arandr
 
-      # Sound
-      pavucontrol
-      (speechd.override { withPulse = true; })
+    # Sound
+    pavucontrol
+    (speechd.override { withPulse = true; })
 
-      # Generative music
-      # I'm kinda tired of compiling it over and over
-      # jack2Full
-      # sc-plugins
-      # supercollider
+    # Generative music
+    # I'm kinda tired of compiling it over and over
+    # jack2Full
+    # sc-plugins
+    # supercollider
 
-      #System management
-      # Boom! Doesn't build on master
-      # anydesk
-      ntfsprogs ntfs3g
-      # Nixos housekeeping
-      vulnix # NixOS vulnerability scanner
-      nox    # Apt-cache, kinda
-      niv
+    #System management
+    # Boom! Doesn't build on master
+    # anydesk
+    ntfsprogs
+    ntfs3g
+    # Nixos housekeeping
+    vulnix # NixOS vulnerability scanner
+    nox # Apt-cache, kinda
+    niv
 
-      # Unsorted. Fuck it.
-      # TODO maybe?..
-      binutils
-      blueman
-      gnumake
-      gnupg
-      gnutls
-      gparted
-      highlight
-      ifuse
-      inotify-tools
-      jmtpfs
-      networkmanagerapplet
-      patchelf
-      playerctl
-      psmisc
-      shared-mime-info
-      unclutter
-      virtmanager
-      stlink # For work
+    # Unsorted. Fuck it.
+    # TODO maybe?..
+    binutils
+    blueman
+    gnumake
+    gnupg
+    gnutls
+    gparted
+    highlight
+    ifuse
+    inotify-tools
+    jmtpfs
+    networkmanagerapplet
+    patchelf
+    playerctl
+    psmisc
+    shared-mime-info
+    unclutter
+    virtmanager
+    stlink # For work
 
-      # Fixes "failed to commit changes to dconf" issues
-      gnome3.dconf
+    # Fixes "failed to commit changes to dconf" issues
+    gnome3.dconf
   ];
 }
 

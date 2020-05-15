@@ -16,17 +16,11 @@ let
     ${mopidyEnv}/bin/mopidy --config ~/.config/mopidy/mopidy.conf
   '';
 
-in
-
-{
-  home = {
-    packages = [ pkgs.mopidy ];
-  };
-
+in {
+  home = { packages = [ pkgs.mopidy ]; };
 
   xdg.configFile.mopidy = {
-    text =
-    ''
+    text = ''
       [mpd]
       hostname = ::
 
@@ -38,12 +32,8 @@ in
     target = "mopidy/mopidy.conf";
   };
 
-  
-
   systemd.user.services.mopidy = {
-    Install = {
-      WantedBy = [ "graphical-session.target" ];
-    };
+    Install = { WantedBy = [ "graphical-session.target" ]; };
     Service = {
       ExecStart = "${startScript}/bin/mopidy.sh";
       Restart = "on-abort";

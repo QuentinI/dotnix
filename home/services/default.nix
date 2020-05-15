@@ -2,16 +2,16 @@
 
 {
   imports = [
-       ./kdeconnect
-       ./gpg-agent
-       ./shadowsocks
-       ./unclutter
-       ./nm-applet
-       ./udiskie
-       ./memory
-       ./keybase
-       ./syncthing
-       ./jackett
-       ./sonarr
+    ./kdeconnect
+    ./gpg-agent
+    ./shadowsocks
+    ./unclutter
+    ./nm-applet
+    ./udiskie
+    ./memory
+    ./keybase
+    ./syncthing
+    ./jackett
+    ./sonarr
   ];
 }

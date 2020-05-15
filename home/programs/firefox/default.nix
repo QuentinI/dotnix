@@ -1,17 +1,17 @@
 { config, pkgs, ... }:
 
 let
-    theme = import ../../themes { inherit pkgs; };
-    mkCss = import ../../themes/lib/mkCss.nix;
-    css = mkCss theme.colors;
-    userContent = ''
-        :root ${css}
-        ${builtins.readFile ./userContent.css}
-    '';
-    userChrome = ''
-        :root ${css}
-        ${builtins.readFile ./userChrome.css}
-    '';
+  theme = import ../../themes { inherit pkgs; };
+  mkCss = import ../../themes/lib/mkCss.nix;
+  css = mkCss theme.colors;
+  userContent = ''
+    :root ${css}
+    ${builtins.readFile ./userContent.css}
+  '';
+  userChrome = ''
+    :root ${css}
+    ${builtins.readFile ./userChrome.css}
+  '';
 in {
   xdg.configFile.tridactylrc = {
     source = ./tridactylrc;
@@ -23,9 +23,7 @@ in {
     target = ".mozilla/firefox/default/chrome/userContent.css";
   };
 
-  home.packages = [
-    pkgs.thunderbird
-  ];
+  home.packages = [ pkgs.thunderbird ];
 
   programs.firefox = {
     enable = true;
@@ -44,13 +42,15 @@ in {
           "dom.battery.enabled" = false;
           "dom.enable_performance" = false;
           "dom.enable_user_timing" = false;
-          "dom.event.contextmenu.enabled" = false; # This may actually break some sites, but I hate RMB highjacking
+          "dom.event.contextmenu.enabled" =
+            false; # This may actually break some sites, but I hate RMB highjacking
           "dom.gamepad.enabled" = false;
           "dom.netinfo.enabled" = false;
           "dom.network.enabled" = false;
           "dom.telephony.enabled" = false;
           "dom.vr.enabled" = false;
-          "dom.vibrator.enabled" = false; # Not working with my vibrator. 0/10 would disable again. 
+          "dom.vibrator.enabled" =
+            false; # Not working with my vibrator. 0/10 would disable again.
           "dom.webnotifications.enabled" = false;
           "media.webspeech.recognition.enable" = false;
 
@@ -69,16 +69,16 @@ in {
 
           # Disable telemetry and telemetry and telemetry and...
           # How many more of this shit is there?
-          "toolkit.telemetry.unified"= false;
-          "toolkit.telemetry.enabled"= false;
-          "toolkit.telemetry.server"= "data:,";
-          "toolkit.telemetry.archive.enabled"= false;
-          "toolkit.telemetry.newProfilePing.enabled"= false;
-          "toolkit.telemetry.shutdownPingSender.enabled"= false;
-          "toolkit.telemetry.updatePing.enabled"= false;
-          "toolkit.telemetry.bhrPing.enabled"= false;
-          "toolkit.telemetry.firstShutdownPing.enabled"= false;
-          "toolkit.telemetry.hybridContent.enabled"= false;
+          "toolkit.telemetry.unified" = false;
+          "toolkit.telemetry.enabled" = false;
+          "toolkit.telemetry.server" = "data:,";
+          "toolkit.telemetry.archive.enabled" = false;
+          "toolkit.telemetry.newProfilePing.enabled" = false;
+          "toolkit.telemetry.shutdownPingSender.enabled" = false;
+          "toolkit.telemetry.updatePing.enabled" = false;
+          "toolkit.telemetry.bhrPing.enabled" = false;
+          "toolkit.telemetry.firstShutdownPing.enabled" = false;
+          "toolkit.telemetry.hybridContent.enabled" = false;
           "experiments.supported" = false;
           "experiments.enabled" = false;
           "experiments.manifest.uri" = "";
@@ -92,17 +92,19 @@ in {
           "browser.discovery.enabled" = false;
           "browser.selfsupport.url" = "";
           "loop.logDomains" = false;
-          "browser.newtabpage.activity-stream.feeds.telemetry"= false;
-          "browser.newtabpage.activity-stream.telemetry"= false;
-          "browser.newtabpage.activity-stream.telemetry.ping.endpoint"= "";
-          "browser.aboutHomeSnippets.updateUrl"= "";
-          "browser.newtabpage.activity-stream.asrouter.providers.snippets"= "";
-          "browser.newtabpage.activity-stream.disableSnippets"= true;
-          "browser.newtabpage.activity-stream.feeds.snippets"= false;
-          "browser.newtabpage.activity-stream.feeds.section.topstories"= false;
-          "browser.newtabpage.activity-stream.section.highlights.includePocket"= false;
-          "browser.newtabpage.activity-stream.showSponsored"= false;
-          "browser.newtabpage.activity-stream.feeds.discoverystreamfeed"= false;
+          "browser.newtabpage.activity-stream.feeds.telemetry" = false;
+          "browser.newtabpage.activity-stream.telemetry" = false;
+          "browser.newtabpage.activity-stream.telemetry.ping.endpoint" = "";
+          "browser.aboutHomeSnippets.updateUrl" = "";
+          "browser.newtabpage.activity-stream.asrouter.providers.snippets" = "";
+          "browser.newtabpage.activity-stream.disableSnippets" = true;
+          "browser.newtabpage.activity-stream.feeds.snippets" = false;
+          "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
+          "browser.newtabpage.activity-stream.section.highlights.includePocket" =
+            false;
+          "browser.newtabpage.activity-stream.showSponsored" = false;
+          "browser.newtabpage.activity-stream.feeds.discoverystreamfeed" =
+            false;
           "extensions.shield-recipe-client.enabled" = false;
           "app.shield.optoutstudies.enabled" = false;
 
@@ -132,7 +134,8 @@ in {
 
           # Stop communicating with Google
           # I mean, I don't use Chrome for a reason
-          "geo.wifi.uri" = "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%";
+          "geo.wifi.uri" =
+            "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%";
           "browser.safebrowsing.downloads.remote.enabled" = false;
           "browser.safebrowsing.enabled" = false;
 
@@ -178,8 +181,7 @@ in {
         id = 1;
         isDefault = false;
 
-        settings = {
-        };
+        settings = { };
       };
     };
   };

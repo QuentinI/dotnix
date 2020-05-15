@@ -1,10 +1,13 @@
 { pkgs, ... }:
 
 # Kudos to https://github.com/ranger/ranger/blob/master/ranger/data/scope.sh
-let preview-file = pkgs.writeShellScriptBin "preview-file.sh" ''
+let
+  preview-file = pkgs.writeShellScriptBin "preview-file.sh" ''
     FILE_PATH="$1"
     FILE_EXTENSION="${"$"}{FILE_PATH##*.}"
-    FILE_EXTENSION_LOWER="$(printf "%s" "${"$"}{FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
+    FILE_EXTENSION_LOWER="$(printf "%s" "${
+      "$"
+    }{FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
 
     if [[ -d "$FILE_PATH" ]]; then
       exa -lh --git --color=always "$FILE_PATH"
@@ -43,7 +46,11 @@ in {
   home.packages = with pkgs; [
     z-lua
     # For file previews
-    exiftool mupdf unrar atool libarchive
+    exiftool
+    mupdf
+    unrar
+    atool
+    libarchive
   ];
 
   programs.zsh = {
@@ -54,7 +61,8 @@ in {
     oh-my-zsh = {
       enable = true;
       theme = "norm";
-      plugins = [ "git" "yarn" "sudo" "python" "pip" "git-extras" "docker" "catimg" ];
+      plugins =
+        [ "git" "yarn" "sudo" "python" "pip" "git-extras" "docker" "catimg" ];
     };
     shellAliases = {
       b = "bat --paging never";
@@ -67,13 +75,12 @@ in {
       nrs = "sudo nixos-rebuild switch";
       confed = "sudo $EDITOR /etc/nixos/configuration.nix";
       dc = "docker-compose";
-      ns  = "nix-shell";
+      ns = "nix-shell";
       nsp = "nix-shell --run zsh -p";
       t = "TERM=xterm"; # Sometimes programs refuse to run in kitty
       "куищще" = "reboot";
     };
-    initExtra =
-      ''
+    initExtra = ''
       setopt numericglobsort   # Sort filenames numerically when it makes sense
       setopt appendhistory     # Immediately append history instead of overwriting
       setopt histignorealldups # If a new command is a duplicate, remove the older one
@@ -164,7 +171,7 @@ in {
       if [ "$NIX_NAME" ]; then
           export PROMPT="[$NIX_NAME] $PROMPT";
       fi
-      '';
-    };
- 
+    '';
+  };
+
 }

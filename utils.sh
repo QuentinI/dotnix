@@ -49,7 +49,8 @@ function check() {
 }
 
 function format() {
-    trace fd . "${CFG_PATH}" -e nix -x nixfmt
+    trace fd . "${CFG_PATH}" -e nix -x nixfmt || :
+    trace git diff
 }
 
 CFG_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -72,5 +73,8 @@ case "$mode" in
         ;;
     "upgrade")
         upgrade "$*"
+        ;;
+    "format")
+        format "$*"
         ;;
 esac

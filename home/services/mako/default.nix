@@ -1,9 +1,7 @@
-{ config, pkgs, ...}:
+{ config, pkgs, ... }:
 
-let
-  theme    = import ../../themes { inherit pkgs; };
-in
-{
+let theme = import ../../themes { inherit pkgs; };
+in {
   home.packages = with pkgs; [ mako ];
 
   xdg.configFile.mako = {
@@ -25,12 +23,10 @@ in
   };
 
   systemd.user.services.mako = {
-      Install = {
-          WantedBy = [ "graphical-session.target" ];
-      };
-      Service = {
-          ExecStart = "${pkgs.mako}/bin/mako";
-          Restart = "on-abort";
-      };
+    Install = { WantedBy = [ "graphical-session.target" ]; };
+    Service = {
+      ExecStart = "${pkgs.mako}/bin/mako";
+      Restart = "on-abort";
+    };
   };
 }

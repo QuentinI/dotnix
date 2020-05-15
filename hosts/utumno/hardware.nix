@@ -16,21 +16,24 @@
     ];
     kernelModules = [ "kvm-intel" "nouveau" ];
     extraModulePackages = [ pkgs.xorg.xf86videonouveau ];
-    kernelParams = [ "acpi_osi=!" ''acpi_osi="Windows 2009"'' "acpi_backlight=native" "nouveau.modeset=1" ];
-    kernel.sysctl = {
-      "vm.swappiness" = 0; 
-    };
+    kernelParams = [
+      "acpi_osi=!"
+      ''acpi_osi="Windows 2009"''
+      "acpi_backlight=native"
+      "nouveau.modeset=1"
+    ];
+    kernel.sysctl = { "vm.swappiness" = 0; };
 
     # Decrypt FDE
     initrd.luks.reusePassphrases = true;
     initrd.luks.devices.root = {
-        device = "/dev/disk/by-uuid/c8a132fa-5b19-4168-aff4-7b9b31b58577";
-        preLVM = true;
-        allowDiscards = true;
+      device = "/dev/disk/by-uuid/c8a132fa-5b19-4168-aff4-7b9b31b58577";
+      preLVM = true;
+      allowDiscards = true;
     };
     initrd.luks.devices.cryptic_2 = {
-        device = "/dev/disk/by-uuid/8174f5ca-3f0c-4c6a-ade0-b37631b88456";
-        preLVM = true;
+      device = "/dev/disk/by-uuid/8174f5ca-3f0c-4c6a-ade0-b37631b88456";
+      preLVM = true;
     };
 
     cleanTmpDir = true;
@@ -74,14 +77,12 @@
   swapDevices = [{ label = "swap"; }];
 
   hardware = {
-    firmware = [
-      pkgs.firmwareLinuxNonfree
-    ];
+    firmware = [ pkgs.firmwareLinuxNonfree ];
     opengl = {
       enable = true;
       driSupport = true;
       driSupport32Bit = true;
-      extraPackages = [ pkgs.xorg.xf86videonouveau  ];
+      extraPackages = [ pkgs.xorg.xf86videonouveau ];
     };
     cpu.intel.updateMicrocode = true;
     pulseaudio = {
@@ -91,11 +92,7 @@
       extraModules = [ pkgs.pulseaudio-modules-bt ];
     };
     bluetooth.enable = true;
-    bluetooth.config = {
-      General = {
-        Enable="Source,Sink,Media,Socket";
-      };
-    };
+    bluetooth.config = { General = { Enable = "Source,Sink,Media,Socket"; }; };
     # nvidia = {
     #   prime = {
     #     offload.enable = true;

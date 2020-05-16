@@ -5,7 +5,6 @@
     ./browserpass
     ./zsh
     ./most
-    ./mopidy
     ./ncmpcpp
     ./iex
     ./tdesktop

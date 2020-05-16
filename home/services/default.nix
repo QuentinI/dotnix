@@ -13,5 +13,6 @@
     ./syncthing
     ./jackett
     ./sonarr
+    ./mopidy
   ];
 }

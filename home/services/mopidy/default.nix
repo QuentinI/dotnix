@@ -1,14 +1,22 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
+
   mopidyEnv = pkgs.buildEnv {
-    paths = lib.closePropagation [ ];
-    name = "mopidy-envt";
-    pathsToLink = [ "/${pkgs.python.sitePackages}" ];
+    name = "mopidy-with-extensions-${pkgs.mopidy.version}";
+    paths = lib.closePropagation [
+      pkgs.glib-networking
+      pkgs.gobject-introspection
+      pkgs.mopidy
+      pkgs.mopidy-mpd
+      pkgs.mopidy-iris
+      (import ./mopidy-local.nix { inherit config pkgs; })
+    ];
+    pathsToLink = [ "/${pkgs.mopidyPackages.python.sitePackages}" ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       makeWrapper ${pkgs.mopidy}/bin/mopidy $out/bin/mopidy \
-        --prefix PYTHONPATH : $out/${pkgs.python.sitePackages}
+        --prefix PYTHONPATH : $out/${pkgs.mopidyPackages.python.sitePackages}
     '';
   };
 
@@ -23,11 +31,13 @@ in {
     text = ''
       [mpd]
       hostname = ::
-
       [local]
       enabled = true
       library = json
       media_dir = ~/Music
+      [iris]
+      country = us
+      locale = en_US
     '';
     target = "mopidy/mopidy.conf";
   };

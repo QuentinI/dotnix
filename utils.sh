@@ -21,7 +21,7 @@ function trace() {
 function build() {
     nixpkgs_path="$(nix eval --raw "(import ${CFG_PATH}/nix/sources.nix).nixpkgs.outPath")"
     home_manager_path="$(nix eval --raw "(import ${CFG_PATH}/nix/sources.nix).home-manager.outPath")"
-    export NIX_PATH=nixpkgs="${nixpkgs_path}":home-manager="${home_manager_path}"
+    export NIX_PATH=nixpkgs="${nixpkgs_path}":home-manager="${home_manager_path}":nixpkgs-overlays="$(realpath $CFG_PATH)/overlays/"
     tmp=$(mktemp -u)
     trace nix build --no-link -f "${CFG_PATH}" -o "${tmp}/result" --keep-going --show-trace "$*" >&2
     drv="$(readlink "${tmp}/result")"
@@ -32,6 +32,16 @@ function switch() {
     drv=$(build)
     trace sudo nix-env -p /nix/var/nix/profiles/system --set "$drv"
     NIXOS_INSTALL_BOOTLOADER=1 trace sudo --preserve-env=NIXOS_INSTALL_BOOTLOADER "$drv/bin/switch-to-configuration" switch
+}
+
+function vm() {
+    nixpkgs_path="$(nix eval --raw "(import ${CFG_PATH}/nix/sources.nix).nixpkgs.outPath")"
+    home_manager_path="$(nix eval --raw "(import ${CFG_PATH}/nix/sources.nix).home-manager.outPath")"
+    export NIX_PATH=nixpkgs="${nixpkgs_path}":home-manager="${home_manager_path}"
+    tmp=$(mktemp -u)
+    trace nix build --no-link -f "${CFG_PATH}/vm.nix" -o "${tmp}/result" --keep-going --show-trace "$*" >&2
+    drv="$(readlink "${tmp}/result")"
+    echo "${drv}"
 }
 
 function update() {
@@ -76,5 +86,8 @@ case "$mode" in
         ;;
     "format")
         format "$*"
+        ;;
+    "vm")
+        vm "$*"
         ;;
 esac

@@ -35,6 +35,10 @@ with pkgs; {
         pyls-isort
         pyls-black
         setuptools
+        numpy
+        scipy
+        matplotlib
+        pytest
       ]))
     poetry
     pipenv

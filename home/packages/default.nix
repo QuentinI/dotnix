@@ -61,7 +61,9 @@ with pkgs; {
     docker_compose
 
     ## Editors and stuff
-    emacs
+    (emacs.override {
+      withXwidgets = true;
+    })
     irony-server # TODO move to own package with deps
     jetbrains.clion
     # jetbrains.idea-ultimate

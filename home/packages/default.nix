@@ -31,9 +31,10 @@ with pkgs; {
         pip
         tkinter
         python-language-server
-        pyls-mypy
-        pyls-isort
-        pyls-black
+        # Broken
+        # pyls-mypy
+        # pyls-isort
+        # pyls-black
         setuptools
         numpy
         scipy

@@ -2,6 +2,14 @@
 ## Just adds them to home.packages
 { pkgs, ... }:
 
+let
+  sources = import ../../nix/sources.nix;
+  pkgs-release = import "${sources.nixpkgs-release}" {
+    config = {
+      allowBroken = true;
+    };
+  };
+in
 with pkgs; {
   home.packages = [
     # Command-line essentials
@@ -31,9 +39,10 @@ with pkgs; {
         pip
         tkinter
         python-language-server
-        pyls-mypy
-        pyls-isort
-        pyls-black
+        # Broken
+        # pyls-mypy
+        # pyls-isort
+        # pyls-black
         setuptools
         numpy
         scipy
@@ -99,8 +108,7 @@ with pkgs; {
       }))
     feh
     mpv
-    # FIXME: broken
-    # pulseeffects
+    pulseeffects
     sox
 
     ## Documents
@@ -147,7 +155,8 @@ with pkgs; {
     ntfsprogs
     ntfs3g
     # Nixos housekeeping
-    vulnix # NixOS vulnerability scanner
+    # FIXME: broken, restore to pkgs
+    pkgs-release.vulnix # NixOS vulnerability scanner
     nox # Apt-cache, kinda
     niv
 

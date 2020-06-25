@@ -171,6 +171,8 @@ in {
       if [ "$NIX_NAME" ]; then
           export PROMPT="[$NIX_NAME] $PROMPT";
       fi
+
+      eval "$(direnv hook zsh)"
     '';
   };
 

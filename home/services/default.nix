@@ -14,5 +14,6 @@
     ./jackett
     ./sonarr
     ./mopidy
+    ./lorri
   ];
 }

@@ -2,6 +2,7 @@
 
 let
   theme = import ../../themes { inherit pkgs; };
+  nvim_plug = "${(import ../../../nix/sources.nix).vim-plug}/plug.vim";
   init = builtins.replaceStrings [
     "{%colorscheme_plug%}"
     "{%colorscheme_activate%}"
@@ -22,11 +23,7 @@ in {
   };
 
   home.file.nvim_plug = {
-    text = builtins.readFile (pkgs.fetchurl {
-      url =
-        "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim";
-      sha256 = "1jj8kbc8ly6y51m7cxabhvvkdwa4n7c9qbkjxb84181khw6jsvvj";
-    });
+    text = builtins.readFile nvim_plug;
     target = ".local/share/nvim/site/autoload/plug.vim";
   };
 

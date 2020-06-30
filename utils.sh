@@ -24,16 +24,16 @@ function trace() {
     if $QUIET_BUILD
     then
         log="$(mktemp)"
-        echo -e "\e[1;34m> $@ \e[0m [logging to $log]" >&2
-        "$@" > $log 2>&1 && stat=$? || stat=$?
+        echo -e "\e[1;34m> $* \e[0m [logging to $log]" >&2
+        "$@" > "$log" 2>&1 && stat=$? || stat=$?
         if [ $stat -ne 0 ]
         then
             echo -e "\e[1;31m> FAILED <\e[0m"
-            head -n 50 $log
+            head -n 50 "$log"
             exit $stat
         fi
     else
-        echo -e "\e[1;34m> $@ \e[0m" >&2
+        echo -e "\e[1;34m> $* \e[0m" >&2
         "$@"
     fi
 }
@@ -41,7 +41,7 @@ function trace() {
 function build() {
     nixpkgs_path="$(nix eval --raw "(import ${CFG_PATH}/nix/sources.nix).nixpkgs.outPath")"
     home_manager_path="$(nix eval --raw "(import ${CFG_PATH}/nix/sources.nix).home-manager.outPath")"
-    export NIX_PATH=nixpkgs="${nixpkgs_path}":home-manager="${home_manager_path}":nixpkgs-overlays="$(realpath $CFG_PATH)/overlays/"
+    export NIX_PATH=nixpkgs="${nixpkgs_path}:home-manager=${home_manager_path}:nixpkgs-overlays=$(realpath "$CFG_PATH")/overlays/"
     tmp=$(mktemp -u)
     trace nix build --no-link -f "${CFG_PATH}" -o "${tmp}/result" --keep-going --show-trace "$@" >&2
     drv="$(readlink "${tmp}/result")"
@@ -81,6 +81,26 @@ function check() {
 function format() {
     trace fd . "${CFG_PATH}" -e nix -x nixfmt || :
     trace git diff
+}
+
+function derivation_hash() {
+    echo "$1" | awk -F "[-/]" '{print $4}'
+}
+
+function _uncached() {
+    dcache=$(derivation_hash "$1")
+    if [ $(curl -s -o /dev/null -w "%{http_code}" "cache.nixos.org/$dcache.narinfo") -eq 404 ]
+    then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function uncached() {
+    export -f derivation_hash
+    export -f _uncached
+    nix-store -qR "$1" | xargs -n 1 -P 16 -I % bash -c 'if $(_uncached $1); then echo $1; fi' _ %
 }
 
 CFG_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -128,5 +148,8 @@ case "$mode" in
         ;;
     "vm")
         vm "$@"
+        ;;
+    "uncached")
+        uncached "$@"
         ;;
 esac

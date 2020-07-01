@@ -159,6 +159,8 @@ with pkgs; {
     pkgs-release.vulnix # NixOS vulnerability scanner
     nox # Apt-cache, kinda
     niv
+    nix-diff
+    cachix
 
     # Unsorted. Fuck it.
     # TODO maybe?..

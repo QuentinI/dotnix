@@ -5,6 +5,8 @@ set -o nounset
 set -o pipefail
 
 QUIET_BUILD=false
+UPLOAD_CACHE=false
+RETURN_VALUE=""
 
 # Nicholas Sushkin
 # https://stackoverflow.com/questions/1527049/how-can-i-join-elements-of-an-array-in-bash
@@ -45,13 +47,24 @@ function build() {
     tmp=$(mktemp -u)
     trace nix build --no-link -f "${CFG_PATH}" -o "${tmp}/result" --keep-going --show-trace "$@" >&2
     drv="$(readlink "${tmp}/result")"
-    echo "${drv}"
+    if $UPLOAD_CACHE
+    then
+        trace cachix push quentini "$drv"
+    fi
+    trace nix-diff --color always $(nix-store -qd /run/current-system) $(nix-store -qd ${drv}) | $PAGER
+    RETURN_VALUE="${drv}"
 }
 
 function switch() {
-    drv=$(build)
-    trace sudo nix-env -p /nix/var/nix/profiles/system --set "$drv"
-    NIXOS_INSTALL_BOOTLOADER=1 trace sudo --preserve-env=NIXOS_INSTALL_BOOTLOADER "$drv/bin/switch-to-configuration" switch
+    build
+    drv=$RETURN_VALUE
+    read -p "Switch? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+        trace sudo nix-env -p /nix/var/nix/profiles/system --set "$drv"
+        NIXOS_INSTALL_BOOTLOADER=1 trace sudo --preserve-env=NIXOS_INSTALL_BOOTLOADER "$drv/bin/switch-to-configuration" switch
+    fi
 }
 
 function vm() {
@@ -118,6 +131,9 @@ do
         "-Q" | "--quiet")
             echo "Building quietly"
             QUIET_BUILD=true
+            ;;
+        "-C" | "--cache")
+            UPLOAD_CACHE=true
             ;;
         *)
             echo "Unknown argument: $1"

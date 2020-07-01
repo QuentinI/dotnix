@@ -5,14 +5,20 @@ env:
        - secure: "E5hSFjR8cToEo1jKcBi7taS4LdzA20zlY6cZ4UAFjPQqE5pCrmtJ+E+XYxKC8GdpOqT7qo9joq1+mcsukH6si6Up1CaA0f9a2vi2exLhmxfS2R5m1hYDiHEYcmnf2/otlT2Sx22LYGUPDM3PsmQxU3NLXBvfivNefCAwqEeGleGECQ9EZWoIVu1N4Ed4Ai+xV/hmf/QKvJAC/v17zLPilxu1tVTjxOUzdbusWlG0fwLRh86X0lWGZnb5BgvuDlpZcm2GP0zGBb6bHDEIur1CykryTqVRZ10+a/KgPAj+l2Wikde6g3ZpZrkcq09uad2+SY9yAKjwQ3zsHVDWsf+cpdD1GG4+eQXD1vALgn2GlSzT/bu2eOJNgdSIwJ7kZF7lL+qrCiAabLyq2Z233KGhF+i/+nXSj7ySZzqk+fgfoJpzajsM0LAiQSF9bTUJugu2xOqfL9bp2stikPvI8q0U3hmDunHOOUc3TG1BB3BHGf59HD16DxmVvQQVC0CvS17xkNxfuXWHJeXa0CFMtNBeKK6WIHK0hIeVjhYooebMR3HYE6D4NVaUhAYselSn/h9oSk79dGk1J2y3USXRtfDJKZttbB0uK3IHDpf/xJnpVkRefvZ9wXbr0MNY+XiWvAPk77zz6H2Ow1WEE6/5x0OD2pZ7QbvqgxdliUWWAHnLhW4="
        - secure: "q6Ii8I8MVhARAIKTgFozHFq3OkbX2KwzzWMzdiYkTBWyK2TvIeluBHKL9L26mx5U9aNqRDBFUyWnbIsUvKE9dCTLR0TVYTLeag5qglX1ZFlMyk81CQHIAUxcAZZFhJZYtlAnV6+RLTfYMVUtNGAbdDOX2P27qc6gYmITnc7kNCSiwmLuoTcXPREAGKdcRYi271WdzGuZwC9ddPoSaoVG0ZUAjsTaWUsZxyJVe2N7fvl1j0wh/yK7FjlByvkBj4sLnD79p2MDF3FlSCIASS91JvFWAvFGP2B2xNLsEL9vLX+GmsBFRDJ0QfCU/JlugNHPF3uf5DPENudcwDYXezjfhOIQ2FERxZ1XnjJvtOTYUWh3ZSiDG6t40UENbTMVQGKSKHVAwcABTI/7oKRiH5xF+vIxVX3KeWKF316lXYexUEbqtjpxV/aRd6guJotrC08lPEhFm8CJnFXE/5r1wX8M9RfoYNFGAVyzW6HwOYbGpa29169roUf7BxlPvpwDrC+s9E5UETpIclIgapXO59r0EVfT+mHSIVSM0PCkihNeSb7qy7rPneVn4zF+l+bXeaUtXMV6+I5ECp+NnY/bvxL5xAwGjZi+WF+6LDR9RYZ6QMoBDaY+xO8bIcqljIki0uhN6gJyXrr1KJKeAQZXBpIYbo5ocWMR0Rdp3wrJgG4G0+A="
 
-before_install:
-  - sudo mkdir -p /etc/nix
-  - echo 'sandbox = true' | sudo tee -a /etc/nix/nix.conf
-  - echo "trusted-users = root travis" | sudo tee -a /etc/nix/nix.conf
-  - sudo pkill nix-daemon
+before_cache:
+- mkdir -p $HOME/nix.store
+- travis_wait 30 bash -c "nix copy --no-check-sigs --to file://$HOME/nix.store $(./utils.sh build | tail -n 1)"
 
 before_script:
-  - echo 'sandbox = true' | sudo tee -a /etc/nix/nix.conf > /dev/null
+  - sudo mkdir -p /etc/nix
+  - echo "substituters = https://cache.nixos.org/ file://$HOME/nix.store" | sudo tee -a /etc/nix/nix.conf > /dev/null
+  - echo 'require-sigs = false' | sudo tee -a /etc/nix/nix.conf > /dev/null
+  - echo 'sandbox = true' | sudo tee -a /etc/nix/nix.conf
+  - echo "trusted-users = root travis" | sudo tee -a /etc/nix/nix.conf
   - nix-env -iA cachix -f https://cachix.org/api/v1/install
   - cachix authtoken $CACHIX_TOKEN
   - cachix use quentini
+
+cache:
+  directories:
+  - $HOME/nix.store

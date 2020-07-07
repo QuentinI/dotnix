@@ -69,8 +69,8 @@
     };
 
     "/home/quentin/Downloads" = {
-      device = "/dev/disk/by-uuid/081c68d5-9e4a-4b5b-9eb8-2e7cf38c6b7e";
-      fsType = "ext4";
+      device = "/dev/disk/by-uuid/218772a8-c132-490c-937f-b879ec1a94f1";
+      fsType = "btrfs";
     };
   };
 

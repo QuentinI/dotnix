@@ -51,7 +51,12 @@ function build() {
     then
         trace cachix push quentini "$drv"
     fi
-    trace nix-diff --color always $(nix-store -qd /run/current-system) $(nix-store -qd ${drv}) | $PAGER
+    if $QUIET_BUILD
+    then
+        echo "${drv}"
+    else
+        trace nix-diff --color always $(nix-store -qd /run/current-system) $(nix-store -qd ${drv}) | $PAGER
+    fi
     RETURN_VALUE="${drv}"
 }
 

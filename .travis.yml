@@ -15,6 +15,7 @@ before_script:
   - echo 'require-sigs = false' | sudo tee -a /etc/nix/nix.conf > /dev/null
   - echo 'sandbox = true' | sudo tee -a /etc/nix/nix.conf
   - echo "trusted-users = root travis" | sudo tee -a /etc/nix/nix.conf
+  - sudo pkill nix-daemon || echo "Nix daemon isn't running"
   - nix-env -iA cachix -f https://cachix.org/api/v1/install
   - cachix authtoken $CACHIX_TOKEN
   - cachix use quentini

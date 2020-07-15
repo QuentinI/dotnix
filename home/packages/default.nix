@@ -110,6 +110,7 @@ with pkgs; {
     mpv
     pulseeffects
     sox
+    spotify
 
     ## Documents
     texlive.combined.scheme-full

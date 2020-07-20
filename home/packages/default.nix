@@ -31,6 +31,7 @@ with pkgs; {
     telnet
     picocom
     gopass
+    github-cli
 
     ## Compilers/interpreters
     (python3.withPackages (ps:

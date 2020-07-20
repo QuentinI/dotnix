@@ -9,6 +9,7 @@ let
       pkgs.gobject-introspection
       pkgs.mopidy
       pkgs.mopidy-mpd
+      pkgs.mopidy-spotify
       pkgs.mopidy-iris
       (import ./mopidy-local.nix { inherit config pkgs; })
     ];
@@ -21,7 +22,11 @@ let
   };
 
   startScript = pkgs.writeShellScriptBin "mopidy.sh" ''
-    ${mopidyEnv}/bin/mopidy --config ~/.config/mopidy/mopidy.conf
+    ${mopidyEnv}/bin/mopidy --config ~/.config/mopidy/mopidy.conf \
+      -o spotify/username=quentini@airmail.cc \
+      -o spotify/password=$(sed '1q;d' <(${pkgs.pass}/bin/pass show spotify.com/quentini@airmail.cc)) \
+      -o spotify/client_id=$(sed '2q;d' <(${pkgs.pass}/bin/pass show spotify.com/quentini@airmail.cc)) \
+      -o spotify/client_secret=$(sed '2q;d' <(${pkgs.pass}/bin/pass show spotify.com/quentini@airmail.cc)) \
   '';
 
 in {

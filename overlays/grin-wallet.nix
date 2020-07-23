@@ -15,9 +15,13 @@ self: super:
     LIBCLANG_PATH = "${super.llvmPackages.libclang}/lib";
     LIBRARY_PATH = "${super.llvmPackages.libcxx}/include/c++/v1";
 
-    nativeBuildInputs = [ super.pkg-config super.llvmPackages.libclang super.llvmPackages.libcxx ];
+    nativeBuildInputs = [
+      super.pkg-config
+      super.llvmPackages.libclang
+      super.llvmPackages.libcxx
+    ];
 
-    buildInputs = [  super.openssl ];
+    buildInputs = [ super.openssl ];
 
     cargoSha256 = "04q7nn9h126ms9s90ap48xi74ypnzgyibjrj4xwa75w9h77id6zh";
 

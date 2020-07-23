@@ -4,13 +4,9 @@
 
 let
   sources = import ../../nix/sources.nix;
-  pkgs-release = import "${sources.nixpkgs-release}" {
-    config = {
-      allowBroken = true;
-    };
-  };
-in
-with pkgs; {
+  pkgs-release =
+    import "${sources.nixpkgs-release}" { config = { allowBroken = true; }; };
+in with pkgs; {
   home.packages = [
     # Command-line essentials
     atool
@@ -71,9 +67,7 @@ with pkgs; {
     docker_compose
 
     ## Editors and stuff
-    (emacs.override {
-      withXwidgets = true;
-    })
+    (emacs.override { withXwidgets = true; })
     irony-server # TODO move to own package with deps
     jetbrains.clion
     # jetbrains.idea-ultimate

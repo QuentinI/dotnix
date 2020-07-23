@@ -15,5 +15,6 @@
     ./sonarr
     ./mopidy
     ./lorri
+    ./hydroxide
   ];
 }

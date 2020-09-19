@@ -61,13 +61,13 @@ in {
       theme = rec {
         name = "Materia-Custom";
         package = (pkgs.materia-theme.overrideAttrs (base: rec {
-          version = "20200320";
+          version = "6f7e51a97fc7ff3ddbb7908cff505a8c1919b6a2";
 
           src = pkgs.fetchFromGitHub {
             owner = "nana-4";
             repo = base.pname;
-            rev = "v${version}";
-            sha256 = "0g4b7363hzs7z9xghldlz9aakmzzp18hhx32frb6qxy04lna2lwk";
+            rev = "6f7e51a97fc7ff3ddbb7908cff505a8c1919b6a2";
+            sha256 = "0psy0fl13zwfj5anshi4imhic77npibjn5xz0f8zfj9sq1ms7p2n";
           };
 
           buildInputs = base.buildInputs

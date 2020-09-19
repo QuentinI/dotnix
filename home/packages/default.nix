@@ -53,6 +53,7 @@ in with pkgs; {
     nodejs
     yarn
     rustup
+    rust-analyzer
     llvm
     llvmPackages.clang-unwrapped
     elixir

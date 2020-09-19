@@ -45,6 +45,7 @@ in {
 
   home.packages = with pkgs; [
     z-lua
+    starship
     # For file previews
     exiftool
     mupdf
@@ -53,17 +54,28 @@ in {
     libarchive
   ];
 
+  xdg.configFile.starship = {
+    target = "starship.toml";
+    text = ''
+      add_newline = false
+
+      [nix_shell]
+      use_name = true
+      symbol = "❄️"
+    '';
+  };
+
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
     history.expireDuplicatesFirst = false;
     history.ignoreDups = false;
-    oh-my-zsh = {
-      enable = true;
-      theme = "norm";
-      plugins =
-        [ "git" "yarn" "sudo" "python" "pip" "git-extras" "docker" "catimg" ];
-    };
+    # oh-my-zsh = {
+    #   enable = true;
+    #   theme = "norm";
+    #   plugins =
+    #     [ "git" "yarn" "sudo" "python" "pip" "git-extras" "docker" "catimg" ];
+    # };
     shellAliases = {
       b = "bat --paging never";
       l = "exa -lh --git";
@@ -157,15 +169,6 @@ in {
       j() {
         old_dir=$(pwd)
         z "$@";
-        # if [ "$(pwd)" != "$old_dir" ]; then
-        #   if [ -e default.nix ]; then
-        #     echo "Auto-nixing..."
-        #     nix-shell
-        #   elif [ -e ../default.nix ]; then
-        #     echo "Auto-nixing in up-dir..."
-        #     nix-shell ../
-        #   fi
-        # fi
       }
 
       if [ "$NIX_NAME" ]; then
@@ -173,6 +176,7 @@ in {
       fi
 
       eval "$(direnv hook zsh)"
+      eval "$(${pkgs.starship}/bin/starship init zsh)"
     '';
   };
 

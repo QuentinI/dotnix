@@ -96,6 +96,9 @@ in {
       setopt numericglobsort   # Sort filenames numerically when it makes sense
       setopt appendhistory     # Immediately append history instead of overwriting
       setopt histignorealldups # If a new command is a duplicate, remove the older one
+      setopt autocd autopushd  # Implied cd
+      autoload -U compinit # Completion
+      compinit
 
       # Attempts to run packet immediately, works only if binary name is the same as package name
       nsr() {
@@ -159,6 +162,18 @@ in {
       zstyle ':completion:*' accept-exact '*(N)'
       zstyle ':completion:*' use-cache on
       zstyle ':completion:*' cache-path ~/.zsh/cache
+
+      # Fuzzy completions
+      zstyle ':completion:*' completer _complete _match _approximate
+      zstyle ':completion:*:match:*' original only
+      zstyle ':completion:*:approximate:*' max-errors 1 numeric
+      zstyle -e ':completion:*:approximate:*' \
+              max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3))numeric)'
+
+      bindkey '^[[A' up-line-or-search
+      bindkey '^[[B' down-line-or-search
+
+
 
       eval "$(dircolors ~/.dir_colors)";
 

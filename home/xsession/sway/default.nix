@@ -320,6 +320,8 @@ in rec {
 
     bindsym --to-code ${modifier}+Shift+q kill
 
+    bindsym --to-code ${modifier}+x splith
+
     bindsym --to-code ${modifier}+h           focus left
     bindsym --to-code ${modifier}+j           focus down
     bindsym --to-code ${modifier}+k           focus up

@@ -9,6 +9,8 @@ let
 in with pkgs; {
   home.packages = [
     # Command-line essentials
+    tmux
+    tmate
     atool
     unrar
     unzip

@@ -172,8 +172,16 @@ in {
 
       bindkey '^[[A' up-line-or-search
       bindkey '^[[B' down-line-or-search
+      bindkey "^[[1;5C" forward-word
+      bindkey "^[[1;5D" backward-word
 
-
+      # https://unix.stackexchange.com/a/250700
+      my-backward-delete-word() {
+          local WORDCHARS=${"$"}{WORDCHARS/\//}
+          zle backward-delete-word
+      }
+      zle -N my-backward-delete-word
+      bindkey '^W' my-backward-delete-word
 
       eval "$(dircolors ~/.dir_colors)";
 
@@ -192,6 +200,7 @@ in {
 
       eval "$(direnv hook zsh)"
       eval "$(${pkgs.starship}/bin/starship init zsh)"
+      export PATH="${"$"}{PATH}:/home/quentin/.local/bin"
     '';
   };
 

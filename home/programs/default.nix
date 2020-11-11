@@ -15,5 +15,6 @@
     ./firefox
     ./fzf
     ./bat
+    ./git
   ];
 }

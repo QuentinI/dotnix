@@ -3,30 +3,28 @@
 {
   environment.systemPackages = [ pkgs.qt5.qtwayland pkgs.sway ];
 
-  programs.sway = {
-    enable = true;
-    extraSessionCommands = ''
-      export SDL_VIDEODRIVER=wayland
-      export QT_QPA_PLATFORM=wayland
-      export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
-      export MOZ_ENABLE_WAYLAND="1"
-    '';
+  environment.variables = {
+    SDL_VIDEODRIVER = "wayland";
+    QT_QPA_PLATFORM = "wayland";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    MOZ_ENABLE_WAYLAND = "1";
+    _JAVA_AWT_WM_NONREPARENTING="1";
   };
 
   services.xserver = {
     enable = true;
     libinput.enable = true;
     videoDrivers = [ "nouveau" "intel" ];
-    displayManager.sddm = {
-      enable = true;
-      # autoLogin = {
-      #   enable = true;
-      #   user = "quentin";
-      # };
-      extraConfig = ''
-        [Users]
-        HideUsers=jupyter
-      '';
+    displayManager = {
+      sessionPackages = [ pkgs.sway ];
+      defaultSession = "sway";
+      sddm = {
+        enable = true;
+        extraConfig = ''
+          [Users]
+          HideUsers=jupyter
+        '';
+      };
     };
     config = "";
     layout = "us,ru";

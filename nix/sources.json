@@ -54,10 +54,10 @@
         "homepage": "",
         "owner": "junegunn",
         "repo": "vim-plug",
-        "rev": "2f4e28161e114cc4b34a9b8ff0f51f4906f37b0b",
-        "sha256": "1wfcyrjqqngnf4l9afc0342avkys8ipfrna7zlgiypwji926y2k7",
+        "rev": "5430b6213a5c6c3bafd7e25b1e80ccb2afd7f5ba",
+        "sha256": "1jzf6wbvwhvm3vjn6rlwic4s9niin6kap5lzi2xpip7yl809wz5x",
         "type": "tarball",
-        "url": "https://github.com/junegunn/vim-plug/archive/2f4e28161e114cc4b34a9b8ff0f51f4906f37b0b.tar.gz",
+        "url": "https://github.com/junegunn/vim-plug/archive/5430b6213a5c6c3bafd7e25b1e80ccb2afd7f5ba.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

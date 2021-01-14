@@ -30,6 +30,7 @@ in with pkgs; {
     picocom
     gopass
     github-cli
+    jq
 
     ## Compilers/interpreters
     (python3.withPackages (ps:
@@ -54,6 +55,7 @@ in with pkgs; {
     (ghc.withPackages (ps: with ps; [ tidal ]))
     nodejs
     yarn
+    pharo
     rustup
     rust-analyzer
     llvm
@@ -76,6 +78,7 @@ in with pkgs; {
     # jetbrains.idea-ultimate
     pencil # UML editing
     insomnia # API testing
+    postman
     anki
 
     ## Games
@@ -149,13 +152,12 @@ in with pkgs; {
     # supercollider
 
     #System management
-    # Boom! Doesn't build on master
-    # anydesk
+    anydesk
     ntfsprogs
     ntfs3g
     # Nixos housekeeping
     # FIXME: broken, restore to pkgs
-    pkgs-release.vulnix # NixOS vulnerability scanner
+    vulnix # NixOS vulnerability scanner
     nox # Apt-cache, kinda
     niv
     nix-diff

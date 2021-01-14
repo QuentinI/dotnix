@@ -46,6 +46,8 @@ in {
   home.packages = with pkgs; [
     z-lua
     starship
+    direnv
+    nix-index
     # For file previews
     exiftool
     mupdf
@@ -198,8 +200,9 @@ in {
           export PROMPT="[$NIX_NAME] $PROMPT";
       fi
 
-      eval "$(direnv hook zsh)"
+      eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
       eval "$(${pkgs.starship}/bin/starship init zsh)"
+      source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
       export PATH="${"$"}{PATH}:/home/quentin/.local/bin"
     '';
   };

@@ -224,7 +224,7 @@ in rec {
       "2" =
         [ { title = "Atom"; } { class = "jetbrains"; } { class = "Emacs"; } ];
       "3" = [
-        { class = "TelegramDesktop"; }
+        { class = "telegram"; }
         { class = "discord"; }
         { class = "Keybase"; }
         { class = "Daily"; }

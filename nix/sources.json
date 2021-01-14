@@ -5,10 +5,10 @@
         "homepage": "https://rycee.gitlab.io/home-manager/",
         "owner": "rycee",
         "repo": "home-manager",
-        "rev": "4cc1b77c3fc4f4b3bc61921dda72663eea962fa3",
-        "sha256": "02y6bjakcbfc0wvf9b5qky792y9abyf1kgnk8r30f1advn3x69nc",
+        "rev": "b9597e57747f227317affdfa2f97fee8e167c33f",
+        "sha256": "029ymsgc3d7fj4fw6r9n488p20vrb1vqwpb66d2qc1ha33fb541v",
         "type": "tarball",
-        "url": "https://github.com/rycee/home-manager/archive/4cc1b77c3fc4f4b3bc61921dda72663eea962fa3.tar.gz",
+        "url": "https://github.com/rycee/home-manager/archive/b9597e57747f227317affdfa2f97fee8e167c33f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
@@ -42,10 +42,10 @@
         "homepage": "https://github.com/NixOS/nixpkgs",
         "owner": "NixOS",
         "repo": "nixpkgs-channels",
-        "rev": "16b3b1eef03e6fb8211b095079aba5059f26081e",
-        "sha256": "0hlb0z9gyjvxmx28cp1gxlfa3xpvx073qizy5k375lbhfpsqqqfn",
+        "rev": "929768261a3ede470eafb58d5b819e1a848aa8bf",
+        "sha256": "0zi54vbfi6i6i5hdd4v0l144y1c8rg6hq6818jjbbcnm182ygyfa",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/16b3b1eef03e6fb8211b095079aba5059f26081e.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/929768261a3ede470eafb58d5b819e1a848aa8bf.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "vim-plug": {
@@ -54,10 +54,10 @@
         "homepage": "",
         "owner": "junegunn",
         "repo": "vim-plug",
-        "rev": "2f4e28161e114cc4b34a9b8ff0f51f4906f37b0b",
-        "sha256": "1wfcyrjqqngnf4l9afc0342avkys8ipfrna7zlgiypwji926y2k7",
+        "rev": "8b45742540f92ba902c97ad1d3d8862ba3305438",
+        "sha256": "0ashl6qixnhgj5pnss9ri8w7fzixcsd0h4cmb2jpfrfma8s7xn3b",
         "type": "tarball",
-        "url": "https://github.com/junegunn/vim-plug/archive/2f4e28161e114cc4b34a9b8ff0f51f4906f37b0b.tar.gz",
+        "url": "https://github.com/junegunn/vim-plug/archive/8b45742540f92ba902c97ad1d3d8862ba3305438.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

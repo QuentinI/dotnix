@@ -20,10 +20,7 @@
       defaultSession = "sway";
       sddm = {
         enable = true;
-        extraConfig = ''
-          [Users]
-          HideUsers=jupyter
-        '';
+        settings.Users.HideUsers = "jupyter";
       };
     };
     config = "";

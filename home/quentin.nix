@@ -1,8 +1,9 @@
 { lib, config, pkgs, ... }:
 
 let
-  theme = import ./themes { inherit pkgs; };
   stripHash = (s: builtins.substring 1 (-1) s);
+  nurNoPkgs = import (import ../nix/sources.nix).nur { };
+  base16-nord-scheme = "${(import ../nix/sources.nix).base16-nord-scheme}/nord.yaml";
 in {
   users.defaultUserShell = pkgs.zsh;
   users.users.quentin = {
@@ -29,8 +30,17 @@ in {
     ${pkgs.nix}/bin/nix-env -i -E
   '';
 
-  home-manager.users.quentin = {
-    imports = [ ./xsession ./packages ./programs ./services ];
+  home-manager.users.quentin = { config, ... } : {
+    imports = [
+            ./xsession
+            ./packages
+            ./programs
+            ./services
+            nurNoPkgs.repos.rycee.hmModules.theme-base16
+Module `/nix/store/v31wiy05idgyv7vn81fp452p5cplnlfp-source/hosts/utumno/user.nix-1:anon-1' has an unsupported attribute `lib'. This is caused by introducing a top-level `config' or `options' attribute. Add configuration attributes immediately on the top level instead, or move all of them (namely: lib nixosConfig) into the explicit `config' attribute.
+    ];
+
+    theme.base16 = config.lib.theme.base16.fromYamlFile base16-nord-scheme;
 
     nixpkgs.config = {
       allowUnfree = true;
@@ -58,68 +68,72 @@ in {
         name = "Paper";
         package = pkgs.paper-icon-theme;
       };
-      theme = rec {
-        name = "Materia-Custom";
-        package = (pkgs.materia-theme.overrideAttrs (base: rec {
-          version = "6f7e51a97fc7ff3ddbb7908cff505a8c1919b6a2";
+      # theme = rec {
+      #       name = "Materia-Custom";
+      #       package = pkgs.materia-theme;
+      # };
+      # theme = rec {
+      #   name = "Materia-Custom";
+      #   package = (pkgs.materia-theme.overrideAttrs (base: rec {
+      #     version = "6f7e51a97fc7ff3ddbb7908cff505a8c1919b6a2";
 
-          src = pkgs.fetchFromGitHub {
-            owner = "nana-4";
-            repo = base.pname;
-            rev = "6f7e51a97fc7ff3ddbb7908cff505a8c1919b6a2";
-            sha256 = "0psy0fl13zwfj5anshi4imhic77npibjn5xz0f8zfj9sq1ms7p2n";
-          };
+      #     src = pkgs.fetchFromGitHub {
+      #       owner = "nana-4";
+      #       repo = base.pname;
+      #       rev = "6f7e51a97fc7ff3ddbb7908cff505a8c1919b6a2";
+      #       sha256 = "0psy0fl13zwfj5anshi4imhic77npibjn5xz0f8zfj9sq1ms7p2n";
+      #     };
 
-          buildInputs = base.buildInputs
-            ++ [ pkgs.sassc pkgs.inkscape pkgs.optipng ];
+      #     buildInputs = base.buildInputs
+      #       ++ [ pkgs.sassc pkgs.inkscape pkgs.optipng ];
 
-          installPhase = ''
-            patchShebangs *.sh scripts/*.sh src/*/*.sh
-            sed -i install.sh \
-              -e "s|if .*which gnome-shell.*;|if true;|" \
-              -e "s|CURRENT_GS_VERSION=.*$|CURRENT_GS_VERSION=${
-                lib.versions.majorMinor pkgs.gnome3.gnome-shell.version
-              }|"
-            sed -i change_color.sh \
-              -e "s|\$HOME/\.themes|$out/share/themes|"
-            ./change_color.sh -o '${name}' <(echo -e "BG=${
-              stripHash theme.colors.background.primary
-            }\n \
-                                                         FG=${
-                                                           stripHash
-                                                           theme.colors.text.primary
-                                                         }\n \
-                                                         MATERIA_VIEW=${
-                                                           stripHash
-                                                           theme.colors.background.primary
-                                                         }\n \
-                                                         MATERIA_SURFACE=${
-                                                           stripHash
-                                                           theme.colors.background.secondary
-                                                         }\n \
-                                                         HDR_BG=${
-                                                           stripHash
-                                                           theme.colors.background.secondary
-                                                         }\n \
-                                                         HDR_FG=${
-                                                           stripHash
-                                                           theme.colors.text.primary
-                                                         }\n \
-                                                         SEL_BG=${
-                                                           stripHash
-                                                           theme.colors.background.selection
-                                                         }\n \
-                                                         ROUNDNESS=0\n \
-                                                         MATERIA_STYLE_COMPACT=True")
-            rm $out/share/themes/*/COPYING
-          '';
+      #     installPhase = ''
+      #       patchShebangs *.sh scripts/*.sh src/*/*.sh
+      #       sed -i install.sh \
+      #         -e "s|if .*which gnome-shell.*;|if true;|" \
+      #         -e "s|CURRENT_GS_VERSION=.*$|CURRENT_GS_VERSION=${
+      #           lib.versions.majorMinor pkgs.gnome3.gnome-shell.version
+      #         }|"
+      #       sed -i change_color.sh \
+      #         -e "s|\$HOME/\.themes|$out/share/themes|"
+      #       ./change_color.sh -o '${name}' <(echo -e "BG=${
+      #         stripHash theme.colors.background.primary
+      #       }\n \
+      #                                                    FG=${
+      #                                                      stripHash
+      #                                                      theme.colors.text.primary
+      #                                                    }\n \
+      #                                                    MATERIA_VIEW=${
+      #                                                      stripHash
+      #                                                      theme.colors.background.primary
+      #                                                    }\n \
+      #                                                    MATERIA_SURFACE=${
+      #                                                      stripHash
+      #                                                      theme.colors.background.secondary
+      #                                                    }\n \
+      #                                                    HDR_BG=${
+      #                                                      stripHash
+      #                                                      theme.colors.background.secondary
+      #                                                    }\n \
+      #                                                    HDR_FG=${
+      #                                                      stripHash
+      #                                                      theme.colors.text.primary
+      #                                                    }\n \
+      #                                                    SEL_BG=${
+      #                                                      stripHash
+      #                                                      theme.colors.background.selection
+      #                                                    }\n \
+      #                                                    ROUNDNESS=0\n \
+      #                                                    MATERIA_STYLE_COMPACT=True")
+      #       rm $out/share/themes/*/COPYING
+      #     '';
 
-        }));
-      };
-      gtk3.extraConfig = {
-        gtk-application-prefer-dark-theme = theme.isDark;
-        # gtk-cursor-theme-name = "Paper";
-      };
+      #   }));
+      # };
+      # gtk3.extraConfig = {
+      #   gtk-application-prefer-dark-theme = theme.isDark;
+      #   # gtk-cursor-theme-name = "Paper";
+      # };
     };
 
     programs = {

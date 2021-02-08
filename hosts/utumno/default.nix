@@ -9,6 +9,7 @@
     ../../home/quentin.nix
     ../../services/xserver/sway.nix
     ../../services/jupyter
+    ../../services/clamav
     ../../services/docker
     ../../services/tor
     ../../services/libvirtd
@@ -52,6 +53,22 @@
     roboto-mono
     material-icons
   ];
+
+  networking.wireguard.interfaces = {
+    wg0 = {
+      ips = [ "10.13.0.2/24" ];
+      privateKeyFile = "/home/quentin/.config/wireguard.pk";
+
+      peers = [
+        {
+          publicKey = "AblSEgygxUWYMY+f1iwSlhh2RANyx64nnS5kSv3pTD4=";
+          allowedIPs = [ "10.13.0.0/24" ];
+          endpoint = "faptek.ml:1642";
+          persistentKeepalive = 25;
+        }
+      ];
+    };
+  };
 
   # Obscure fixes for something
   systemd.extraConfig = "DefaultLimitNOFILE=1048576";

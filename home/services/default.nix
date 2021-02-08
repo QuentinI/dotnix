@@ -13,7 +13,7 @@
     ./syncthing
     ./jackett
     ./sonarr
-    ./mopidy
+    # ./mopidy
     ./lorri
     ./hydroxide
   ];

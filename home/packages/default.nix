@@ -1,12 +1,8 @@
-# # A list of packages requiring little to no configuration
+## A list of packages requiring little to no configuration
 ## Just adds them to home.packages
 { pkgs, ... }:
 
-let
-  sources = import ../../nix/sources.nix;
-  pkgs-release =
-    import "${sources.nixpkgs-release}" { config = { allowBroken = true; }; };
-in with pkgs; {
+with pkgs; {
   home.packages = [
     # Command-line essentials
     tmux
@@ -55,7 +51,6 @@ in with pkgs; {
     (ghc.withPackages (ps: with ps; [ tidal ]))
     nodejs
     yarn
-    pharo
     rustup
     rust-analyzer
     llvm
@@ -122,6 +117,7 @@ in with pkgs; {
     pandoc
 
     ## Browsing
+    bitwarden
     firefox
     chromium
 
@@ -156,7 +152,6 @@ in with pkgs; {
     ntfsprogs
     ntfs3g
     # Nixos housekeeping
-    # FIXME: broken, restore to pkgs
     vulnix # NixOS vulnerability scanner
     nox # Apt-cache, kinda
     niv

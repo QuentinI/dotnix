@@ -14,6 +14,7 @@
       "sr_mod"
       "rtsx_pci_sdmmc"
     ];
+
     kernelModules = [ "kvm-intel" "nouveau" ];
     extraModulePackages = [ pkgs.xorg.xf86videonouveau ];
     kernelParams = [
@@ -22,7 +23,9 @@
       "acpi_backlight=native"
       "nouveau.modeset=1"
     ];
-    kernel.sysctl = { "vm.swappiness" = 0; };
+    kernel.sysctl = {
+      "vm.swappiness" = 1; 
+    };
 
     # Decrypt FDE
     initrd.luks.reusePassphrases = true;
@@ -71,6 +74,7 @@
     "/home/quentin/Downloads" = {
       device = "/dev/disk/by-uuid/218772a8-c132-490c-937f-b879ec1a94f1";
       fsType = "btrfs";
+      options = [ "defaults" "nodev" "nosuid" "noexec" ];
     };
   };
 

@@ -2,6 +2,8 @@
 
 {
   imports = [
+    ./emacs
+    ./qutebrowser
     ./browserpass
     ./zsh
     ./most

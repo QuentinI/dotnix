@@ -27,5 +27,5 @@ in {
     target = ".local/share/nvim/site/autoload/plug.vim";
   };
 
-  programs.neovim.enable = true;
+  # programs.neovim.enable = true;
 }

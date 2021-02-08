@@ -1,86 +1,30 @@
-# TODO: this file was once a big blob of everything
-# Most of the contents has been factored out,
-# but there are still things to do
-{ config, pkgs, ... }:
+inputs@{ system, master, nixos, stable, home, vars, secrets, ... }:
 
-{
-  imports = [
+nixos.lib.nixosSystem {
+  inherit system;
+
+  # Things in this set are passed to modules and accessible
+  # in the top-level arguments (e.g. `{ pkgs, lib, inputs, ... }:`).
+  specialArgs = { inherit inputs vars secrets; };
+
+  modules = [
+    home.nixosModules.home-manager
+
     ./hardware.nix
-    ../../home/quentin.nix
-    ../../services/xserver/sway.nix
-    ../../services/jupyter
-    ../../services/clamav
-    ../../services/docker
-    ../../services/tor
-    ../../services/libvirtd
-    ../../services/udev/st-link.nix
-    ../../services/zerotierone
+    ./configuration.nix
+    ./user.nix
+
+    ../../modules/profiles/base.nix
+    ../../modules/profiles/silent-boot.nix
+    ../../modules/profiles/hardened.nix
+
+    ../../modules/services/sddm.nix
+    ../../modules/services/docker.nix
+    ../../modules/services/libvirtd.nix
+    ../../modules/services/jupyter.nix
+    ../../modules/services/zerotierone.nix
+
+    ../../modules/programs/sway.nix
   ];
 
-  # Nix-related settings
-  system.stateVersion = "20.03";
-  nix.autoOptimiseStore = true;
-  system.autoUpgrade.enable = true;
-  nixpkgs.config.allowUnfree = true;
-
-  # Set your time zone.
-  time.timeZone = "Europe/Moscow";
-
-  # Just enable a bunch of stuff
-  xdg.portal.enable = true;
-  services.flatpak.enable = true;
-  services.blueman.enable = true;
-  networking.networkmanager.enable = true;
-  networking.firewall.enable = false;
-  services.printing.enable = true;
-  sound.enable = true;
-  programs.firejail.enable = true;
-
-  services.logind.extraConfig = ''
-    HandlePowerKey=ignore
-  '';
-
-  # Do I really need all these fonts?
-  fonts.fonts = with pkgs; [
-    font-awesome_4
-    noto-fonts
-    noto-fonts-cjk
-    noto-fonts-emoji
-    fira-code
-    fira-code-symbols
-    roboto
-    roboto-slab
-    roboto-mono
-    material-icons
-  ];
-
-  networking.wireguard.interfaces = {
-    wg0 = {
-      ips = [ "10.13.0.2/24" ];
-      privateKeyFile = "/home/quentin/.config/wireguard.pk";
-
-      peers = [
-        {
-          publicKey = "AblSEgygxUWYMY+f1iwSlhh2RANyx64nnS5kSv3pTD4=";
-          allowedIPs = [ "10.13.0.0/24" ];
-          endpoint = "faptek.ml:1642";
-          persistentKeepalive = 25;
-        }
-      ];
-    };
-  };
-
-  # Obscure fixes for something
-  systemd.extraConfig = "DefaultLimitNOFILE=1048576";
-  security.pam.services.swaylock = { };
-  security.pam.loginLimits = [{
-    domain = "*";
-    type = "hard";
-    item = "nofile";
-    value = "1048576";
-  }];
-  services.gnome3.at-spi2-core.enable = true;
-  services.journald.extraConfig = ''
-    SystemMaxUse=16M
-  '';
 }

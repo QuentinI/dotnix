@@ -211,13 +211,15 @@
     },
     "secrets": {
       "locked": {
-        "narHash": "sha256-Hfz4uzr9rcnmJCbky9vmu1lDUqghjaZwYnzLBVTr9SE=",
-        "path": "/home/quentin/Code/nixos/secrets",
-        "type": "path"
+        "lastModified": 1612801892,
+        "narHash": "sha256-f2TJ4oZaMX2lfxoHntqKCNw8eSL2RRK/OFxn4pOcas8=",
+        "type": "git",
+        "url": "file:///etc/nixos/secrets"
       },
       "original": {
-        "path": "/home/quentin/Code/nixos/secrets",
-        "type": "path"
+        "owner": "QuentinI",
+        "repo": "dummy-flake",
+        "type": "github"
       }
     },
     "stable": {

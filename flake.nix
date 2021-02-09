@@ -16,14 +16,12 @@
       flake = false;
       url = "github:spejamchr/base16-nord-scheme/master";
     };
-    secrets.url = "/home/quentin/Code/nixos/secrets";
+    secrets.url = "github:QuentinI/dummy-flake";
   };
 
   outputs = inputs@{ master, nixos, stable, home, secrets, ... }:
   let
     hosts = import ./hosts;
-    # TODO: figure out secrets with flakes
-    # secrets = import ./secrets;
     vars = {
       user = "quentin";
     };

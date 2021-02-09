@@ -19,5 +19,6 @@ jobs:
       with:
         name: quentini
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-    - run: nix build .#nixosConfigurations.utumno.config.system.build.toplevel
+    - run: nix build .#nixosConfigurations.utumno.config.system.build.toplevel --keep-going --show-trace
+
 

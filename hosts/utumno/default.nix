@@ -1,6 +1,6 @@
 inputs@{ system, master, nixos, stable, home, vars, secrets, ... }:
 
-nixos.lib.nixosSystem {
+nixos.lib.nixosSystem rec {
   inherit system;
 
   # Things in this set are passed to modules and accessible
@@ -9,6 +9,16 @@ nixos.lib.nixosSystem {
 
   modules = [
     home.nixosModules.home-manager
+    # Some black magic fuckery to inject specialArgs into HM configuration
+    ({ config, lib, ... }: { 
+       options.home-manager.users = lib.mkOption {
+         type = with lib.types; attrsOf (submoduleWith {
+              inherit specialArgs;
+              modules = [];
+         });
+       };
+    })
+
 
     ./hardware.nix
     ./configuration.nix

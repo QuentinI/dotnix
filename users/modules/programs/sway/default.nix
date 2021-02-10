@@ -42,79 +42,6 @@ let
     $SWAYMSG unmark __moving
   '';
 
-  mpdByTitle = pkgs.writeShellScriptBin "mpdByTitle.sh" ''
-
-    JQ=${pkgs.jq}/bin/jq
-    MPC=${pkgs.mpc_cli}/bin/mpc
-
-    # function by Fikri Omar
-    # https://github.com/fikriomar16/rofi-mpd/blob/master/rofi-mpd
-    addaftercurrentandplay(){
-
-          #playlist is empty, just add the song
-          if [ "$($MPC playlist | wc -l)" == "0" ]; then
-                  $MPC add "$1"
-                  sleep 0.3
-                  $MPC play
-
-          #there is no current song so mpd is stopped
-          #it seems to be impossible to determine the current songs' position when 
-          #mpd is stopped, so just add to the end
-          elif [ -z "$($MPC current)" ]; then 
-                  END_POS=$($MPC playlist | wc -l)
-                  $MPC add "$1"
-                  sleep 0.3
-                  $MPC play $(($END_POS+1))
-
-          #at least 1 song is in the playlist, determine the position of the 
-          #currently played song and add $1 after it
-          else
-                  CUR_POS=$($MPC | tail -2 | head -1 | awk '{print $2}' | sed 's/#//' | awk -F/ '{print $1}')
-                  END_POS=$($MPC playlist | wc -l)
-                  $MPC add "$1"
-                  sleep 0.3
-                  $MPC move $(($END_POS+1)) $(($CUR_POS+1))
-                  sleep 0.3
-                  $MPC play $(($CUR_POS+1))
-          fi
-    }
-
-    addalbum() {
-      titles=("$@")
-      IFS=$'\n' sorted=($(sort <<<"${"$"}{titles[*]}"))
-      unset IFS
-      addaftercurrentandplay ${"$"}{sorted[0]};
-      COUNT=0;
-      CUR_POS=$($MPC | tail -2 | head -1 | awk '{print $2}' | sed 's/#//' | awk -F/ '{print $1}')
-      for i in "${"$"}{sorted[@]:1}"
-      do
-        END_POS=$($MPC playlist | wc -l)
-        $MPC add "$i"
-        sleep 0.3
-        $MPC move $(($END_POS+1)) $(($CUR_POS+1+$COUNT))
-        sleep 0.3
-        COUNT=$(($COUNT+1))
-      done
-    }
-
-    case $1 in
-      track)
-        title=$(gzip -d -c ~/.local/share/mopidy/local/library.json.gz | $JQ -r ".tracks[] | .name + \" <small>(\"  + .artists[0].name + \", \" + .album.name + \")</small>\" " | sort | rofi -dmenu -markup-rows -matching normal -i | sed 's/<small>.*//' | xargs -I % $MPC find Title "%" | cut -d " " -f1)
-        if [ "$title" ]; then
-          addaftercurrentandplay $title;
-        fi
-        ;;
-      album)
-        titles=$(gzip -d -c ~/.local/share/mopidy/local/library.json.gz | $JQ -r ".tracks[].album | .name + \" <small>(\" + .artists[0].name + \")</small>\"" | sort | uniq | rofi -dmenu -markup-rows -matching normal -i | sed 's/<small>.*//' | xargs -I % $MPC find Album "%")
-        if [ "$titles" ]; then
-          addalbum $titles;
-        fi
-        ;;
-      *)
-    esac
-
-  '';
-
 in rec {
   imports = [ ../../programs/rofi ../../services/mako.nix ];
 
@@ -143,10 +70,6 @@ in rec {
 
   # Waybar works with libappindicator tray icons only
   xsession.preferStatusNotifierItems = true;
-
-  # TODO:
-  # xdg.configFile.dunst_volume = {
-  # };
 
   xdg.configFile.waybar_config = {
     source = ./waybar_config.json;
@@ -396,9 +319,6 @@ in rec {
 
 
     bindsym ${modifier}+F11         fullscreen
-
-    bindsym --to-code ${modifier}+m           exec ${mpdByTitle}/bin/mpdByTitle.sh track
-    bindsym --to-code ${modifier}+a           exec ${mpdByTitle}/bin/mpdByTitle.sh album
 
     bindsym --to-code Control+Space       exec ${pkgs.mako}/bin/makoctl dismiss
     bindsym --to-code Control+Shift+Space exec ${pkgs.mako}/bin/makoctl dismiss -a

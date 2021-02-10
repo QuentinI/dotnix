@@ -15,7 +15,6 @@ in
      ../../users/modules/services/kdeconnect.nix
      ../../users/modules/services/gpg-agent.nix
      ../../users/modules/services/shadowsocks.nix
-     ../../users/modules/services/unclutter.nix
      ../../users/modules/services/nm-applet.nix
      ../../users/modules/services/udiskie.nix
      ../../users/modules/services/memory.nix

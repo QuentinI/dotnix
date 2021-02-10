@@ -10,8 +10,10 @@
       flake = false; # NUR's flake support is... suboptimal
       url = "github:nix-community/NUR";
     };
-    # devshell.url = "github:numtide/devshell";
-    ci-agent.url = "github:hercules-ci/hercules-ci-agent";
+    vim-plug = {
+      flake = false;
+      url = "github:junegunn/vim-plug";
+    };
     base16-nord-scheme = {
       flake = false;
       url = "github:spejamchr/base16-nord-scheme/master";

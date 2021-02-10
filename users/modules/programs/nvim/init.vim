@@ -8,16 +8,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'mattn/emmet-vim'
 Plug 'sunaku/vim-shortcut'
-" :Plug 'w0rp/ale'
-" Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'autozimu/LanguageClient-neovim', {
-"     \ 'branch': 'next',
-"     \ 'do': 'bash install.sh',
-"     \ }
-Plug {%colorscheme_plug%}
 Plug 'sheerun/vim-polyglot'
 Plug 'airblade/vim-gitgutter'
-"Plug 'ryanoasis/vim-devicons'
+Plug 'arcticicestudio/nord-vim'
 Plug 'neomake/neomake'
 Plug 'rhysd/vim-grammarous'
 Plug 'posva/vim-vue'
@@ -46,9 +39,8 @@ set signcolumn=yes
 " Colors
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set termguicolors
-{%colorscheme_activate%}
-" colorscheme nord
-" let g:nord_uniform_diff_background = 1
+colorscheme nord
+let g:nord_uniform_diff_background = 1
 
 " Show invisibles
 set listchars=tab:→\ ,trail:·

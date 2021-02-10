@@ -1,13 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 let
-  theme = import ../../themes { inherit pkgs; };
-  nvim_plug = "${(import ../../../nix/sources.nix).vim-plug}/plug.vim";
-  init = builtins.replaceStrings [
-    "{%colorscheme_plug%}"
-    "{%colorscheme_activate%}"
-  ] [ "'${theme.vim.plugname}'" theme.vim.activate ]
-    (builtins.readFile ./init.vim);
+  nvim_plug = "${inputs.vim-plug}/plug.vim";
+  init = builtins.readFile ./init.vim;
 in {
 
   home.packages = [ pkgs.neovim ];
@@ -26,6 +21,4 @@ in {
     text = builtins.readFile nvim_plug;
     target = ".local/share/nvim/site/autoload/plug.vim";
   };
-
-  # programs.neovim.enable = true;
 }

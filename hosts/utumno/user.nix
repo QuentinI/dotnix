@@ -1,4 +1,4 @@
-{ config, vars, pkgs, inputs, ...}:
+{ config, vars, pkgs, inputs, secrets, ...}:
 let 
   nur = (import inputs.nur { nurpkgs = pkgs; pkgs = null; });
 in
@@ -8,7 +8,7 @@ in
     imports = [
      nur.repos.rycee.hmModules.theme-base16
 
-      ../../users/modules/profiles/base.nix
+     ../../users/modules/profiles/base.nix
 
      ../../users/modules/services/lorri.nix
      ../../users/modules/services/kdeconnect.nix
@@ -31,7 +31,7 @@ in
       ../../users/modules/programs/ncmpcpp
       ../../users/modules/programs/iex
       ../../users/modules/programs/tdesktop
-      # ../../users/modules/programs/nvim
+      ../../users/modules/programs/nvim
       ../../users/modules/programs/kitty
       ../../users/modules/programs/zathura
       ../../users/modules/programs/beets

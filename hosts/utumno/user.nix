@@ -1,13 +1,12 @@
 { config, vars, pkgs, inputs, ...}:
 let 
   nur = (import inputs.nur { nurpkgs = pkgs; pkgs = null; });
-  mod = nur.repos.rycee.hmModules.theme-base16;
 in
 {
 
   home-manager.users."${vars.user}" = { config, pkgs, ...}: {
     imports = [
-      mod
+     nur.repos.rycee.hmModules.theme-base16
 
       ../../users/modules/profiles/base.nix
 

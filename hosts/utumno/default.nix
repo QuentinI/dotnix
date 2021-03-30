@@ -1,4 +1,4 @@
-inputs@{ system, master, nixos, stable, home, vars, secrets, ... }:
+inputs@{ system, master, nixpkgs, stable, home, vars, secrets, ... }:
 
 nixos.lib.nixosSystem rec {
   inherit system;

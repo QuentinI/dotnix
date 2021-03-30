@@ -25,7 +25,7 @@ in
 
       ../../users/modules/programs/emacs
       ../../users/modules/programs/qutebrowser
-      ../../users/modules/programs/browserpass
+      ../../users/modules/programs/firefox
       ../../users/modules/programs/zsh
       ../../users/modules/programs/most
       ../../users/modules/programs/ncmpcpp

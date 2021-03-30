@@ -34,6 +34,7 @@
   services.flatpak.enable = true;
   services.blueman.enable = true;
   networking.networkmanager.enable = true;
+  networking.networkmanager.unmanaged = [ "interface-name:wl*u*" ]; # Any USB adapters
   networking.firewall.enable = true;
   networking.hostName = "utumno";
   services.printing.enable = true;

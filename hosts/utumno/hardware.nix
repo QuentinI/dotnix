@@ -14,8 +14,8 @@
     ];
 
     # Graphics card-related
-    kernelModules = [ "kvm-intel" "nouveau" ];
-    extraModulePackages = [ pkgs.xorg.xf86videonouveau ];
+    kernelModules = [ "kvm-intel" "nouveau" "v4l2loopback" ];
+    extraModulePackages = [ pkgs.xorg.xf86videonouveau pkgs.linuxPackages.v4l2loopback ];
     kernelParams = [
       "acpi_osi=!"
       ''acpi_osi="Windows 2009"''

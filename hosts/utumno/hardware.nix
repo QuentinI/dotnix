@@ -48,22 +48,23 @@
       options = [ "discard" ];
     };
 
-    "/var" = {
-      device = "/dev/disk/by-uuid/ec7c1689-178b-4b0e-bbdf-7dca46cab2ee";
-      fsType = "btrfs";
-      options = [ "noatime" ];
-    };
+    # HDD on quarantine
+    # "/var" = {
+    #   device = "/dev/disk/by-uuid/ec7c1689-178b-4b0e-bbdf-7dca46cab2ee";
+    #   fsType = "btrfs";
+    #   options = [ "noatime" ];
+    # };
 
-    "/home/${vars.user}/Downloads" = {
-      device = "/dev/disk/by-uuid/218772a8-c132-490c-937f-b879ec1a94f1";
-      fsType = "btrfs";
-      options = [ "defaults" "nodev" "nosuid" "noexec" ];
-    };
+    # "/home/${vars.user}/Downloads" = {
+    #   device = "/dev/disk/by-uuid/218772a8-c132-490c-937f-b879ec1a94f1";
+    #   fsType = "btrfs";
+    #   options = [ "defaults" "nodev" "nosuid" "noexec" ];
+    # };
   };
 
-  swapDevices = [{ label = "swap"; }];
+  # swapDevices = [{ label = "swap"; }];
 
-  # FDA
+  # FDE
   boot.initrd.luks = {
     reusePassphrases = true;
     devices = {
@@ -72,10 +73,11 @@
         preLVM = true;
         allowDiscards = true;
       };
-      cryptic_2 = {
-        device = "/dev/disk/by-uuid/8174f5ca-3f0c-4c6a-ade0-b37631b88456";
-        preLVM = true;
-      };
+      # HDD on quarantine
+      # cryptic_2 = {
+      #   device = "/dev/disk/by-uuid/8174f5ca-3f0c-4c6a-ade0-b37631b88456";
+      #   preLVM = true;
+      # };
     };
   };
 

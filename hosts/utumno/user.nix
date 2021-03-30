@@ -4,11 +4,12 @@ let
 in
 {
 
-  home-manager.users."${vars.user}" = { config, pkgs, ...}: {
+  home-manager.users."${vars.user}" = { config, pkgs, inputs, ...}: {
     imports = [
      nur.repos.rycee.hmModules.theme-base16
 
      ../../users/modules/profiles/base.nix
+     ../../users/modules/profiles/hdpi.nix
 
      ../../users/modules/services/lorri.nix
      ../../users/modules/services/kdeconnect.nix

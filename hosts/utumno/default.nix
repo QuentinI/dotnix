@@ -1,40 +1,44 @@
 inputs@{ system, master, nixpkgs, stable, home, vars, secrets, ... }:
 
-nixos.lib.nixosSystem rec {
-  inherit system;
+{
+  nixosConfiguration = nixpkgs.lib.nixosSystem rec {
+    inherit system;
 
-  # Things in this set are passed to modules and accessible
-  # in the top-level arguments (e.g. `{ pkgs, lib, inputs, ... }:`).
-  specialArgs = { inherit inputs vars secrets; };
+    # Things in this set are passed to modules and accessible
+    # in the top-level arguments (e.g. `{ pkgs, lib, inputs, ... }:`).
+    specialArgs = { inherit inputs vars secrets; };
 
-  modules = [
-    home.nixosModules.home-manager
-    # Some black magic fuckery to inject specialArgs into HM configuration
-    ({ config, lib, ... }: { 
-       options.home-manager.users = lib.mkOption {
-         type = with lib.types; attrsOf (submoduleWith {
-              inherit specialArgs;
-              modules = [];
-         });
-       };
-    })
+    modules = [
+      home.nixosModules.home-manager
+      # Some black magic fuckery to inject specialArgs into HM configuration
+      ({ config, lib, ... }: { 
+         options.home-manager.users = lib.mkOption {
+           type = with lib.types; attrsOf (submoduleWith {
+                inherit specialArgs;
+                modules = [];
+           });
+         };
+      })
 
 
-    ./hardware.nix
-    ./configuration.nix
-    ./user.nix
+      ./hardware.nix
+      ./configuration.nix
+      ./user.nix
 
-    ../../modules/profiles/base.nix
-    ../../modules/profiles/silent-boot.nix
-    ../../modules/profiles/hardened.nix
+      ../../modules/profiles/base.nix
+      ../../modules/profiles/silent-boot.nix
+      ../../modules/profiles/hardened.nix
 
-    ../../modules/services/sddm.nix
-    ../../modules/services/docker.nix
-    ../../modules/services/libvirtd.nix
-    ../../modules/services/jupyter.nix
-    ../../modules/services/zerotierone.nix
+      ../../modules/services/sddm.nix
+      ../../modules/services/docker.nix
+      ../../modules/services/libvirtd.nix
+      ../../modules/services/jupyter.nix
+      ../../modules/services/zerotierone.nix
 
-    ../../modules/programs/sway.nix
-  ];
+      ../../modules/programs/sway.nix
+    ];
 
+  };
+
+  deploy = {};
 }

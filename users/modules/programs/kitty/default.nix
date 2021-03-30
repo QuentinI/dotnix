@@ -12,7 +12,7 @@ rec {
 
       # Font
       font_family  Fira Code
-      font_size    16.0
+      font_size    15.0
 
       window_padding_width 8.0
 

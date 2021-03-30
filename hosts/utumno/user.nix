@@ -162,6 +162,9 @@ in
         zoom-us
         vk-messenger
         skype
+        thunderbird
+        slack
+        teams
 
         ## Media
         lollypop
@@ -171,7 +174,7 @@ in
           }))
         feh
         mpv
-        pulseeffects
+        # pulseeffects
         sox
         spotify
 
@@ -185,7 +188,6 @@ in
 
         ## Browsing
         bitwarden
-        firefox
         chromium
 
         ## Download management
@@ -218,7 +220,6 @@ in
         nox # Apt-cache, kinda
         nix-index
         niv
-        nix-diff
         cachix
 
         # Unsorted. Fuck it.
@@ -238,6 +239,7 @@ in
         psmisc
         shared-mime-info
         virtmanager
+        typora
         stlink # For work
 
         # Fixes "failed to commit changes to dconf" issues

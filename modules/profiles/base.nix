@@ -6,6 +6,8 @@
   ];
 
   nix.autoOptimiseStore = true;
+  nix.trustedUsers = [ "@wheel" ];
+  nixpkgs.config.allowUnfree = true;
   users.mutableUsers = false;
 
   # Doesn't make sense with flakes

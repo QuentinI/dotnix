@@ -1,4 +1,4 @@
-{ config, pkgs, vars, secrets, ... }:
+inputs@{ config, pkgs, vars, secrets, ... }:
 
 {
   users.users."${vars.user}" = {
@@ -26,6 +26,10 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   system.stateVersion = "21.03";
+
+  services.openvpn.servers = if builtins.hasAttr "vpn" secrets then
+    (secrets.vpn inputs)
+  else {};
 
   time.timeZone = "Europe/Moscow";
 

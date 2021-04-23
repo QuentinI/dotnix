@@ -1,28 +1,30 @@
-{ config, vars, pkgs, inputs, secrets, ...}:
-let 
-  nur = (import inputs.nur { nurpkgs = pkgs; pkgs = null; });
-in
-{
+{ config, vars, pkgs, inputs, secrets, ... }:
+let
+  nur = (import inputs.nur {
+    nurpkgs = pkgs;
+    pkgs = null;
+  });
+in {
 
-  home-manager.users."${vars.user}" = { config, pkgs, inputs, ...}: {
+  home-manager.users."${vars.user}" = { config, pkgs, inputs, ... }: {
     imports = [
-     nur.repos.rycee.hmModules.theme-base16
+      nur.repos.rycee.hmModules.theme-base16
 
-     ../../users/modules/profiles/base.nix
-     ../../users/modules/profiles/hdpi.nix
+      ../../users/modules/profiles/base.nix
+      ../../users/modules/profiles/hdpi.nix
 
-     ../../users/modules/services/lorri.nix
-     ../../users/modules/services/kdeconnect.nix
-     ../../users/modules/services/gpg-agent.nix
-     ../../users/modules/services/shadowsocks.nix
-     ../../users/modules/services/nm-applet.nix
-     ../../users/modules/services/udiskie.nix
-     ../../users/modules/services/memory.nix
-     ../../users/modules/services/keybase.nix
-     ../../users/modules/services/syncthing.nix
-     ../../users/modules/services/jackett.nix
-     ../../users/modules/services/sonarr.nix
-     ../../users/modules/services/hydroxide.nix
+      ../../users/modules/services/lorri.nix
+      ../../users/modules/services/kdeconnect.nix
+      ../../users/modules/services/gpg-agent.nix
+      ../../users/modules/services/shadowsocks.nix
+      ../../users/modules/services/nm-applet.nix
+      ../../users/modules/services/udiskie.nix
+      ../../users/modules/services/memory.nix
+      ../../users/modules/services/keybase.nix
+      ../../users/modules/services/syncthing.nix
+      ../../users/modules/services/jackett.nix
+      ../../users/modules/services/sonarr.nix
+      ../../users/modules/services/hydroxide.nix
 
       ../../users/modules/programs/emacs
       ../../users/modules/programs/qutebrowser
@@ -49,9 +51,10 @@ in
     #   oraclejdk.accept_license = true;
     # };
 
-    theme.base16 = config.lib.theme.base16.fromYamlFile "${inputs.base16-nord-scheme}/nord.yaml";
+    theme.base16 = config.lib.theme.base16.fromYamlFile
+      "${inputs.base16-nord-scheme}/nord.yaml";
 
-    gtk = {  
+    gtk = {
       enable = true;
       iconTheme = {
         name = "Paper";

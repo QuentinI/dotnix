@@ -190,11 +190,6 @@ in {
         teams
 
         ## Media
-        lollypop
-        (gnome-podcasts.overrideAttrs (base:
-          with pkgs.gst_all_1; {
-            buildInputs = base.buildInputs ++ [ gst-plugins-good gst-plugins-ugly ];
-          }))
         feh
         mpv
         # pulseeffects

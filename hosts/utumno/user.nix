@@ -159,15 +159,15 @@ in {
         docker_compose
 
         ## Editors and stuff
-        (emacs.override { withXwidgets = true; })
+        emacsGcc
         irony-server # TODO move to own package with deps
         pencil # UML editing
         insomnia # API testing
         postman
         anki
+        dbeaver
 
         ## Games
-        steam
         xonotic
         wesnoth
 

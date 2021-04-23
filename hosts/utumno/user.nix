@@ -62,6 +62,26 @@ in {
       };
     };
 
+    xdg.configFile."mimeapps.list".force = true;
+    xdg.dataFile."applications/mimeapps.list".force = true;
+    xdg.mimeApps = {
+      enable = true;
+      defaultApplications = let
+        desktopFile = pkg: name: "${pkg}/share/applications/${name}.desktop";
+        firefox = desktopFile pkgs.firefox "firefox";
+      in {
+        "application/pdf" =
+          [ (desktopFile pkgs.zathura "org.pwmt.zathura-pdf-mupdf") ];
+        "text/html" = [ firefox ];
+        "text/xml" = [ firefox ];
+        "application/xhtml+xml" = [ firefox ];
+        "application/vnd.mozilla.xul+xml" = [ firefox ];
+        "x-scheme-handler/http" = [ firefox ];
+        "x-scheme-handler/https" = [ firefox ];
+        "x-scheme-handler/ftp" = [ firefox ];
+      };
+    };
+
     home = {
 
       sessionVariables = {

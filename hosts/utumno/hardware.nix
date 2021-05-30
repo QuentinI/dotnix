@@ -55,11 +55,11 @@
     #   options = [ "noatime" ];
     # };
 
-    # "/home/${vars.user}/Downloads" = {
-    #   device = "/dev/disk/by-uuid/218772a8-c132-490c-937f-b879ec1a94f1";
-    #   fsType = "btrfs";
-    #   options = [ "defaults" "nodev" "nosuid" "noexec" ];
-    # };
+    "/home/${vars.user}/Downloads" = {
+      device = "/dev/disk/by-uuid/8c048aaa-7568-4ff4-a96c-02f4d8510566";
+      fsType = "btrfs";
+      options = [ "defaults" "nodev" "nosuid" "noexec" ];
+    };
   };
 
   # swapDevices = [{ label = "swap"; }];

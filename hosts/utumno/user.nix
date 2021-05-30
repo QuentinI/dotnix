@@ -20,7 +20,6 @@ in {
       ../../users/modules/services/nm-applet.nix
       ../../users/modules/services/udiskie.nix
       ../../users/modules/services/memory.nix
-      ../../users/modules/services/keybase.nix
       ../../users/modules/services/syncthing.nix
       ../../users/modules/services/jackett.nix
       ../../users/modules/services/sonarr.nix
@@ -159,7 +158,7 @@ in {
         docker_compose
 
         ## Editors and stuff
-        emacsGcc
+        emacsPgtkGcc
         irony-server # TODO move to own package with deps
         pencil # UML editing
         insomnia # API testing

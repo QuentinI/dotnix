@@ -27,4 +27,6 @@
     password = secrets.jupyter-password;
   } else pkgs.lib.warn "Jupyter service is enabled, but `secrets.jupyter-password` is not set, disabling" {
   };
+  # WORKAROUND for some bug
+  users.users."jupyter".isNormalUser = true;
 }

@@ -44,7 +44,7 @@ let
 in {
 
   home.packages = with pkgs; [
-    z-lua
+    zoxide
     starship
     direnv
     nix-index
@@ -62,8 +62,15 @@ in {
       add_newline = false
 
       [nix_shell]
-      use_name = true
+      impure_msg = ""
       symbol = "❄️"
+
+      [shlvl]
+      symbol = "↕️ "
+      disabled = false
+
+      [status]
+      disabled = false
     '';
   };
 
@@ -187,8 +194,8 @@ in {
 
       eval "$(dircolors ~/.dir_colors)";
 
-      eval "$(z --init zsh enhanced once fzf)"
-      export _ZL_ECHO=1
+      eval "$(zoxide init zsh)"
+      export _ZO_ECHO=1
       alias j='z'
       alias jj='z -I'
 

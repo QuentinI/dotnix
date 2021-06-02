@@ -79,12 +79,6 @@ in {
     enableAutosuggestions = true;
     history.expireDuplicatesFirst = false;
     history.ignoreDups = false;
-    # oh-my-zsh = {
-    #   enable = true;
-    #   theme = "norm";
-    #   plugins =
-    #     [ "git" "yarn" "sudo" "python" "pip" "git-extras" "docker" "catimg" ];
-    # };
     shellAliases = {
       b = "bat --paging never";
       l = "exa -lh --git";
@@ -96,8 +90,6 @@ in {
       nrs = "sudo nixos-rebuild switch";
       confed = "sudo $EDITOR /etc/nixos/configuration.nix";
       dc = "docker-compose";
-      ns = "nix-shell";
-      nsp = "nix-shell --run zsh -p";
       t = "TERM=xterm"; # Sometimes programs refuse to run in kitty
       "куищще" = "reboot";
     };
@@ -108,11 +100,6 @@ in {
       setopt autocd autopushd  # Implied cd
       autoload -U compinit # Completion
       compinit
-
-      # Attempts to run packet immediately, works only if binary name is the same as package name
-      nsr() {
-        nix-shell --run "$1" -p "$1"
-      }
 
       transfer() {
         if [ $# -eq 0 ]; then
@@ -167,6 +154,17 @@ in {
         fi
       }
 
+      function join_by { local d=${"$"}{1-} f=${"$"}{2-}; if shift 2; then printf %s "$f" "${"$"}{@/#/$d}"; fi; }
+
+      function nsp {
+        nix shell nixpkgs#`join_by " nixpkgs#" ${"$"}{@[@]}`
+      }
+
+      nsr() {
+        nix shell nixpkgs#"$1" -c "$1"
+      }
+
+
       # Speed up completions
       zstyle ':completion:*' accept-exact '*(N)'
       zstyle ':completion:*' use-cache on
@@ -186,7 +184,7 @@ in {
 
       # https://unix.stackexchange.com/a/250700
       my-backward-delete-word() {
-          local WORDCHARS=${"$"}{WORDCHARS/\//}
+          local WORDCHARS=${"$"}{WORDCHARS/\//#}
           zle backward-delete-word
       }
       zle -N my-backward-delete-word
@@ -194,10 +192,9 @@ in {
 
       eval "$(dircolors ~/.dir_colors)";
 
-      eval "$(zoxide init zsh)"
+      eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
       export _ZO_ECHO=1
       alias j='z'
-      alias jj='z -I'
 
       eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
       eval "$(${pkgs.starship}/bin/starship init zsh)"

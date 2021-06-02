@@ -83,6 +83,19 @@ in {
 
     home = {
 
+      # Hell is other MIME databases
+      activation = {
+        myActivationAction = inputs.home.lib.hm.dag.entryAfter ["writeBoundary"] ''
+          ${pkgs.glib}/bin/gio mime 'application/vnd.mozilla.xul+xml' 'firefox.desktop'
+          ${pkgs.glib}/bin/gio mime 'application/xhtml+xml' 'firefox.desktop'
+          ${pkgs.glib}/bin/gio mime 'text/html' 'firefox.desktop'
+          ${pkgs.glib}/bin/gio mime 'text/xml' 'firefox.desktop'
+          ${pkgs.glib}/bin/gio mime 'x-scheme-handler/ftp' 'firefox.desktop'
+          ${pkgs.glib}/bin/gio mime 'x-scheme-handler/http' 'firefox.desktop'
+          ${pkgs.glib}/bin/gio mime 'x-scheme-handler/https' 'firefox.desktop'
+        '';
+      };
+
       sessionVariables = {
         GOPATH = "$HOME/Code/go";
         PATH = "$HOME/.yarn/bin/:$PATH";

@@ -1,16 +1,15 @@
-{ config, pkgs, ... }:
+{ config, pkgs, vars, ... }:
 
 {
   services.xserver = {
     enable = true;
     libinput.enable = true;
-    # videoDrivers = [ "nouveau" "intel" ];
+    videoDrivers = [ "nouveau" "intel" ];
     displayManager = {
-      # sessionPackages = [ pkgs.sway ];
-      # defaultSession = "sway";
+      defaultSession = "sway";
       sddm = {
         enable = true;
-        # settings.Users.HideUsers = "jupyter";
+        settings.Users.HideUsers = "jupyter";
       };
     };
     config = "";

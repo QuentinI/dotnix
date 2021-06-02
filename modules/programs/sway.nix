@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, vars, ... }:
 
 {
   environment.systemPackages = [ pkgs.qt5.qtwayland pkgs.sway ];

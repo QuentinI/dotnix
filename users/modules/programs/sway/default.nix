@@ -213,7 +213,9 @@ in rec {
       smartBorders = "on";
     };
 
-    fonts = [ "Fira Code 10" ];
+    fonts =  {
+      names = [ "Fira Code 10" ];
+    };
 
     keybindings = { };
 

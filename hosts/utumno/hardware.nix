@@ -98,7 +98,7 @@
       extraModules = [ pkgs.pulseaudio-modules-bt ];
     };
     bluetooth.enable = true;
-    bluetooth.config = { General = { Enable = "Source,Sink,Media,Socket"; }; };
+    bluetooth.settings = { General = { Enable = "Source,Sink,Media,Socket"; }; };
   };
 
   nix.buildCores = 4;

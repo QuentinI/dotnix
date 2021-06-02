@@ -56,6 +56,7 @@ in rec {
     pkgs.light
     waybar
     pkgs.libappindicator
+    pkgs.playerctl
   ];
 
   # Get rid of Qt filepickers, etc
@@ -308,6 +309,8 @@ in rec {
     bindsym XF86AudioRaiseVolume    exec ${pkgs.pamixer}/bin/pamixer -ui 2 && ${pkgs.pamixer}/bin/pamixer --get-volume > $SWAYSOCK.wob
     bindsym XF86AudioLowerVolume    exec ${pkgs.pamixer}/bin/pamixer -ud 2 && ${pkgs.pamixer}/bin/pamixer --get-volume > $SWAYSOCK.wob
     bindsym XF86AudioMute           exec ${pkgs.pamixer}/bin/pamixer --toggle-mute && ( ${pkgs.pamixer}/bin/pamixer --get-mute && echo 0 > $SWAYSOCK.wob ) || ${pkgs.pamixer}/bin/pamixer --get-volume > $SWAYSOCK.wob
+    bindsym XF86AudioPlay           exec ${pkgs.playerctl}/bin/playerctl play
+    bindsym XF86AudioPause          exec ${pkgs.playerctl}/bin/playerctl pause
 
     bindsym XF86MonBrightnessUp     exec ${pkgs.light}/bin/light -A 3 && ${pkgs.light}/bin/light -G | cut -d'.' -f1 > $SWAYSOCK.wob
     bindsym XF86MonBrightnessDown   exec ${pkgs.light}/bin/light -U 3 && ${pkgs.light}/bin/light -G | cut -d'.' -f1 > $SWAYSOCK.wob

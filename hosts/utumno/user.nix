@@ -44,12 +44,6 @@ in {
 
     ];
 
-    # nixpkgs.config = {
-    #   allowUnfree = true;
-    #   android_sdk.accept_license = true;
-    #   oraclejdk.accept_license = true;
-    # };
-
     theme.base16 = config.lib.theme.base16.fromYamlFile
       "${inputs.base16-nord-scheme}/nord.yaml";
 
@@ -58,6 +52,10 @@ in {
       iconTheme = {
         name = "Paper";
         package = pkgs.paper-icon-theme;
+      };
+      theme = {
+        name = "Nordic";
+        package = pkgs.nordic;
       };
     };
 

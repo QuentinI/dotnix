@@ -83,7 +83,7 @@ in {
 
       # Hell is other MIME databases
       activation = {
-        myActivationAction = inputs.home.lib.hm.dag.entryAfter ["writeBoundary"] ''
+        gioMimes = inputs.home.lib.hm.dag.entryAfter ["writeBoundary"] ''
           ${pkgs.glib}/bin/gio mime 'application/vnd.mozilla.xul+xml' 'firefox.desktop'
           ${pkgs.glib}/bin/gio mime 'application/xhtml+xml' 'firefox.desktop'
           ${pkgs.glib}/bin/gio mime 'text/html' 'firefox.desktop'

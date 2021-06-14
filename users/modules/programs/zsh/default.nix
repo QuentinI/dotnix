@@ -4,40 +4,42 @@
 let
   preview-file = pkgs.writeShellScriptBin "preview-file.sh" ''
     FILE_PATH="$1"
-    FILE_EXTENSION="${"$"}{FILE_PATH##*.}"
-    FILE_EXTENSION_LOWER="$(printf "%s" "${
-      "$"
-    }{FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
+    FILE_EXTENSION="''${FILE_PATH##*.}"
+    FILE_EXTENSION_LOWER="$(printf "%s" "''${FILE_EXTENSION}" | tr '[:upper:]' '[:lower:]')"
 
     if [[ -d "$FILE_PATH" ]]; then
-      exa -lh --git --color=always "$FILE_PATH"
+      exa -lh --no-permissions --no-user --group-directories-first --git --color=always "$FILE_PATH"
       exit 0
     fi
 
-    case "${"$"}{FILE_EXTENSION_LOWER}" in
+    case "''${FILE_EXTENSION_LOWER}" in
+      ## Image
+      jpeg|jpg|png|gif|tiff|ppm|pgm|pbm|bmp|pcx|avi|mp4|mkv|mov|webm|mpeg|flv|vob|ogv)
+        timg -E --frames=1 --loops=1 -g $(( $COLUMNS / 2 - 4 ))x$(( $FZF_PREVIEW_LINES * 2 )) "''${FILE_PATH}";
+        ;;
       ## Archive
       a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|\
       rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)
-        atool --list -- "${"$"}{FILE_PATH}"
-        bsdtar --list --file "${"$"}{FILE_PATH}"
+        atool --list -- "''${FILE_PATH}"
+        bsdtar --list --file "''${FILE_PATH}"
         ;;
       rar)
         ## Avoid password prompt by providing empty password
-        unrar lt -p- -- "${"$"}{FILE_PATH}"
+        unrar lt -p- -- "''${FILE_PATH}"
         ;;
       7z)
         ## Avoid password prompt by providing empty password
-        7z l -p -- "${"$"}{FILE_PATH}"
+        7z l -p -- "''${FILE_PATH}"
         ;;
       ## PDF
       pdf)
         ## Preview as text conversion
-        pdftotext -l 10 -nopgbrk -q -- "${"$"}{FILE_PATH}" -
-        mutool draw -F txt -i -- "${"$"}{FILE_PATH}" 1-10
-        exiftool "${"$"}{FILE_PATH}"
+        pdftotext -l 10 -nopgbrk -q -- "''${FILE_PATH}" -
+        mutool draw -F txt -i -- "''${FILE_PATH}" 1-10
+        exiftool "''${FILE_PATH}"
         ;;
       *)
-        bat --color=always "${"$"}{FILE_PATH}"
+        bat --color=always "''${FILE_PATH}"
         ;;
     esac
   '';
@@ -53,6 +55,7 @@ in {
     mupdf
     unrar
     atool
+    timg
     libarchive
   ];
 
@@ -126,15 +129,20 @@ in {
         else
           SEARCHPATH="$1";
         fi
+
         if ! [[ -a "$SEARCHPATH" ]]; then
           echo "Invalid path: $SEARCHPATH"
           return
         fi
+
         if ! [[ -d "$SEARCHPATH" ]]; then
           FILE="$SEARCHPATH"
         else
-          FILE=$(ls "$SEARCHPATH" | fzf -0 --preview="${preview-file}/bin/preview-file.sh "$SEARCHPATH"/{}")
-          FILE="${"$"}{SEARCHPATH}/${"$"}{FILE}" 
+          FILE=$(ls "$SEARCHPATH" | fzf -0 --preview-window='right:70%' --preview="${preview-file}/bin/preview-file.sh "$SEARCHPATH"/{}")
+          if [[ -z "$FILE" ]]; then
+            return
+          fi
+          FILE="''${SEARCHPATH}/''${FILE}" 
         fi
 
         if [[ -z "$FILE" ]]; then
@@ -154,10 +162,10 @@ in {
         fi
       }
 
-      function join_by { local d=${"$"}{1-} f=${"$"}{2-}; if shift 2; then printf %s "$f" "${"$"}{@/#/$d}"; fi; }
+      function join_by { local d=''${1-} f=''${2-}; if shift 2; then printf %s "$f" "''${@/#/$d}"; fi; }
 
       function nsp {
-        nix shell nixpkgs#`join_by " nixpkgs#" ${"$"}{@[@]}`
+        nix shell nixpkgs#`join_by " nixpkgs#" ''${@[@]}`
       }
 
       nsr() {
@@ -184,7 +192,7 @@ in {
 
       # https://unix.stackexchange.com/a/250700
       my-backward-delete-word() {
-          local WORDCHARS=${"$"}{WORDCHARS/\//#}
+          local WORDCHARS=''${WORDCHARS/\//#}
           zle backward-delete-word
       }
       zle -N my-backward-delete-word
@@ -199,7 +207,7 @@ in {
       eval "$(${pkgs.direnv}/bin/direnv hook zsh)"
       eval "$(${pkgs.starship}/bin/starship init zsh)"
       source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
-      export PATH="${"$"}{PATH}:/home/quentin/.local/bin"
+      export PATH="''${PATH}:/home/quentin/.local/bin"
     '';
   };
 

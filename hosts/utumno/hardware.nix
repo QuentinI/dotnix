@@ -91,14 +91,22 @@
       extraPackages = [ pkgs.xorg.xf86videonouveau ];
     };
     cpu.intel.updateMicrocode = true;
-    pulseaudio = {
-      enable = true;
-      package = pkgs.pulseaudioFull;
-      support32Bit = true;
-      extraModules = [ pkgs.pulseaudio-modules-bt ];
-    };
+    # pulseaudio = {
+    #   enable = true;
+    #   package = pkgs.pulseaudioFull;
+    #   support32Bit = true;
+    #   extraModules = [ pkgs.pulseaudio-modules-bt ];
+    # };
     bluetooth.enable = true;
-    bluetooth.settings = { General = { Enable = "Source,Sink,Media,Socket"; }; };
+    # bluetooth.settings = { General = { Enable = "Source,Sink,Media,Socket"; }; };
+  };
+
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
   };
 
   nix.buildCores = 4;

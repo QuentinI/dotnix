@@ -57,6 +57,7 @@ in rec {
     waybar
     pkgs.libappindicator
     pkgs.playerctl
+    pkgs.xdg-desktop-portal-wlr
   ];
 
   # Waybar works with libappindicator tray icons only

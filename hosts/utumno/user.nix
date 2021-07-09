@@ -169,7 +169,6 @@ in {
         docker_compose
 
         ## Editors and stuff
-        emacsPgtkGcc
         irony-server # TODO move to own package with deps
         pencil # UML editing
         insomnia # API testing

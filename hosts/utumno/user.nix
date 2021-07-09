@@ -146,6 +146,7 @@ in {
             scipy
             matplotlib
             pytest
+            pyserial
           ]))
         poetry
         pipenv
@@ -251,6 +252,8 @@ in {
 
         # Unsorted. Fuck it.
         # TODO maybe?..
+        xh
+        duf
         blueman
         gnumake
         gnupg

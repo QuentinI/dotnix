@@ -244,8 +244,8 @@ in {
         ntfs3g
 
         # Nixos housekeeping
-        vulnix # NixOS vulnerability scanner
-        nox # Apt-cache, kinda
+        # TODO: broken
+        # vulnix # NixOS vulnerability scanner
         nix-index
         niv
         cachix

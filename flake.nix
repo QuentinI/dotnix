@@ -20,6 +20,14 @@
       flake = false;
       url = "github:spejamchr/base16-nord-scheme/master";
     };
+    mpv-scripts = {
+      flake = false;
+      url = "github:wiiaboo/mpv-scripts/master";
+    };
+    mpv-chapters = {
+      flake = false;
+      url = "github:zxhzxhz/mpv-chapters/master";
+    };
     secrets.url = "github:QuentinI/dummy-flake";
   };
 

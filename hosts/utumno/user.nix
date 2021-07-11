@@ -41,6 +41,7 @@ in {
       ../../users/modules/programs/bat
       ../../users/modules/programs/git
       ../../users/modules/programs/sway
+      ../../users/modules/programs/mpv
 
     ];
 
@@ -201,7 +202,6 @@ in {
 
         ## Media
         feh
-        mpv
         # pulseeffects
         sox
         spotify

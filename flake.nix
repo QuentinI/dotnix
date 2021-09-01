@@ -26,7 +26,19 @@
     };
     mpv-chapters = {
       flake = false;
-      url = "github:zxhzxhz/mpv-chapters/master";
+      url = "github:QuentinI/mpv-chapters/master";
+    };
+    mpv-search-page = {
+      flake = false;
+      url = "github:CogentRedTester/mpv-search-page/master";
+    };
+    mpv-user-input = {
+      flake = false;
+      url = "github:CogentRedTester/mpv-user-input/master";
+    };
+    mpv-scroll-list = {
+      flake = false;
+      url = "github:CogentRedTester/mpv-scroll-list/master";
     };
     secrets.url = "github:QuentinI/dummy-flake";
   };

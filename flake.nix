@@ -3,7 +3,7 @@
   inputs = {
     master.url = "nixpkgs/master";
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    stable.url = "nixpkgs/release-20.09";
+    stable.url = "nixpkgs/release-21.05";
     home.url = "github:nix-community/home-manager/master";
     emacs-overlay.url = "github:nix-community/emacs-overlay/master";
     flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
@@ -19,6 +19,10 @@
     base16-nord-scheme = {
       flake = false;
       url = "github:spejamchr/base16-nord-scheme/master";
+    };
+    base16-solarized-scheme = {
+      flake = false;
+      url = "github:arzg/base16-solarized-scheme/master";
     };
     mpv-scripts = {
       flake = false;

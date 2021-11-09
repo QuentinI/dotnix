@@ -51,12 +51,12 @@ in {
     gtk = {
       enable = true;
       iconTheme = {
-        name = "Paper";
+        name = "Paper${if config.theme.base16.kind == "light" then "-Mono-Dark" else ""}";
         package = pkgs.paper-icon-theme;
       };
       theme = {
-        name = "Nordic";
-        package = pkgs.nordic;
+        name = "Matcha-${config.theme.base16.kind}-sea";
+        package = pkgs.matcha-gtk-theme;
       };
     };
 
@@ -97,7 +97,7 @@ in {
 
       sessionVariables = {
         GOPATH = "$HOME/Code/go";
-        PATH = "$HOME/.yarn/bin/:$PATH";
+        PATH = "$HOME/.yarn/bin/:$HOME/.npm-global:$PATH";
         USE_NIX2_COMMAND = 1;
         EDITOR = "emacs";
         PAGER = "most";
@@ -141,17 +141,18 @@ in {
             virtualenv
             pip
             tkinter
-            python-language-server
+            # python-language-server
             setuptools
             numpy
             scipy
             matplotlib
             pytest
             pyserial
+            pypdf2
           ]))
         poetry
         pipenv
-        (python2.withPackages (ps: with ps; [ virtualenv pip ]))
+        # (python2.withPackages (ps: with ps; [ virtualenv pip ]))
         (ghc.withPackages (ps: with ps; [ tidal ]))
         nodejs
         yarn
@@ -198,7 +199,7 @@ in {
         skype
         thunderbird
         slack
-        teams
+        element-desktop
 
         ## Media
         feh
@@ -269,11 +270,13 @@ in {
         psmisc
         shared-mime-info
         virtmanager
-        typora
         stlink # For work
 
         # Fixes "failed to commit changes to dconf" issues
         gnome3.dconf
+
+        # Fallback
+        gnome.adwaita-icon-theme
       ];
     };
 

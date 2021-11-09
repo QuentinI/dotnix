@@ -10,7 +10,6 @@ Plug 'mattn/emmet-vim'
 Plug 'sunaku/vim-shortcut'
 Plug 'sheerun/vim-polyglot'
 Plug 'airblade/vim-gitgutter'
-Plug 'arcticicestudio/nord-vim'
 Plug 'neomake/neomake'
 Plug 'rhysd/vim-grammarous'
 Plug 'posva/vim-vue'
@@ -18,6 +17,7 @@ Plug 'powerman/vim-plugin-ruscmd'
 Plug 'Shougo/neco-vim'
 Plug 'neoclide/coc-neco'
 Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'RRethy/nvim-base16'
 call plug#end()
 
 " TODO
@@ -39,8 +39,6 @@ set signcolumn=yes
 " Colors
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 set termguicolors
-colorscheme nord
-let g:nord_uniform_diff_background = 1
 
 " Show invisibles
 set listchars=tab:→\ ,trail:·

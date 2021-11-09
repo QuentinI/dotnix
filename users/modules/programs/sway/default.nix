@@ -81,7 +81,7 @@ in rec {
 
       window#waybar {
           background-color: #${config.theme.base16.colors.base00.hex.rgb};
-          color: #${config.theme.base16.colors.base04.hex.rgb};
+          color: #${config.theme.base16.colors.base05.hex.rgb};
           transition-property: background-color;
           transition-duration: .5s;
       }
@@ -218,6 +218,12 @@ in rec {
         l = "resize grow width 10 px or 10 ppt";
         Return = "mode default";
         Escape = "mode default";
+      };
+    };
+
+    output = {
+      "*" = {
+        background = "#${config.theme.base16.colors.base00.hex.rgb} solid_color";
       };
     };
 

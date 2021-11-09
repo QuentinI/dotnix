@@ -16,12 +16,12 @@ in
   };
 
   xdg.configFile.mpv_subit = {
-    source = "${inputs.mpv-scripts}/scripts/subit.lua";
+    source = "${inputs.mpv-scripts}/subit.lua";
     target = "${scripts}/subit.lua";
   };
 
   xdg.configFile.mpv_undo_redo = {
-    source = "${inputs.mpv-scripts}/scripts/UndoRedo.lua";
+    source = "${inputs.mpv-scripts}/UndoRedo.lua";
     target = "${scripts}/UndoRedo.lua";
   };
 

@@ -149,6 +149,7 @@ in {
             pytest
             pyserial
             pypdf2
+            requests
           ]))
         poetry
         pipenv
@@ -271,6 +272,7 @@ in {
         shared-mime-info
         virtmanager
         stlink # For work
+        rnix-lsp
 
         # Fixes "failed to commit changes to dconf" issues
         gnome3.dconf

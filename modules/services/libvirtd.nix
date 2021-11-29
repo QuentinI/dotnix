@@ -3,6 +3,8 @@
 {
   virtualisation.libvirtd = {
     enable = true;
-    qemuPackage = pkgs.qemu;
+    qemu = {
+      package = pkgs.qemu;
+    };
   };
 }

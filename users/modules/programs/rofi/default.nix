@@ -4,7 +4,6 @@
 {
   programs.rofi = {
     enable = true;
-    lines = 7;
     font = "Fira Code 16";
     extraConfig = {
       modi = "drun";
@@ -17,26 +16,6 @@
       kb-row-tab = "shift+Tab";
     };
 
-    enableBase16Theme = false;
-
-    colors = {
-      window = {
-        background = "#${config.theme.base16.colors.base01.hex.rgb}";
-        border = "#${config.theme.base16.colors.base04.hex.rgb}";
-        separator = "#${config.theme.base16.colors.base04.hex.rgb}";
-      };
-
-      rows = {
-        normal = {
-          background = "#${config.theme.base16.colors.base01.hex.rgb}";
-          foreground = "#${config.theme.base16.colors.base04.hex.rgb}";
-          backgroundAlt = "#${config.theme.base16.colors.base01.hex.rgb}";
-          highlight = {
-            background = "#${config.theme.base16.colors.base04.hex.rgb}";
-            foreground = "#${config.theme.base16.colors.base00.hex.rgb}";
-          };
-        };
-      };
-    };
+    enableBase16Theme = true;
   };
 }

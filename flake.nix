@@ -30,7 +30,7 @@
     };
     mpv-chapters = {
       flake = false;
-      url = "github:QuentinI/mpv-chapters/master";
+      url = "github:zxhzxhz/mpv-chapters/master";
     };
     mpv-search-page = {
       flake = false;

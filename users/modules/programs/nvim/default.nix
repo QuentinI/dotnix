@@ -18,20 +18,20 @@ let
   '');
 in {
 
-  home.packages = [ pkgs.neovim ];
+  home.packages = [ pkgs.neovim pkgs.neovide ];
 
-  xdg.configFile.nvim_init = {
-    text = init;
-    target = "nvim/init.vim";
-  };
+  # xdg.configFile.nvim_init = {
+  #   text = init;
+  #   target = "nvim/init.vim";
+  # };
 
-  xdg.configFile.nvim_coc = {
-    source = ./coc-settings.json;
-    target = "nvim/coc-settings.json";
-  };
-
-  home.file.nvim_plug = {
-    text = builtins.readFile nvim_plug;
-    target = ".local/share/nvim/site/autoload/plug.vim";
-  };
+  # xdg.configFile.nvim_coc = {
+  #   source = ./coc-settings.json;
+  #   target = "nvim/coc-settings.json";
+  # };
+  #
+  # home.file.nvim_plug = {
+  #   text = builtins.readFile nvim_plug;
+  #   target = ".local/share/nvim/site/autoload/plug.vim";
+  # };
 }

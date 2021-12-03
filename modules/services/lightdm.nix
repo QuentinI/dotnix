@@ -1,14 +1,13 @@
 { config, pkgs, vars, ... }:
-
+ 
 {
   services.xserver = {
     enable = true;
     libinput.enable = true;
     displayManager = {
       defaultSession = "sway";
-      sddm = {
+      lightdm = {
         enable = true;
-        settings.Users.HideUsers = "jupyter";
       };
     };
     config = "";

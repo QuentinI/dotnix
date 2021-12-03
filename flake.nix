@@ -1,9 +1,10 @@
 {
 
   inputs = {
+    staging.url = "nixpkgs/staging";
     master.url = "nixpkgs/master";
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    stable.url = "nixpkgs/release-21.05";
+    stable.url = "nixpkgs/release-21.11";
     home.url = "github:nix-community/home-manager/master";
     emacs-overlay.url = "github:nix-community/emacs-overlay/master";
     flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
@@ -19,6 +20,10 @@
     base16-nord-scheme = {
       flake = false;
       url = "github:spejamchr/base16-nord-scheme/master";
+    };
+    nord-dircolors = {
+      flake = false;
+      url = "github:arcticicestudio/nord-dircolors/master";
     };
     base16-solarized-scheme = {
       flake = false;
@@ -54,8 +59,11 @@
       vars = { user = "quentin"; };
     in rec {
       nixosConfigurations = builtins.mapAttrs (hostname: config:
-        (config (inputs // {
+        (config (inputs // rec {
           system = "x86_64-linux";
+          staging = import inputs.staging { inherit system; };
+          stable = import inputs.stable { inherit system; };
+          master = import inputs.master { inherit system; };
           inherit vars secrets;
         })).nixosConfiguration) hosts;
 

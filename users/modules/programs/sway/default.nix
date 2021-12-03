@@ -19,7 +19,7 @@ let
   # TODO
   graphical_resize = pkgs.writeShellScriptBin "resize.sh" ''
     SLURP=${pkgs.slurp}/bin/slurp
-    SWAYMSG=${pkgs.sway}/bin/swaymsg
+    SWAYMSG=swaymsg
 
     $SWAYMSG mark __moving
 
@@ -46,7 +46,6 @@ in rec {
   imports = [ ../../programs/rofi ../../services/mako.nix ];
 
   home.packages = [
-    pkgs.sway
     pkgs.swaylock
     pkgs.grim
     pkgs.slurp
@@ -136,6 +135,7 @@ in rec {
   };
 
   wayland.windowManager.sway.enable = true;
+  wayland.windowManager.sway.extraOptions = [ "--unsupported-gpu" "--verbose" ];
   wayland.windowManager.sway.config = {
     assigns = {
       "1" = [
@@ -236,6 +236,7 @@ in rec {
         click_method = "clickfinger";
         natural_scroll = "enabled";
         tap = "enabled";
+        dwt = "enabled";
       };
     };
   };
@@ -292,6 +293,7 @@ in rec {
 
     bindsym ${modifier}+Return      exec kitty
     bindsym Menu                    exec rofi -show
+    bindsym Control_R               exec rofi -show
 
     bindsym Print                      exec grim ~/Pictures/screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
     bindsym Control+Print              exec grim - | wl-copy -p -o -t image/png
@@ -311,8 +313,8 @@ in rec {
     bindsym XF86AudioPlay           exec ${pkgs.playerctl}/bin/playerctl play
     bindsym XF86AudioPause          exec ${pkgs.playerctl}/bin/playerctl pause
 
-    bindsym XF86MonBrightnessUp     exec ${pkgs.light}/bin/light -A 3 && ${pkgs.light}/bin/light -G | cut -d'.' -f1 > $SWAYSOCK.wob
-    bindsym XF86MonBrightnessDown   exec ${pkgs.light}/bin/light -U 3 && ${pkgs.light}/bin/light -G | cut -d'.' -f1 > $SWAYSOCK.wob
+    bindsym XF86MonBrightnessUp     exec ${pkgs.light}/bin/light -A 1 && ${pkgs.light}/bin/light -G | cut -d'.' -f1 > $SWAYSOCK.wob
+    bindsym XF86MonBrightnessDown   exec ${pkgs.light}/bin/light -U 1 && ${pkgs.light}/bin/light -G | cut -d'.' -f1 > $SWAYSOCK.wob
 
     bindsym ${modifier}+F5  opacity minus 0.05
     bindsym ${modifier}+F6  opacity plus  0.05

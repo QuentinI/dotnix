@@ -50,6 +50,10 @@ inputs@{ config, pkgs, vars, secrets, ... }:
     HandlePowerKey=ignore
   '';
 
+
+  services.xserver.enable = true;
+  services.xserver.libinput.enable = true;
+
   services.colord.enable = true;
 
   fonts.fonts = with pkgs; [

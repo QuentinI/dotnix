@@ -23,8 +23,6 @@ in {
       ../../users/modules/services/udiskie.nix
       ../../users/modules/services/memory.nix
       ../../users/modules/services/syncthing.nix
-      ../../users/modules/services/jackett.nix
-      ../../users/modules/services/sonarr.nix
       ../../users/modules/services/hydroxide.nix
       ../../users/modules/services/ssh-agent.nix
 

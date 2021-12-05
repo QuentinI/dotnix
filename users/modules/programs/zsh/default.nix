@@ -208,6 +208,7 @@ in {
       eval "$(${pkgs.starship}/bin/starship init zsh)"
       source ${pkgs.nix-index}/etc/profile.d/command-not-found.sh
       export PATH="''${PATH}:/home/quentin/.local/bin"
+      export SSH_AUTH_SOCK="/run/user/1000/ssh-agent"
     '';
   };
 

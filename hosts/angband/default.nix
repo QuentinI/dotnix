@@ -29,7 +29,6 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, ... }:
       ../../modules/profiles/silent-boot.nix
       ../../modules/profiles/hardened.nix
 
-      ../../modules/services/lightdm.nix
       ../../modules/services/docker.nix
       ../../modules/services/libvirtd.nix
       ../../modules/services/jupyter.nix

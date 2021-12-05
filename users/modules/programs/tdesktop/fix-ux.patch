@@ -1,12 +1,39 @@
-From ea8d69f6fc7c09985aba09f097da4dc95bc65b5e Mon Sep 17 00:00:00 2001
+From 86af21925d8f88621bf3eb9b764b7cc20e3e7e7f Mon Sep 17 00:00:00 2001
 From: Quentin Inkling <mbee@protonmail.ch>
 Date: Mon, 6 Dec 2021 00:08:03 +0300
 Subject: [PATCH] Fix UX
 
 ---
+ Telegram/SourceFiles/dialogs/dialogs_widget.cpp     | 8 +++++++-
  Telegram/SourceFiles/window/window_filters_menu.cpp | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ 2 files changed, 11 insertions(+), 2 deletions(-)
 
+diff --git a/Telegram/SourceFiles/dialogs/dialogs_widget.cpp b/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
+index 8001a6627..4f9b7831a 100644
+--- a/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
++++ b/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
+@@ -45,6 +45,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "data/data_folder.h"
+ #include "data/data_histories.h"
+ #include "data/data_changes.h"
++#include "data/data_chat_filters.h"
+ #include "facades.h"
+ #include "app.h"
+ #include "styles/style_dialogs.h"
+@@ -745,7 +746,12 @@ void Widget::escape() {
+ 		if (controller()->activeChatEntryCurrent().key) {
+ 			cancelled();
+ 		} else if (controller()->activeChatsFilterCurrent()) {
+-			controller()->setActiveChatsFilter(FilterId(0));
++			const auto filters = &controller()->session().data().chatsFilters();
++			if (filters->list().empty()) {
++				controller()->setActiveChatsFilter(FilterId(0));
++			} else {
++				controller()->setActiveChatsFilter(filters->list()[0].id());
++			}
+ 		}
+ 	} else if (!_searchInChat && !controller()->selectingPeer()) {
+ 		if (controller()->activeChatEntryCurrent().key) {
 diff --git a/Telegram/SourceFiles/window/window_filters_menu.cpp b/Telegram/SourceFiles/window/window_filters_menu.cpp
 index d097a8d5d..f4446aad5 100644
 --- a/Telegram/SourceFiles/window/window_filters_menu.cpp

@@ -1,7 +1,11 @@
 { config, pkgs, ... }:
 
 {
-  home.packages = [ pkgs.tdesktop ];
+  home.packages = [
+    (pkgs.tdesktop.overrideAttrs (old: {
+      patches = [ ./fix-ux.patch ];
+    })) 
+  ];
 
   xdg.mimeApps = {
     defaultApplications = {

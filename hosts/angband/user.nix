@@ -26,7 +26,6 @@ in {
       ../../users/modules/services/hydroxide.nix
       ../../users/modules/services/ssh-agent.nix
 
-      ../../users/modules/programs/emacs
       ../../users/modules/programs/qutebrowser
       ../../users/modules/programs/firefox
       ../../users/modules/programs/zsh
@@ -210,14 +209,8 @@ in {
 
         ## Messaging
         discord
-        wire-desktop
-        gitter
-        zoom-us
-        vk-messenger
-        skype
         thunderbird
         slack
-        element-desktop
 
         ## Media
         feh
@@ -227,7 +220,6 @@ in {
 
         ## Documents
         texlive.combined.scheme-full
-        calibre
         zathura
         libreoffice-unwrapped
         pdftk

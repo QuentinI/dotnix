@@ -25,7 +25,6 @@ in {
       ../../users/modules/services/sonarr.nix
       ../../users/modules/services/hydroxide.nix
 
-      ../../users/modules/programs/emacs
       ../../users/modules/programs/qutebrowser
       ../../users/modules/programs/firefox
       ../../users/modules/programs/zsh
@@ -210,7 +209,6 @@ in {
 
         ## Documents
         texlive.combined.scheme-full
-        calibre
         zathura
         libreoffice-unwrapped
         pdftk

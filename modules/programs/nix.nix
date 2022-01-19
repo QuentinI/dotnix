@@ -16,7 +16,7 @@
     ];
   };
 
-  nixpkgs.overlays = [ inputs.emacs-overlay.overlay ];
+  nixpkgs.overlays = [ ];
 
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;

@@ -6,7 +6,6 @@
     nixpkgs.url = "nixpkgs/nixos-unstable";
     stable.url = "nixpkgs/release-21.11";
     home.url = "github:nix-community/home-manager/master";
-    emacs-overlay.url = "github:nix-community/emacs-overlay/master";
     flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
     deploy-rs.url = "github:serokell/deploy-rs";
     nur = {

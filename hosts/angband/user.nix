@@ -23,13 +23,11 @@ in {
       ../../users/modules/services/udiskie.nix
       ../../users/modules/services/memory.nix
       ../../users/modules/services/syncthing.nix
-      ../../users/modules/services/hydroxide.nix
       ../../users/modules/services/ssh-agent.nix
 
       ../../users/modules/programs/qutebrowser
       ../../users/modules/programs/firefox
       ../../users/modules/programs/zsh
-      ../../users/modules/programs/most
       ../../users/modules/programs/ncmpcpp
       ../../users/modules/programs/iex
       ../../users/modules/programs/tdesktop
@@ -105,7 +103,7 @@ in {
         PATH = "$HOME/.yarn/bin/:$HOME/.npm-global:$PATH";
         USE_NIX2_COMMAND = 1;
         EDITOR = "emacs";
-        PAGER = "most";
+        PAGER = "less";
       };
 
       keyboard = {
@@ -127,7 +125,6 @@ in {
         fd
         ripgrep
         htop
-        most
         pv
         tldr
         lf

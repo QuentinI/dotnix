@@ -11,9 +11,17 @@ let
 
   # TODO
   lock = pkgs.writeShellScriptBin "lock.sh" ''
-    ${pkgs.grim}/bin/grim /tmp/lock_screenshot.jpg
-    ${pkgs.imagemagick}/bin/convert /tmp/lock_screenshot.jpg -filter point -resize 10% -resize 1000% /tmp/lock_screenshot.png
-    ${pkgs.swaylock}/bin/swaylock -i /tmp/lock_screenshot.png -e -f
+    outputs=($(swaymsg -t get_outputs | jq -r '.[]'.name));
+    arguments=()
+    for output in "''${outputs[@]}"; do
+      basename="/tmp/''${output}_lock_screenshot"
+      ${pkgs.grim}/bin/grim -o "$output" "$basename.jpg";
+      ${pkgs.imagemagick}/bin/convert "$basename.jpg" -filter point -resize 10% -resize 1000% "$basename.png";
+      arguments+=("-i")
+      arguments+=("$output:$basename.png")
+    done
+
+    ${pkgs.swaylock}/bin/swaylock ''${arguments[@]} -e -f;
   '';
 
   # TODO
@@ -132,6 +140,34 @@ in rec {
       }
     '';
     target = "waybar/style.css";
+  };
+
+  services.kanshi = {
+    enable = true;
+    profiles = {
+      undocked = {
+        outputs = [
+          {
+            criteria = "eDP-1";
+            scale = 1.0;
+          }
+        ];
+      };
+      work = {
+        outputs = [
+          {
+            criteria = "eDP-1";
+            scale = 1.2;
+            position = "0,0";
+          }
+          {
+            criteria = "Philips Consumer Electronics Company PHL 288E2 UK52124000133";
+            scale = 1.5;
+            position = "1600,-630";
+          }
+        ];
+      };
+    };
   };
 
   wayland.windowManager.sway.enable = true;
@@ -280,12 +316,14 @@ in rec {
     bindsym ${modifier}+Shift+6     move container to workspace 6
     bindsym ${modifier}+Shift+grave move container to workspace 7
 
-    bindsym --to-code ${modifier}+n           exec telegram-desktop; exec Discord; exec vk; exec thunderbird; exec skypeforlinux; exec wire-desktop
+    bindsym --to-code ${modifier}+m           layout splith; exec telegram-desktop; exec slack; exec thunderbird
     bindsym --to-code ${modifier}+f           exec kitty -T=lf lf
     bindsym --to-code ${modifier}+w           layout tabbed
     bindsym --to-code ${modifier}+e           layout toggle split
     bindsym ${modifier}+Shift+space           floating toggle
     bindsym --to-code ${modifier}+s           sticky toggle
+    bindsym --to-code ${modifier}+g           gaps inner current set 0
+    bindsym --to-code ${modifier}+Shift+g     gaps inner current set 10
 
     bindsym --to-code ${modifier}+Shift+c     reload
     bindsym --to-code ${modifier}+Shift+r     restart
@@ -295,9 +333,9 @@ in rec {
     bindsym Menu                    exec rofi -show
     bindsym Control_R               exec rofi -show
 
-    bindsym Print                      exec grim ~/Pictures/screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
+    bindsym Print                      exec grim ~/Pictures/Screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
     bindsym Control+Print              exec grim - | wl-copy -p -o -t image/png
-    bindsym ${modifier}+Print          exec grim -g "$(slurp -b '#ffffff00' -c '#${config.theme.base16.colors.base06.hex.rgb}ff')" ~/Pictures/screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
+    bindsym ${modifier}+Print          exec grim -g "$(slurp -b '#ffffff00' -c '#${config.theme.base16.colors.base06.hex.rgb}ff')" ~/Pictures/Screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
     bindsym ${modifier}+Control+Print  exec grim -g "$(slurp -b '#ffffff00' -c '#${config.theme.base16.colors.base06.hex.rgb}ff')" - | wl-copy -p -o -t image/png
 
     bindsym XF86KbdBrightnessUp     exec ${pkgs.light}/bin/light -s sysfs/leds/asus::kbd_backlight -A 1 && ${pkgs.light}/bin/light -s sysfs/leds/asus::kbd_backlight -G | cut -d'.' -f1 > $SWAYSOCK.wob

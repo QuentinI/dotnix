@@ -227,7 +227,7 @@ in {
 
         ## Browsing
         bitwarden
-        chromium
+        ungoogled-chromium
 
         ## Download management
         aria2

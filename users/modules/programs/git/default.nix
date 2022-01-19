@@ -1,6 +1,8 @@
 { config, pkgs, system, staging, ... }:
 
 {
+  home.packages = [ pkgs.delta ];
+
   programs.git = {
     enable = true;
     package = staging.git;
@@ -14,6 +16,11 @@
       diff.algorithm = "histogram";
       gpg.format = "ssh";
       gpg.ssh.program = "${staging.openssh}/bin/ssh-keygen";
+      core.pager = "delta";
+      interactive.diffFilter = "delta --color-only";
+      delta.navigate = true;
+      merge.conflictstyle = "diff3";
+      diff.colorMoved = "default";
     };
   };
 }

@@ -4,8 +4,9 @@ let
     nurpkgs = pkgs;
     pkgs = null;
   });
-in {
- 
+in
+{
+
   security.pam.services."${vars.user}".fprintAuth = true;
 
   home-manager.users."${vars.user}" = { config, pkgs, inputs, staging, ... }: {
@@ -62,27 +63,29 @@ in {
     xdg.dataFile."applications/mimeapps.list".force = true;
     xdg.mimeApps = {
       enable = true;
-      defaultApplications = let
-        desktopFile = pkg: name: "${pkg}/share/applications/${name}.desktop";
-        firefox = desktopFile pkgs.firefox "firefox";
-      in {
-        "application/pdf" =
-          [ (desktopFile pkgs.zathura "org.pwmt.zathura-pdf-mupdf") ];
-        "text/html" = [ firefox ];
-        "text/xml" = [ firefox ];
-        "application/xhtml+xml" = [ firefox ];
-        "application/vnd.mozilla.xul+xml" = [ firefox ];
-        "x-scheme-handler/http" = [ firefox ];
-        "x-scheme-handler/https" = [ firefox ];
-        "x-scheme-handler/ftp" = [ firefox ];
-      };
+      defaultApplications =
+        let
+          desktopFile = pkg: name: "${pkg}/share/applications/${name}.desktop";
+          firefox = desktopFile pkgs.firefox "firefox";
+        in
+        {
+          "application/pdf" =
+            [ (desktopFile pkgs.zathura "org.pwmt.zathura-pdf-mupdf") ];
+          "text/html" = [ firefox ];
+          "text/xml" = [ firefox ];
+          "application/xhtml+xml" = [ firefox ];
+          "application/vnd.mozilla.xul+xml" = [ firefox ];
+          "x-scheme-handler/http" = [ firefox ];
+          "x-scheme-handler/https" = [ firefox ];
+          "x-scheme-handler/ftp" = [ firefox ];
+        };
     };
 
     home = {
 
       # Hell is other MIME databases
       activation = {
-        gioMimes = inputs.home.lib.hm.dag.entryAfter ["writeBoundary"] ''
+        gioMimes = inputs.home.lib.hm.dag.entryAfter [ "writeBoundary" ] ''
           ${pkgs.glib}/bin/gio mime 'application/vnd.mozilla.xul+xml' 'firefox.desktop'
           ${pkgs.glib}/bin/gio mime 'application/xhtml+xml' 'firefox.desktop'
           ${pkgs.glib}/bin/gio mime 'text/html' 'firefox.desktop'
@@ -95,7 +98,7 @@ in {
 
       file."dircolors" = {
         source = "${inputs.nord-dircolors}/src/dir_colors";
-	target = ".dir_colors";
+        target = ".dir_colors";
       };
 
       sessionVariables = {
@@ -162,16 +165,17 @@ in {
         (rust-analyzer.override {
           rust-analyzer-unwrapped = (
             rust-analyzer-unwrapped.overrideAttrs (old: {
-	      pname = "rust-analyzer-unwrapped-bumped-recursion";
+              pname = "rust-analyzer-unwrapped-bumped-recursion";
               patches = [
                 (fetchpatch {
                   url = "https://github.com/QuentinI/rust-analyzer/commit/c336bad52bb79517be8f0e07bff59c5944830d40.patch";
                   sha256 = "sha256-W803ZYU3oRM8427LnpLD4PYpTseIVUMUPGGkzrsE0tA=";
-                }) 
-	      ] ++ old.patches;
-	    })
-	  ); 
-	})
+                })
+              ] ++ old.patches;
+            })
+          );
+        })
+        sumneko-lua-language-server
         llvm
         llvmPackages.clang-unwrapped
         elixir

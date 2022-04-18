@@ -1,13 +1,25 @@
-{ config, vars, pkgs, inputs, secrets, ... }:
+{ config, vars, pkgs, inputs, secrets, naersk, napalm, ... }:
 let
-  nur = (import inputs.nur {
+  nur = import inputs.nur {
     nurpkgs = pkgs;
     pkgs = null;
-  });
-in
-{
+  };
+
+  scr = pkgs.writeShellScriptBin "scr.sh" ''
+    export __NV_PRIME_RENDER_OFFLOAD=1
+    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
+    export __GLX_VENDOR_LIBRARY_NAME=nvidia
+    export __VK_LAYER_NV_optimus=NVIDIA_only
+    ${pkgs.scrcpy}/bin/scrcpy  -S -K -M -t
+  '';
+
+in {
 
   security.pam.services."${vars.user}".fprintAuth = true;
+
+  services.udev.extraRules = ''
+    ACTION=="add", ATTRS{idVendor}=="2717", ATTRS{idProduct}=="ff08", RUN+="${scr}/bin/scr.sh"
+  '';
 
   home-manager.users."${vars.user}" = { config, pkgs, inputs, staging, ... }: {
     imports = [
@@ -16,15 +28,17 @@ in
       ../../users/modules/profiles/base.nix
       ../../users/modules/profiles/hdpi.nix
 
-      ../../users/modules/services/lorri.nix
-      ../../users/modules/services/kdeconnect.nix
+      ../../users/modules/services/activitywatch.nix
       ../../users/modules/services/gpg-agent.nix
-      ../../users/modules/services/shadowsocks.nix
-      ../../users/modules/services/nm-applet.nix
-      ../../users/modules/services/udiskie.nix
+      ../../users/modules/services/kdeconnect.nix
+      ../../users/modules/services/lorri.nix
       ../../users/modules/services/memory.nix
-      ../../users/modules/services/syncthing.nix
+      ../../users/modules/services/nm-applet.nix
+      ../../users/modules/services/protonmail-bridge.nix
+      ../../users/modules/services/shadowsocks.nix
       ../../users/modules/services/ssh-agent.nix
+      ../../users/modules/services/syncthing.nix
+      ../../users/modules/services/udiskie.nix
 
       ../../users/modules/programs/qutebrowser
       ../../users/modules/programs/firefox
@@ -44,57 +58,62 @@ in
 
     ];
 
+    xdg.configFile."hm/theme" = {
+        text = vars.theme;
+    };
+
     theme.base16 = config.lib.theme.base16.fromYamlFile
-      "${inputs.base16-nord-scheme}/nord.yaml";
+      (if vars.theme == "light"
+        then "${inputs.base16-solarized-scheme}/solarized-light.yaml"
+        else "${inputs.base16-nord-scheme}/nord.yaml");
 
     gtk = {
       enable = true;
       iconTheme = {
-        name = "Paper${if config.theme.base16.kind == "light" then "-Mono-Dark" else ""}";
-        package = pkgs.paper-icon-theme;
+        name = "Papirus-${
+            if config.theme.base16.kind == "light" then "Light" else "Dark"
+          }";
+        package = pkgs.papirus-icon-theme;
       };
       theme = {
-        name = "Matcha-${config.theme.base16.kind}-sea";
-        package = pkgs.matcha-gtk-theme;
+        name = "Canta-${config.theme.base16.kind}";
+        package = pkgs.canta-theme;
       };
+    };
+
+    qt = {
+        platformTheme = "qt5ct";
+        style = {
+            name = "kvantum";
+            package = pkgs.plasma5Packages.qtstyleplugin-kvantum;
+        };
     };
 
     xdg.configFile."mimeapps.list".force = true;
     xdg.dataFile."applications/mimeapps.list".force = true;
-    xdg.mimeApps = {
+    xdg.mimeApps = rec {
       enable = true;
-      defaultApplications =
-        let
-          desktopFile = pkg: name: "${pkg}/share/applications/${name}.desktop";
-          firefox = desktopFile pkgs.firefox "firefox";
-        in
-        {
-          "application/pdf" =
-            [ (desktopFile pkgs.zathura "org.pwmt.zathura-pdf-mupdf") ];
-          "text/html" = [ firefox ];
-          "text/xml" = [ firefox ];
-          "application/xhtml+xml" = [ firefox ];
-          "application/vnd.mozilla.xul+xml" = [ firefox ];
-          "x-scheme-handler/http" = [ firefox ];
-          "x-scheme-handler/https" = [ firefox ];
-          "x-scheme-handler/ftp" = [ firefox ];
-        };
+      associations.added = defaultApplications;
+      defaultApplications = let
+        desktopFiles = pkg: name: [
+          "${pkg}/share/applications/${name}.desktop"
+          "${name}.desktop"
+        ];
+        firefox = desktopFiles pkgs.firefox "firefox";
+      in {
+        "application/pdf" =
+          desktopFiles pkgs.zathura "org.pwmt.zathura-pdf-mupdf";
+        "text/html" = firefox;
+        "text/xml" = firefox;
+        "application/xhtml+xml" = firefox;
+        "application/vnd.mozilla.xul+xml" = firefox;
+        "x-scheme-handler/http" = firefox;
+        "x-scheme-handler/https" = firefox;
+        "x-scheme-handler/ftp" = firefox;
+      };
     };
 
     home = {
-
-      # Hell is other MIME databases
-      activation = {
-        gioMimes = inputs.home.lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          ${pkgs.glib}/bin/gio mime 'application/vnd.mozilla.xul+xml' 'firefox.desktop'
-          ${pkgs.glib}/bin/gio mime 'application/xhtml+xml' 'firefox.desktop'
-          ${pkgs.glib}/bin/gio mime 'text/html' 'firefox.desktop'
-          ${pkgs.glib}/bin/gio mime 'text/xml' 'firefox.desktop'
-          ${pkgs.glib}/bin/gio mime 'x-scheme-handler/ftp' 'firefox.desktop'
-          ${pkgs.glib}/bin/gio mime 'x-scheme-handler/http' 'firefox.desktop'
-          ${pkgs.glib}/bin/gio mime 'x-scheme-handler/https' 'firefox.desktop'
-        '';
-      };
 
       file."dircolors" = {
         source = "${inputs.nord-dircolors}/src/dir_colors";
@@ -105,8 +124,8 @@ in
         GOPATH = "$HOME/Code/go";
         PATH = "$HOME/.yarn/bin/:$HOME/.npm-global:$PATH";
         USE_NIX2_COMMAND = 1;
-        EDITOR = "emacs";
-        PAGER = "less";
+        EDITOR = "nvim";
+        PAGER = "more";
       };
 
       keyboard = {
@@ -132,12 +151,13 @@ in
         tldr
         lf
         file
-        telnet
+        inetutils
         picocom
-        gopass
+        pass
         github-cli
         jq
         rlwrap
+        gping
 
         ## Compilers/interpreters
         (python3.withPackages (ps:
@@ -163,17 +183,18 @@ in
         yarn
         rustup
         (rust-analyzer.override {
-          rust-analyzer-unwrapped = (
-            rust-analyzer-unwrapped.overrideAttrs (old: {
+          rust-analyzer-unwrapped = rust-analyzer-unwrapped.overrideAttrs
+            (old: {
               pname = "rust-analyzer-unwrapped-bumped-recursion";
               patches = [
                 (fetchpatch {
-                  url = "https://github.com/QuentinI/rust-analyzer/commit/c336bad52bb79517be8f0e07bff59c5944830d40.patch";
-                  sha256 = "sha256-W803ZYU3oRM8427LnpLD4PYpTseIVUMUPGGkzrsE0tA=";
+                  url =
+                    "https://github.com/QuentinI/rust-analyzer/commit/f6fffc019affcf7b0532f6ebb6ca9c0e84a87e93.patch";
+                  sha256 =
+                    "sha256-ZwQEjKThPO3Wvlt4nVX9qK6qsSKbTICyNICy4niX8Xg=";
                 })
               ] ++ old.patches;
-            })
-          );
+            });
         })
         sumneko-lua-language-server
         llvm
@@ -187,31 +208,40 @@ in
 
         ## Docker
         docker
-        docker_compose
+        docker-compose
 
         ## Editors and stuff
         irony-server # TODO move to own package with deps
-        pencil # UML editing
-        insomnia # API testing
-        postman
-        anki
-        dbeaver
 
         ## Games
+        # Stores/launchers
+        steam
+        steam-tui
+        steam-run-native
+        legendary-gl
+        heroic
+        lutris
+        # Native
         xonotic
         wesnoth
+        # Wine
+        wineWowPackages.waylandFull
+        winetricks
+        protontricks
+        bottles
+        # Other
+        mangohud
 
         ## Image editing
         imagemagick
         pinta
-        krita
-        gimp
         ffmpeg
 
         ## Messaging
         discord
         thunderbird
         slack
+        zoom-us
 
         ## Media
         feh
@@ -231,8 +261,6 @@ in
         ungoogled-chromium
 
         ## Download management
-        aria2
-        uget
         qbittorrent
 
         ## Dictionaries
@@ -251,7 +279,6 @@ in
         (speechd.override { withPulse = true; })
 
         #System management
-        anydesk
         ntfsprogs
         ntfs3g
 
@@ -270,7 +297,6 @@ in
         gnumake
         gnupg
         gnutls
-        gparted
         highlight
         ifuse
         inotify-tools
@@ -281,11 +307,14 @@ in
         psmisc
         shared-mime-info
         virtmanager
-        stlink # For work
         rnix-lsp
+        libsForQt5.qtstyleplugin-kvantum
+        gsettings-desktop-schemas
+        qt5ct
+        notion-app-enhanced
 
         # Fixes "failed to commit changes to dconf" issues
-        gnome3.dconf
+        dconf
 
         # Fallback
         gnome.adwaita-icon-theme

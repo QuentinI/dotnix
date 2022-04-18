@@ -131,10 +131,11 @@
           "privacy.trackingprotection.pbmode.enabled" = true;
 
           # Theme
-          "ui.systemUsesDarkTheme" = if config.theme.base16.kind == "dark" then 1 else 0;
+          "ui.systemUsesDarkTheme" =
+            if config.theme.base16.kind == "dark" then 1 else 0;
           "devtools.theme" = "${config.theme.base16.kind}";
-          # I'm myopic
-          "layout.css.devPixelsPerPx" = "1.2";
+          # HiDPi
+          "layout.css.devPixelsPerPx" = "2";
 
           # Homepage
           # TODO: set a default search engine somehow?

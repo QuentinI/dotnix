@@ -1,5 +1,5 @@
 { config, pkgs, vars, ... }:
- 
+
 {
   services.xserver = {
     enable = true;
@@ -8,7 +8,7 @@
       defaultSession = "sway";
       gdm = {
         enable = true;
-	wayland = true;
+        wayland = true;
       };
     };
     config = "";

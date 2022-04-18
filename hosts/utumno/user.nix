@@ -1,9 +1,9 @@
 { config, vars, pkgs, inputs, secrets, ... }:
 let
-  nur = (import inputs.nur {
+  nur = import inputs.nur {
     nurpkgs = pkgs;
     pkgs = null;
-  });
+  };
 in {
 
   home-manager.users."${vars.user}" = { config, pkgs, inputs, ... }: {
@@ -50,7 +50,9 @@ in {
     gtk = {
       enable = true;
       iconTheme = {
-        name = "Paper${if config.theme.base16.kind == "light" then "-Mono-Dark" else ""}";
+        name = "Paper${
+            if config.theme.base16.kind == "light" then "-Mono-Dark" else ""
+          }";
         package = pkgs.paper-icon-theme;
       };
       theme = {
@@ -83,7 +85,7 @@ in {
 
       # Hell is other MIME databases
       activation = {
-        gioMimes = inputs.home.lib.hm.dag.entryAfter ["writeBoundary"] ''
+        gioMimes = inputs.home.lib.hm.dag.entryAfter [ "writeBoundary" ] ''
           ${pkgs.glib}/bin/gio mime 'application/vnd.mozilla.xul+xml' 'firefox.desktop'
           ${pkgs.glib}/bin/gio mime 'application/xhtml+xml' 'firefox.desktop'
           ${pkgs.glib}/bin/gio mime 'text/html' 'firefox.desktop'
@@ -173,11 +175,6 @@ in {
 
         ## Editors and stuff
         irony-server # TODO move to own package with deps
-        pencil # UML editing
-        insomnia # API testing
-        postman
-        anki
-        dbeaver
 
         ## Games
         xonotic
@@ -186,8 +183,6 @@ in {
         ## Image editing
         imagemagick
         pinta
-        krita
-        gimp
         ffmpeg
 
         ## Messaging
@@ -239,7 +234,6 @@ in {
         (speechd.override { withPulse = true; })
 
         #System management
-        anydesk
         ntfsprogs
         ntfs3g
 
@@ -258,7 +252,6 @@ in {
         gnumake
         gnupg
         gnutls
-        gparted
         highlight
         ifuse
         inotify-tools
@@ -273,7 +266,7 @@ in {
         rnix-lsp
 
         # Fixes "failed to commit changes to dconf" issues
-        gnome3.dconf
+        dconf
 
         # Fallback
         gnome.adwaita-icon-theme

@@ -11,7 +11,7 @@
 
   home = {
     activation = {
-      batCache = inputs.home.lib.hm.dag.entryAfter ["writeBoundary"] ''
+      batCache = inputs.home.lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         ${pkgs.bat}/bin/bat cache --build
       '';
     };

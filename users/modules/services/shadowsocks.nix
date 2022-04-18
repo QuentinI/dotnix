@@ -1,7 +1,11 @@
 { config, pkgs, secrets, ... }:
 
 let
-  cfg = pkgs.writeText "config.json" (if builtins.hasAttr "shadowsocks" secrets then (builtins.toJSON secrets.shadowsocks) else "");
+  cfg = pkgs.writeText "config.json"
+    (if builtins.hasAttr "shadowsocks" secrets then
+      (builtins.toJSON secrets.shadowsocks)
+    else
+      "");
 
   startScript = pkgs.writeShellScriptBin "shadowsocks.sh" ''
     SS=${pkgs.shadowsocks-libev}/bin/ss-local
@@ -15,8 +19,9 @@ in {
   systemd.user.services.shadowsocks = {
     Install = { WantedBy = [ "graphical-session.target" ]; };
     Service = {
+      After = [ "network.target" ];
       ExecStart = "${startScript}/bin/shadowsocks.sh";
-      Restart = "on-abort";
+      Restart = "on-failure";
     };
   };
 }

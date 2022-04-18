@@ -15,7 +15,8 @@
 
     # Graphics card-related
     kernelModules = [ "kvm-intel" "nouveau" "v4l2loopback" ];
-    extraModulePackages = [ pkgs.xorg.xf86videonouveau pkgs.linuxPackages.v4l2loopback ];
+    extraModulePackages =
+      [ pkgs.xorg.xf86videonouveau pkgs.linuxPackages.v4l2loopback ];
     kernelParams = [
       "acpi_osi=!"
       ''acpi_osi="Windows 2009"''
@@ -24,9 +25,7 @@
     ];
 
     # I have plenty of RAM and I'd hate to swap to SSD
-    kernel.sysctl = {
-      "vm.swappiness" = 1; 
-    };
+    kernel.sysctl = { "vm.swappiness" = 1; };
 
     # Don't really remember why I need that
     loader.efi.canTouchEfiVariables = true;
@@ -110,25 +109,23 @@
     media-session = {
       config = {
         bluez-monitor = {
-          rules = [
-            {
-              # Matches all cards
-              matches = [ { "device.name" = "~bluez_card.*"; } ];
-              actions = {
-                "update-props" = {
-                  "bluez5.msbc-support" = true;
-                  "bluez5.sbc-xq-support" = true;
-                };
+          rules = [{
+            # Matches all cards
+            matches = [{ "device.name" = "~bluez_card.*"; }];
+            actions = {
+              "update-props" = {
+                "bluez5.msbc-support" = true;
+                "bluez5.sbc-xq-support" = true;
               };
-            }
-          ];
+            };
+          }];
         };
       };
     };
   };
 
-  nix.buildCores = 4;
-  nix.maxJobs = lib.mkDefault 4;
+  nix.settings.cores = 4;
+  nix.settings.max-jobs = lib.mkDefault 4;
 
   # Allow user backlight control
   services.udev.extraRules = ''

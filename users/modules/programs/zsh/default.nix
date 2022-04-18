@@ -74,6 +74,9 @@ in {
 
       [status]
       disabled = false
+
+      [rust]
+      disabled = true
     '';
   };
 
@@ -170,6 +173,10 @@ in {
 
       nsr() {
         nix shell nixpkgs#"$1" -c "$1"
+      }
+
+      myip() {
+        xh -b https://ipapi.co/json/
       }
 
 

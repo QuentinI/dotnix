@@ -1,4 +1,4 @@
-{ pkgs, inputs, ...}:
+{ pkgs, inputs, ... }:
 
 {
   imports = [
@@ -6,7 +6,7 @@
     ../services/clamav.nix
   ];
 
-  environment.memoryAllocator.provider = "libc";  
+  environment.memoryAllocator.provider = "libc";
 
   security.apparmor.enable = false;
 }

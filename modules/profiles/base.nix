@@ -1,12 +1,12 @@
 { inputs, ... }:
 
 {
-  imports = [
-    ../programs/nix.nix
-  ];
+  imports = [ ../programs/nix.nix ];
 
-  nix.autoOptimiseStore = true;
-  nix.trustedUsers = [ "@wheel" ];
+  nix.settings = {
+    trusted-users = [ "@wheel" ];
+    auto-optimise-store = true;
+  };
   nixpkgs.config.allowUnfree = true;
   users.mutableUsers = false;
 

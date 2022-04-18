@@ -11,15 +11,15 @@ inputs@{ system, master, nixpkgs, stable, home, vars, secrets, ... }:
     modules = [
       home.nixosModules.home-manager
       # Some black magic fuckery to inject specialArgs into HM configuration
-      ({ config, lib, ... }: { 
-         options.home-manager.users = lib.mkOption {
-           type = with lib.types; attrsOf (submoduleWith {
-                inherit specialArgs;
-                modules = [];
-           });
-         };
+      ({ config, lib, ... }: {
+        options.home-manager.users = lib.mkOption {
+          type = with lib.types;
+            attrsOf (submoduleWith {
+              inherit specialArgs;
+              modules = [ ];
+            });
+        };
       })
-
 
       ./hardware.nix
       ./configuration.nix
@@ -32,7 +32,6 @@ inputs@{ system, master, nixpkgs, stable, home, vars, secrets, ... }:
       ../../modules/services/sddm.nix
       ../../modules/services/docker.nix
       ../../modules/services/libvirtd.nix
-      ../../modules/services/jupyter.nix
       ../../modules/services/zerotierone.nix
 
       ../../modules/programs/sway.nix
@@ -40,5 +39,5 @@ inputs@{ system, master, nixpkgs, stable, home, vars, secrets, ... }:
 
   };
 
-  deploy = {};
+  deploy = { };
 }

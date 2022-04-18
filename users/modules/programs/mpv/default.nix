@@ -2,13 +2,9 @@
 let
   scripts = "mpv/scripts";
   modules = "mpv/script-modules";
-in
 
-{
-  home.packages = with pkgs; [
-    mpv
-    python3Packages.subliminal
-  ];
+in {
+  home.packages = with pkgs; [ mpv python3Packages.subliminal ];
 
   xdg.configFile.mpv_conf = {
     source = ./mpv.conf;

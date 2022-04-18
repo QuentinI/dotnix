@@ -7,7 +7,6 @@
     stable.url = "nixpkgs/release-21.11";
     home.url = "github:nix-community/home-manager/master";
     flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
-    deploy-rs.url = "github:serokell/deploy-rs";
     nur = {
       flake = false; # NUR's flake support is... suboptimal
       url = "github:nix-community/NUR";
@@ -48,35 +47,64 @@
       flake = false;
       url = "github:CogentRedTester/mpv-scroll-list/master";
     };
+    naersk = {
+      url = "github:nmattia/naersk";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    napalm = {
+      url = "github:nix-community/napalm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixpkgs-mozilla = {
+      url = "github:mozilla/nixpkgs-mozilla";
+      flake = false;
+    };
     secrets.url = "github:QuentinI/dummy-flake";
   };
 
   outputs =
-    inputs@{ self, master, nixpkgs, stable, home, secrets, deploy-rs, ... }:
+    inputs@{ self, master, nixpkgs, stable, home, secrets, naersk, napalm, ... }:
     let
       hosts = import ./hosts;
-      vars = { user = "quentin"; };
-    in rec {
-      nixosConfigurations = builtins.mapAttrs (hostname: config:
-        (config (inputs // rec {
-          system = "x86_64-linux";
-          staging = import inputs.staging { inherit system; };
-          stable = import inputs.stable { inherit system; };
-          master = import inputs.master { inherit system; };
-          inherit vars secrets;
-        })).nixosConfiguration) hosts;
-
-      deploy.nodes = builtins.mapAttrs (hostname: config:
-        let
-          deploy = (config (inputs // {
+      vars = {
+        user = "quentin";
+        theme = "dark";
+      };
+    in
+    rec {
+      nixosConfigurations = builtins.mapAttrs
+        (hostname: config:
+          (config (inputs // rec {
+            common-cfg = {
+              inherit system;
+              config.allowUnfree = true;
+            };
             system = "x86_64-linux";
+            staging = import inputs.staging common-cfg;
+            stable = import inputs.stable common-cfg;
+            master = import inputs.master common-cfg;
             inherit vars secrets;
-          })).deploy;
-        in nixpkgs.lib.recursiveUpdate deploy {
-          sshUser = vars.user; # bug in deploy-rs
-          user = "root";
-          profiles.system.path = deploy-rs.lib.x86_64-linux.activate.nixos
-            self.nixosConfigurations."${hostname}";
-        }) hosts;
+            overlays = [
+              (final: prev: {
+                naersk = final.pkgs.callPackage naersk { };
+                naerskUnstable =
+                  let
+                    nmo = import inputs.nixpkgs-mozilla final prev;
+                    rust = (nmo.rustChannelOf {
+                      date = "2022-04-06";
+                      channel = "nightly";
+                      sha256 = "vOGzOgpFAWqSlXEs9IgMG7jWwhsmouGHSRHwAcHyccs=";
+                    }).rust;
+                  in
+                  naersk.lib.${system}.override {
+                    cargo = rust;
+                    rustc = rust;
+                  };
+              })
+              napalm.overlay
+              (import ./packages)
+            ];
+          })).nixosConfiguration)
+        hosts;
     };
 }

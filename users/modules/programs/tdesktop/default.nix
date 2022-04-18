@@ -1,15 +1,13 @@
 { config, pkgs, ... }:
 
 {
-  home.packages = [
-    (pkgs.tdesktop.overrideAttrs (old: {
-      patches = [ ./fix-ux.patch ];
-    })) 
-  ];
+  home.packages = [ pkgs.tdesktop ];
+    # [ (pkgs.tdesktop.overrideAttrs (old: { patches = [ ./fix-ux.patch ]; })) ];
 
   xdg.mimeApps = {
     defaultApplications = {
-      "x-scheme-handler/tg" = [ "${pkgs.tdesktop}/share/applications/telegramdesktop.desktop" ];
+      "x-scheme-handler/tg" =
+        [ "${pkgs.tdesktop}/share/applications/telegramdesktop.desktop" ];
     };
   };
 

@@ -5,13 +5,13 @@
     enable = true;
     kernels = {
       python3 = let
-        env = (pkgs.python3.withPackages (pythonPackages:
+        env = pkgs.python3.withPackages (pythonPackages:
           with pythonPackages; [
             ipykernel
             matplotlib
             pandas
             scikitlearn
-          ]));
+          ]);
       in {
         displayName = "Python";
         argv = [
@@ -25,8 +25,10 @@
       };
     };
     password = secrets.jupyter-password;
-  } else pkgs.lib.warn "Jupyter service is enabled, but `secrets.jupyter-password` is not set, disabling" {
-  };
+  } else
+    pkgs.lib.warn
+    "Jupyter service is enabled, but `secrets.jupyter-password` is not set, disabling"
+    { };
   # WORKAROUND for some bug
   users.users."jupyter".isNormalUser = true;
 }

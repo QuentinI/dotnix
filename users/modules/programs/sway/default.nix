@@ -4,10 +4,10 @@ let
   modifier = "Mod4";
   # mkOpaque = import ../../themes/lib/mkOpaque.nix;
   mkOpaque = x: x;
-  waybar = (pkgs.waybar.override {
+  waybar = pkgs.waybar.override {
     pulseSupport = true;
     traySupport = true;
-  });
+  };
 
   # TODO
   lock = pkgs.writeShellScriptBin "lock.sh" ''
@@ -52,6 +52,31 @@ let
 
 in rec {
   imports = [ ../../programs/rofi ../../services/mako.nix ];
+
+  home.sessionVariables = {
+    MOZ_ENABLE_WAYLAND = 1;
+    QT_QPA_PLATFORM = "wayland";
+    QT_QPA_PLATFORMTHEME = "qt5ct";
+    SDL_VIDEODRIVER = "wayland";
+    GDK_BACKEND = "wayland";
+    _JAVA_AWT_WM_NONREPARENTING = 1;
+    NIXOS_OZONE_WL = 1;
+  };
+
+  xdg.configFile.electron = {
+    target = "electron-flags.conf";
+    text = ''
+      --enable-features=UseOzonePlatform
+      --ozone-platform=wayland
+    '';
+  };
+
+  xdg.configFile.chromium = {
+    target = "chrome-flags.conf";
+    text = ''
+      --ozone-platform-hint=auto
+    '';
+  };
 
   home.packages = [
     pkgs.swaylock
@@ -149,21 +174,24 @@ in rec {
         outputs = [
           {
             criteria = "eDP-1";
-            scale = 1.0;
+            position = "0,0";
           }
         ];
+        # Firefox behaves differently with fractional and integer scaling
+        exec = "swaymsg 'output eDP-1 scale 1.000001'";
       };
       work = {
         outputs = [
           {
             criteria = "eDP-1";
             scale = 1.2;
-            position = "0,0";
+            position = "0,630";
           }
           {
-            criteria = "Philips Consumer Electronics Company PHL 288E2 UK52124000133";
+            criteria =
+              "Philips Consumer Electronics Company PHL 288E2 UK52124000133";
             scale = 1.5;
-            position = "1600,-630";
+            position = "1600,0";
           }
         ];
       };
@@ -231,7 +259,7 @@ in rec {
       urgent = placeholder;
     };
 
-    modifier = modifier;
+    inherit modifier;
     floating.modifier = modifier;
 
     gaps = {
@@ -240,9 +268,7 @@ in rec {
       smartBorders = "on";
     };
 
-    fonts =  {
-      names = [ "Fira Code 10" ];
-    };
+    fonts = { names = [ "Fira Code 10" ]; };
 
     keybindings = { };
 
@@ -259,7 +285,8 @@ in rec {
 
     output = {
       "*" = {
-        background = "#${config.theme.base16.colors.base00.hex.rgb} solid_color";
+        background =
+          "#${config.theme.base16.colors.base00.hex.rgb} solid_color";
       };
     };
 
@@ -276,7 +303,9 @@ in rec {
       };
     };
   };
+
   wayland.windowManager.sway.extraConfig = ''
+    hide_edge_borders none --i3
     focus_wrapping workspace
     exec mkfifo $SWAYSOCK.wob && tail -f $SWAYSOCK.wob | ${pkgs.wob}/bin/wob -a bottom -M 40 -t 500
 
@@ -288,6 +317,9 @@ in rec {
     bindsym --to-code ${modifier}+Shift+q kill
 
     bindsym --to-code ${modifier}+x splith
+
+    bindsym --to-code ${modifier}+d       move window to scratchpad
+    bindsym --to-code ${modifier}+Shift+d scratchpad show
 
     bindsym --to-code ${modifier}+h           focus left
     bindsym --to-code ${modifier}+j           focus down
@@ -330,8 +362,10 @@ in rec {
     bindsym --to-code ${modifier}+Shift+e     exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'
 
     bindsym ${modifier}+Return      exec kitty
-    bindsym Menu                    exec rofi -show
-    bindsym Control_R               exec rofi -show
+    bindsym Menu                    exec rofi -show drun -display-drun 'run'
+    bindsym Control_R               exec rofi -show drun -display-drun 'run'
+    bindsym ${modifier}+Menu        exec rofi -show drun -display-drun 'run [dGPU]' -run-command 'nv {cmd}'
+    bindsym ${modifier}+Control_R   exec rofi -show drun -display-drun 'run [dGPU]' -run-command 'nv {cmd}'
 
     bindsym Print                      exec grim ~/Pictures/Screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
     bindsym Control+Print              exec grim - | wl-copy -p -o -t image/png

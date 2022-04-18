@@ -27,9 +27,8 @@ inputs@{ config, pkgs, vars, secrets, ... }:
   boot.loader.efi.canTouchEfiVariables = true;
   system.stateVersion = "21.03";
 
-  services.openvpn.servers = if builtins.hasAttr "vpn" secrets then
-    (secrets.vpn inputs)
-  else {};
+  services.openvpn.servers =
+    if builtins.hasAttr "vpn" secrets then (secrets.vpn inputs) else { };
 
   time.timeZone = "Europe/Moscow";
 
@@ -38,7 +37,8 @@ inputs@{ config, pkgs, vars, secrets, ... }:
   services.flatpak.enable = true;
   services.blueman.enable = true;
   networking.networkmanager.enable = true;
-  networking.networkmanager.unmanaged = [ "interface-name:wl*u*" ]; # Any USB adapters
+  networking.networkmanager.unmanaged =
+    [ "interface-name:wl*u*" ]; # Any USB adapters
   networking.firewall.enable = true;
   networking.hostName = "utumno";
   services.printing.enable = true;

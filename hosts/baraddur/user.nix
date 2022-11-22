@@ -5,21 +5,17 @@ let
     pkgs = null;
   };
 
-  scr = pkgs.writeShellScriptBin "scr.sh" ''
-    export __NV_PRIME_RENDER_OFFLOAD=1
-    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-    export __GLX_VENDOR_LIBRARY_NAME=nvidia
-    export __VK_LAYER_NV_optimus=NVIDIA_only
-    ${pkgs.scrcpy}/bin/scrcpy  -S -K -M -t
-  '';
+#  scr = pkgs.writeShellScriptBin "scr.sh" ''
+#    ${pkgs.scrcpy}/bin/scrcpy  -S -K -M -t
+#  '';
 
 in {
 
   security.pam.services."${vars.user}".fprintAuth = true;
 
-  services.udev.extraRules = ''
-    ACTION=="add", ATTRS{idVendor}=="2717", ATTRS{idProduct}=="ff08", RUN+="${scr}/bin/scr.sh"
-  '';
+  # services.udev.extraRules = ''
+  #   ACTION=="add", ATTRS{idVendor}=="2717", ATTRS{idProduct}=="ff08", RUN+="${scr}/bin/scr.sh"
+  # '';
 
   home-manager.users."${vars.user}" = { config, pkgs, inputs, staging, ... }: {
     imports = [
@@ -28,7 +24,7 @@ in {
       ../../users/modules/profiles/base.nix
       ../../users/modules/profiles/hdpi.nix
 
-      ../../users/modules/services/activitywatch.nix
+      # ../../users/modules/services/activitywatch.nix
       ../../users/modules/services/gpg-agent.nix
       ../../users/modules/services/kdeconnect.nix
       ../../users/modules/services/lorri.nix
@@ -57,6 +53,18 @@ in {
       ../../users/modules/programs/mpv
 
     ];
+
+    services.kanshi.profiles = {
+       default = {
+         outputs = [
+             {
+               criteria = "Unknown-1";
+               position = "0,0";
+               scale = 1.5;
+             }
+         ];
+       };
+    };
 
     xdg.configFile."hm/theme" = {
         text = vars.theme;
@@ -182,20 +190,21 @@ in {
         nodejs
         yarn
         rustup
-        (rust-analyzer.override {
-          rust-analyzer-unwrapped = rust-analyzer-unwrapped.overrideAttrs
-            (old: {
-              pname = "rust-analyzer-unwrapped-bumped-recursion";
-              patches = [
-                (fetchpatch {
-                  url =
-                    "https://github.com/QuentinI/rust-analyzer/commit/f6fffc019affcf7b0532f6ebb6ca9c0e84a87e93.patch";
-                  sha256 =
-                    "sha256-ZwQEjKThPO3Wvlt4nVX9qK6qsSKbTICyNICy4niX8Xg=";
-                })
-              ] ++ old.patches;
-            });
-        })
+	rust-analyzer
+#         (rust-analyzer.override {
+#           rust-analyzer-unwrapped = rust-analyzer-unwrapped.overrideAttrs
+#             (old: {
+#               pname = "rust-analyzer-unwrapped-bumped-recursion";
+#               patches = [
+#                 (fetchpatch {
+#                   url =
+#                     "https://github.com/QuentinI/rust-analyzer/commit/f6fffc019affcf7b0532f6ebb6ca9c0e84a87e93.patch";
+#                   sha256 =
+#                     "sha256-ZwQEjKThPO3Wvlt4nVX9qK6qsSKbTICyNICy4niX8Xg=";
+#                 })
+#               ] ++ old.patches;
+#             });
+#         })
         sumneko-lua-language-server
         llvm
         llvmPackages.clang-unwrapped
@@ -215,22 +224,22 @@ in {
 
         ## Games
         # Stores/launchers
-        steam
-        steam-tui
-        steam-run-native
-        legendary-gl
-        heroic
-        lutris
-        # Native
-        xonotic
-        wesnoth
-        # Wine
-        wineWowPackages.waylandFull
-        winetricks
-        protontricks
-        bottles
-        # Other
-        mangohud
+        # steam
+        # steam-tui
+        # steam-run-native
+        # legendary-gl
+        # heroic
+        # lutris
+        # # Native
+        # xonotic
+        # wesnoth
+        # # Wine
+        # wineWowPackages.waylandFull
+        # winetricks
+        # protontricks
+        # bottles
+        # # Other
+        # mangohud
 
         ## Image editing
         imagemagick
@@ -238,27 +247,27 @@ in {
         ffmpeg
 
         ## Messaging
-        discord
+        # discord
         thunderbird
-        slack
-        zoom-us
+        # slack
+        # zoom-us
 
         ## Media
         feh
         # pulseeffects
         sox
-        spotify
+        # spotify
 
         ## Documents
-        texlive.combined.scheme-full
+        # texlive.combined.scheme-full
         zathura
         libreoffice-unwrapped
         pdftk
         pandoc
 
         ## Browsing
-        bitwarden
-        ungoogled-chromium
+        # bitwarden
+        # ungoogled-chromium
 
         ## Download management
         qbittorrent
@@ -311,7 +320,7 @@ in {
         libsForQt5.qtstyleplugin-kvantum
         gsettings-desktop-schemas
         qt5ct
-        notion-app-enhanced
+        # notion-app-enhanced
 
         # Fixes "failed to commit changes to dconf" issues
         dconf
@@ -319,6 +328,7 @@ in {
         # Fallback
         gnome.adwaita-icon-theme
       ];
+      stateVersion = "22.11";
     };
 
   };

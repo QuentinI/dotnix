@@ -90,6 +90,7 @@ in rec {
     pkgs.libappindicator
     pkgs.playerctl
     pkgs.xdg-desktop-portal-wlr
+    pkgs.kanshi
   ];
 
   # Waybar works with libappindicator tray icons only
@@ -169,33 +170,7 @@ in rec {
 
   services.kanshi = {
     enable = true;
-    profiles = {
-      undocked = {
-        outputs = [
-          {
-            criteria = "eDP-1";
-            position = "0,0";
-          }
-        ];
-        # Firefox behaves differently with fractional and integer scaling
-        exec = "swaymsg 'output eDP-1 scale 1.000001'";
-      };
-      work = {
-        outputs = [
-          {
-            criteria = "eDP-1";
-            scale = 1.2;
-            position = "0,630";
-          }
-          {
-            criteria =
-              "Philips Consumer Electronics Company PHL 288E2 UK52124000133";
-            scale = 1.5;
-            position = "1600,0";
-          }
-        ];
-      };
-    };
+    profiles = pkgs.lib.mkDefault (pkgs.lib.warn "Sway is enabled, but no kanshi profiles are set" {});
   };
 
   wayland.windowManager.sway.enable = true;
@@ -362,10 +337,9 @@ in rec {
     bindsym --to-code ${modifier}+Shift+e     exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'
 
     bindsym ${modifier}+Return      exec kitty
-    bindsym Menu                    exec rofi -show drun -display-drun 'run'
+    bindsym ${modifier}+Menu        exec rofi -show drun -display-drun 'run'
+    bindsym ${modifier}+Space       exec rofi -show drun -display-drun 'run'
     bindsym Control_R               exec rofi -show drun -display-drun 'run'
-    bindsym ${modifier}+Menu        exec rofi -show drun -display-drun 'run [dGPU]' -run-command 'nv {cmd}'
-    bindsym ${modifier}+Control_R   exec rofi -show drun -display-drun 'run [dGPU]' -run-command 'nv {cmd}'
 
     bindsym Print                      exec grim ~/Pictures/Screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
     bindsym Control+Print              exec grim - | wl-copy -p -o -t image/png

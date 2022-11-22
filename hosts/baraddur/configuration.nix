@@ -24,8 +24,8 @@ inputs@{ config, pkgs, vars, secrets, ... }:
   };
 
   boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  system.stateVersion = "21.03";
+  boot.loader.efi.canTouchEfiVariables = false;
+  system.stateVersion = "22.11";
 
   services.openvpn.servers =
     if builtins.hasAttr "vpn" secrets then (secrets.vpn inputs) else { };
@@ -47,7 +47,7 @@ inputs@{ config, pkgs, vars, secrets, ... }:
   networking.networkmanager.unmanaged =
     [ "interface-name:wl*u*" ]; # Any USB adapters
   networking.firewall.enable = true;
-  networking.hostName = "angband";
+  networking.hostName = "baraddur";
   services.printing.enable = true;
   sound.enable = true;
   programs.firejail.enable = true;

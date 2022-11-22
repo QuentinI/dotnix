@@ -51,10 +51,6 @@
       url = "github:nmattia/naersk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    napalm = {
-      url = "github:nix-community/napalm";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nixpkgs-mozilla = {
       url = "github:mozilla/nixpkgs-mozilla";
       flake = false;
@@ -63,7 +59,7 @@
   };
 
   outputs =
-    inputs@{ self, master, nixpkgs, stable, home, secrets, naersk, napalm, ... }:
+    inputs@{ self, master, nixpkgs, stable, home, secrets, naersk, flake-utils, ... }:
     let
       hosts = import ./hosts;
       vars = {
@@ -71,40 +67,41 @@
         theme = "dark";
       };
     in
-    rec {
-      nixosConfigurations = builtins.mapAttrs
-        (hostname: config:
-          (config (inputs // rec {
-            common-cfg = {
+    flake-utils.lib.eachDefaultSystem (system: rec {
+      packages = {
+        nixosConfigurations = builtins.mapAttrs
+          (hostname: config:
+            (config (inputs // rec {
+              common-cfg = {
+                inherit system;
+                config.allowUnfree = true;
+              };
               inherit system;
-              config.allowUnfree = true;
-            };
-            system = "x86_64-linux";
-            staging = import inputs.staging common-cfg;
-            stable = import inputs.stable common-cfg;
-            master = import inputs.master common-cfg;
-            inherit vars secrets;
-            overlays = [
-              (final: prev: {
-                naersk = final.pkgs.callPackage naersk { };
-                naerskUnstable =
-                  let
-                    nmo = import inputs.nixpkgs-mozilla final prev;
-                    rust = (nmo.rustChannelOf {
-                      date = "2022-04-06";
-                      channel = "nightly";
-                      sha256 = "vOGzOgpFAWqSlXEs9IgMG7jWwhsmouGHSRHwAcHyccs=";
-                    }).rust;
-                  in
-                  naersk.lib.${system}.override {
-                    cargo = rust;
-                    rustc = rust;
-                  };
-              })
-              napalm.overlay
-              (import ./packages)
-            ];
-          })).nixosConfiguration)
-        hosts;
-    };
+              staging = import inputs.staging common-cfg;
+              stable = import inputs.stable common-cfg;
+              master = import inputs.master common-cfg;
+              inherit vars secrets;
+              overlays = [
+                (final: prev: {
+                  naersk = final.pkgs.callPackage naersk { };
+                  naerskUnstable =
+                    let
+                      nmo = import inputs.nixpkgs-mozilla final prev;
+                      rust = (nmo.rustChannelOf {
+                        date = "2022-04-06";
+                        channel = "nightly";
+                        sha256 = "vOGzOgpFAWqSlXEs9IgMG7jWwhsmouGHSRHwAcHyccs=";
+                      }).rust;
+                    in
+                    naersk.lib.${system}.override {
+                      cargo = rust;
+                      rustc = rust;
+                    };
+                })
+                (import ./packages)
+              ];
+            })).nixosConfiguration)
+          hosts;
+      };
+    });
 }

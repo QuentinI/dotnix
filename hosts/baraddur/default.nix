@@ -10,7 +10,11 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, ... }:
 
     modules = [
       ({ pkgs, ... }: {
-        nixpkgs.overlays = inputs.overlays;
+        nixpkgs.overlays = inputs.overlays ++ [(self: super: {
+          mesa = super.mesa.overrideAttrs (_: {
+	    version = "22.3.0-rc4";
+	  });
+	})];
       })
       home.nixosModules.home-manager
       # Some black magic fuckery to inject specialArgs into HM configuration
@@ -26,6 +30,7 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, ... }:
       })
 
       ./hardware.nix
+      ./m1-support
       ./configuration.nix
       ./user.nix
 
@@ -38,7 +43,6 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, ... }:
       ../../modules/services/zerotierone.nix
       ../../modules/services/fprintd.nix
       ../../modules/services/tlp.nix
-      ../../modules/services/thermald.nix
       ../../modules/services/wireguard.nix
       ../../modules/services/yggdrasil.nix
       ../../modules/services/i2p.nix

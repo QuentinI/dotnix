@@ -1,4 +1,4 @@
 {
   utumno = import ./utumno;
-  angband = import ./angband;
+  baraddur = import ./baraddur;
 }

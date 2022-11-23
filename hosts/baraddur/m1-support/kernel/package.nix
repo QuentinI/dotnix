@@ -15,19 +15,19 @@
     echo "}" >> $out
   '').outPath;
 
-  linux_asahi_pkg = { stdenv, lib, fetchFromGitHub, fetchpatch, linuxKernel, ... } @ args:
-    linuxKernel.manualConfig rec {
+    linux_asahi_pkg = { stdenv, lib, fetchFromGitHub, fetchpatch, linuxKernel,
+      rustPlatform, rustfmt, rust-bindgen, ... } @ args:
+    (linuxKernel.manualConfig rec {
       inherit stdenv lib;
 
-      version = "5.19.0-asahi";
+      version = "6.1.0-rc5-asahi";
       modDirVersion = version;
 
       src = fetchFromGitHub {
-        # tracking branch: https://github.com/AsahiLinux/linux/tree/asahi
         owner = "AsahiLinux";
         repo = "linux";
-        rev = "f8c0d18173a7b649999ee27515393f7aae40310c";
-        hash = "sha256-6Pceu4eBF8kl//8CV57+yfYnywZxNk17BU0YgLkGVc0=";
+        rev = "1087f668f666a257db411fd6655de488c8578543";
+        hash = "sha256-o/Ey8YAgo4TAamUBr+oxTzSVFBhFpeTKVzAb+4iqZ5c=";
       };
 
       kernelPatches = [
@@ -50,8 +50,11 @@
       configfile = ./config;
       config = readConfig configfile;
 
-      extraMeta.branch = "5.19";
-    } // (args.argsOverride or {});
+      extraMeta.branch = "6.1";
+    } // (args.argsOverride or {})).overrideAttrs (old: {
+      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ rust-bindgen rustfmt rustPlatform.rust.rustc ];
+      RUST_LIB_SRC = rustPlatform.rustLibSrc;
+    });
 
   linux_asahi = (pkgs.callPackage linux_asahi_pkg { });
 in pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_asahi)

@@ -24,7 +24,6 @@ in {
       ../../users/modules/profiles/base.nix
       ../../users/modules/profiles/hdpi.nix
 
-      # ../../users/modules/services/activitywatch.nix
       ../../users/modules/services/gpg-agent.nix
       ../../users/modules/services/kdeconnect.nix
       ../../users/modules/services/lorri.nix
@@ -36,7 +35,6 @@ in {
       ../../users/modules/services/syncthing.nix
       ../../users/modules/services/udiskie.nix
 
-      ../../users/modules/programs/qutebrowser
       ../../users/modules/programs/firefox
       ../../users/modules/programs/zsh
       ../../users/modules/programs/ncmpcpp
@@ -45,7 +43,6 @@ in {
       ../../users/modules/programs/nvim
       ../../users/modules/programs/kitty
       ../../users/modules/programs/zathura
-      ../../users/modules/programs/beets
       ../../users/modules/programs/fzf
       ../../users/modules/programs/bat
       ../../users/modules/programs/git
@@ -58,9 +55,9 @@ in {
        default = {
          outputs = [
              {
-               criteria = "Unknown-1";
+               criteria = "eDP-1";
                position = "0,0";
-               scale = 1.5;
+               scale = 2.0;
              }
          ];
        };
@@ -107,7 +104,7 @@ in {
           "${pkg}/share/applications/${name}.desktop"
           "${name}.desktop"
         ];
-        firefox = desktopFiles pkgs.firefox "firefox";
+        firefox = "skip"; # desktopFiles pkgs.firefox "firefox";
       in {
         "application/pdf" =
           desktopFiles pkgs.zathura "org.pwmt.zathura-pdf-mupdf";
@@ -213,7 +210,8 @@ in {
         nixfmt
         gcc
 
-        jetbrains.jdk # Jetbrains JDK is more convinient generally
+	# TODO:
+        # jetbrains.jdk # Jetbrains JDK is more convinient generally
 
         ## Docker
         docker
@@ -244,7 +242,7 @@ in {
         ## Image editing
         imagemagick
         pinta
-        ffmpeg
+        # ffmpeg
 
         ## Messaging
         # discord
@@ -261,8 +259,8 @@ in {
         ## Documents
         # texlive.combined.scheme-full
         zathura
-        libreoffice-unwrapped
-        pdftk
+        # libreoffice-unwrapped
+        # pdftk
         pandoc
 
         ## Browsing

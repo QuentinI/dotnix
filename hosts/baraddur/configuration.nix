@@ -51,7 +51,6 @@ inputs@{ config, pkgs, vars, secrets, ... }:
   services.printing.enable = true;
   sound.enable = true;
   programs.firejail.enable = true;
-  environment.defaultPackages = [ pkgs.pptp ];
 
   services.logind.extraConfig = ''
     HandlePowerKey=ignore

@@ -31,8 +31,8 @@ in stdenv.mkDerivation rec {
     # tracking: https://github.com/AsahiLinux/PKGBUILDs/blob/main/m1n1/PKGBUILD
     owner = "AsahiLinux";
     repo = "m1n1";
-    rev = "v${version}";
-    hash = "sha256-dtj3SQsWdpjBkPOU7frD6BEV1AaSLz5jdE1aJeyf0NU=";
+    rev = "d57aa956c38b3cfe0aa983cd4804fd2d1abb86c9";
+    hash = "sha256-oH6BwTdJ05pvF/VAmv7kXBtZz2ZwS1I4qBZyV2toIcs=";
     fetchSubmodules = true;
   };
 

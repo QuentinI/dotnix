@@ -9,16 +9,10 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, ... }:
     specialArgs = { inherit inputs vars secrets staging system; };
 
     modules = [
-      ({ pkgs, ... }: {
-        nixpkgs.overlays = inputs.overlays ++ [(self: super: {
-          mesa = super.mesa.overrideAttrs (_: {
-	    version = "22.3.0-rc4";
-	  });
-	})];
-      })
-      home.nixosModules.home-manager
-      # Some black magic fuckery to inject specialArgs into HM configuration
-      ({ config, lib, ... }: {
+      ({ config, lib, pkgs, ... }: {
+        config.nixpkgs.overlays = inputs.overlays
+	  ++ [ (import ../../overlays/mesa-m1.nix) ];
+      	# Some black magic fuckery to inject specialArgs into HM configuration
         options.home-manager.users = lib.mkOption {
           type = with lib.types;
             attrsOf (submoduleWith {
@@ -26,11 +20,22 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, ... }:
               modules = [ ];
             });
         };
-
       })
+      home.nixosModules.home-manager
+
+      # This is https://github.com/tpwrules/nixos-m1
+      # patched to support Lina and Alyssa's ongoing
+      # GPU work.
+      # If by any chance you stumble upon this:
+      # PLEASE think twice before using this, there's a reason
+      # Lina's driver isn't released yet. If you will still end
+      # up using it - PLEASE don't go and complain to Asahi team
+      # about your computer exploding or something, I don't want
+      # to cause them problems. Don't complain to me either,
+      # although you may ask questions.
+      ./m1-support
 
       ./hardware.nix
-      ./m1-support
       ./configuration.nix
       ./user.nix
 
@@ -39,7 +44,7 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, ... }:
       ../../modules/profiles/hardened.nix
 
       ../../modules/services/docker.nix
-      ../../modules/services/libvirtd.nix
+      # ../../modules/services/libvirtd.nix
       ../../modules/services/zerotierone.nix
       ../../modules/services/fprintd.nix
       ../../modules/services/tlp.nix

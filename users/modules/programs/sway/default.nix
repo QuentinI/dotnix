@@ -337,6 +337,7 @@ in rec {
     bindsym --to-code ${modifier}+Shift+e     exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'
 
     bindsym ${modifier}+Return      exec kitty
+    bindsym ${modifier}+Shift+Return      exec konsole
     bindsym ${modifier}+Menu        exec rofi -show drun -display-drun 'run'
     bindsym ${modifier}+Space       exec rofi -show drun -display-drun 'run'
     bindsym Control_R               exec rofi -show drun -display-drun 'run'

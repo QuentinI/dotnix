@@ -10,6 +10,9 @@ rec {
       # WTF, really
       enable_audio_bell no
 
+      # Nice in theory, misfires in practice
+      confirm_os_window_close 0
+
       # Font
       font_family  Fira Code
       font_size    15.0

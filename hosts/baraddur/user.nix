@@ -5,11 +5,12 @@ let
     pkgs = null;
   };
 
-#  scr = pkgs.writeShellScriptBin "scr.sh" ''
-#    ${pkgs.scrcpy}/bin/scrcpy  -S -K -M -t
-#  '';
+  #  scr = pkgs.writeShellScriptBin "scr.sh" ''
+  #    ${pkgs.scrcpy}/bin/scrcpy  -S -K -M -t
+  #  '';
 
-in {
+in
+{
 
   security.pam.services."${vars.user}".fprintAuth = true;
 
@@ -33,6 +34,7 @@ in {
       ../../users/modules/services/shadowsocks.nix
       ../../users/modules/services/ssh-agent.nix
       ../../users/modules/services/syncthing.nix
+      ../../users/modules/services/spotifyd.nix
       ../../users/modules/services/udiskie.nix
 
       ../../users/modules/programs/firefox
@@ -52,25 +54,25 @@ in {
     ];
 
     services.kanshi.profiles = {
-       default = {
-         outputs = [
-             {
-               criteria = "eDP-1";
-               position = "0,0";
-               scale = 2.0;
-             }
-         ];
-       };
+      default = {
+        outputs = [
+          {
+            criteria = "eDP-1";
+            position = "0,0";
+            scale = 2.0;
+          }
+        ];
+      };
     };
 
     xdg.configFile."hm/theme" = {
-        text = vars.theme;
+      text = vars.theme;
     };
 
     theme.base16 = config.lib.theme.base16.fromYamlFile
       (if vars.theme == "light"
-        then "${inputs.base16-solarized-scheme}/solarized-light.yaml"
-        else "${inputs.base16-nord-scheme}/nord.yaml");
+      then "${inputs.base16-solarized-scheme}/solarized-light.yaml"
+      else "${inputs.base16-nord-scheme}/nord.yaml");
 
     gtk = {
       enable = true;
@@ -87,11 +89,11 @@ in {
     };
 
     qt = {
-        platformTheme = "qt5ct";
-        style = {
-            name = "kvantum";
-            package = pkgs.plasma5Packages.qtstyleplugin-kvantum;
-        };
+      platformTheme = "qt5ct";
+      style = {
+        name = "kvantum";
+        package = pkgs.plasma5Packages.qtstyleplugin-kvantum;
+      };
     };
 
     xdg.configFile."mimeapps.list".force = true;
@@ -99,23 +101,25 @@ in {
     xdg.mimeApps = rec {
       enable = true;
       associations.added = defaultApplications;
-      defaultApplications = let
-        desktopFiles = pkg: name: [
-          "${pkg}/share/applications/${name}.desktop"
-          "${name}.desktop"
-        ];
-        firefox = "skip"; # desktopFiles pkgs.firefox "firefox";
-      in {
-        "application/pdf" =
-          desktopFiles pkgs.zathura "org.pwmt.zathura-pdf-mupdf";
-        "text/html" = firefox;
-        "text/xml" = firefox;
-        "application/xhtml+xml" = firefox;
-        "application/vnd.mozilla.xul+xml" = firefox;
-        "x-scheme-handler/http" = firefox;
-        "x-scheme-handler/https" = firefox;
-        "x-scheme-handler/ftp" = firefox;
-      };
+      defaultApplications =
+        let
+          desktopFiles = pkg: name: [
+            "${pkg}/share/applications/${name}.desktop"
+            "${name}.desktop"
+          ];
+          firefox = "skip"; # desktopFiles pkgs.firefox "firefox";
+        in
+        {
+          "application/pdf" =
+            desktopFiles pkgs.zathura "org.pwmt.zathura-pdf-mupdf";
+          "text/html" = firefox;
+          "text/xml" = firefox;
+          "application/xhtml+xml" = firefox;
+          "application/vnd.mozilla.xul+xml" = firefox;
+          "x-scheme-handler/http" = firefox;
+          "x-scheme-handler/https" = firefox;
+          "x-scheme-handler/ftp" = firefox;
+        };
     };
 
     home = {
@@ -187,21 +191,21 @@ in {
         nodejs
         yarn
         rustup
-	rust-analyzer
-#         (rust-analyzer.override {
-#           rust-analyzer-unwrapped = rust-analyzer-unwrapped.overrideAttrs
-#             (old: {
-#               pname = "rust-analyzer-unwrapped-bumped-recursion";
-#               patches = [
-#                 (fetchpatch {
-#                   url =
-#                     "https://github.com/QuentinI/rust-analyzer/commit/f6fffc019affcf7b0532f6ebb6ca9c0e84a87e93.patch";
-#                   sha256 =
-#                     "sha256-ZwQEjKThPO3Wvlt4nVX9qK6qsSKbTICyNICy4niX8Xg=";
-#                 })
-#               ] ++ old.patches;
-#             });
-#         })
+        rust-analyzer
+        #         (rust-analyzer.override {
+        #           rust-analyzer-unwrapped = rust-analyzer-unwrapped.overrideAttrs
+        #             (old: {
+        #               pname = "rust-analyzer-unwrapped-bumped-recursion";
+        #               patches = [
+        #                 (fetchpatch {
+        #                   url =
+        #                     "https://github.com/QuentinI/rust-analyzer/commit/f6fffc019affcf7b0532f6ebb6ca9c0e84a87e93.patch";
+        #                   sha256 =
+        #                     "sha256-ZwQEjKThPO3Wvlt4nVX9qK6qsSKbTICyNICy4niX8Xg=";
+        #                 })
+        #               ] ++ old.patches;
+        #             });
+        #         })
         sumneko-lua-language-server
         llvm
         llvmPackages.clang-unwrapped
@@ -210,7 +214,7 @@ in {
         nixfmt
         gcc
 
-	# TODO:
+        # TODO:
         # jetbrains.jdk # Jetbrains JDK is more convinient generally
 
         ## Docker

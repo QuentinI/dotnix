@@ -1,5 +1,10 @@
-{ config, pkgs, ... }:
-
+{ config, pkgs, inputs, ... }:
+let
+  nur = import inputs.nur {
+    nurpkgs = pkgs;
+    inherit pkgs;
+  };
+in
 {
   xdg.configFile.tridactylrc = {
     source = ./tridactylrc;
@@ -10,10 +15,24 @@
 
   programs.firefox = {
     enable = true;
+    extensions = with nur.repos.rycee.firefox-addons; [
+      ublock-origin
+      bitwarden
+      polkadot-js
+      metamask
+      sponsorblock
+      stylus
+      multi-account-containers
+      simple-tab-groups
+      terms-of-service-didnt-read
+      consent-o-matic
+    ];
     profiles = {
       default = {
         id = 0;
         isDefault = true;
+
+        search.default = "DuckDuckGo";
 
         # Hardening cherry-picked from https://github.com/pyllyukko/user.js
         settings = {
@@ -138,7 +157,6 @@
           "layout.css.devPixelsPerPx" = "2";
 
           # Homepage
-          # TODO: set a default search engine somehow?
           "browser.startup.homepage" = "duckduckgo.com";
           # Make Ctrl-Tab just switch you to the next tab
           "browser.ctrlTab.recentlyUsedOrder" = false;

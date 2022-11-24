@@ -80,7 +80,7 @@
               staging = import inputs.staging common-cfg;
               stable = import inputs.stable common-cfg;
               master = import inputs.master common-cfg;
-              inherit vars secrets;
+              inherit vars secrets hostname;
               overlays = [
                 (final: prev: {
                   naersk = final.pkgs.callPackage naersk { };

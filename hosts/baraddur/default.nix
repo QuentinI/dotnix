@@ -1,4 +1,4 @@
-inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, ... }:
+inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, hostname, ... }:
 
 {
   nixosConfiguration = nixpkgs.lib.nixosSystem rec {
@@ -6,13 +6,13 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, ... }:
 
     # Things in this set are passed to modules and accessible
     # in the top-level arguments (e.g. `{ pkgs, lib, inputs, ... }:`).
-    specialArgs = { inherit inputs vars secrets staging system; };
+    specialArgs = { inherit inputs vars secrets staging system hostname; };
 
     modules = [
       ({ config, lib, pkgs, ... }: {
         config.nixpkgs.overlays = inputs.overlays
-	  ++ [ (import ../../overlays/mesa-m1.nix) ];
-      	# Some black magic fuckery to inject specialArgs into HM configuration
+          ++ [ (import ../../overlays/mesa-m1.nix) ];
+        # Some black magic fuckery to inject specialArgs into HM configuration
         options.home-manager.users = lib.mkOption {
           type = with lib.types;
             attrsOf (submoduleWith {

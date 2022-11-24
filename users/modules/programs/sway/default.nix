@@ -50,7 +50,8 @@ let
     $SWAYMSG unmark __moving
   '';
 
-in rec {
+in
+rec {
   imports = [ ../../programs/rofi ../../services/mako.nix ];
 
   home.sessionVariables = {
@@ -170,7 +171,7 @@ in rec {
 
   services.kanshi = {
     enable = true;
-    profiles = pkgs.lib.mkDefault (pkgs.lib.warn "Sway is enabled, but no kanshi profiles are set" {});
+    profiles = pkgs.lib.mkDefault (pkgs.lib.warn "Sway is enabled, but no kanshi profiles are set" { });
   };
 
   wayland.windowManager.sway.enable = true;
@@ -183,7 +184,7 @@ in rec {
         { class = "Deluge"; }
       ];
       "2" =
-        [ { title = "Atom"; } { class = "jetbrains"; } { class = "Emacs"; } ];
+        [{ title = "Atom"; } { class = "jetbrains"; } { class = "Emacs"; }];
       "3" = [
         { class = "telegram"; }
         { class = "discord"; }
@@ -324,7 +325,7 @@ in rec {
     bindsym ${modifier}+Shift+grave move container to workspace 7
 
     bindsym --to-code ${modifier}+m           layout splith; exec telegram-desktop; exec slack; exec thunderbird
-    bindsym --to-code ${modifier}+f           exec kitty -T=lf lf
+    bindsym --to-code ${modifier}+f           exec LIBGL_ALWAYS_SOFTWARE=true kitty -T=lf lf
     bindsym --to-code ${modifier}+w           layout tabbed
     bindsym --to-code ${modifier}+e           layout toggle split
     bindsym ${modifier}+Shift+space           floating toggle
@@ -336,7 +337,7 @@ in rec {
     bindsym --to-code ${modifier}+Shift+r     restart
     bindsym --to-code ${modifier}+Shift+e     exec i3-nagbar -t warning -m 'Do you want to exit i3?' -b 'Yes' 'i3-msg exit'
 
-    bindsym ${modifier}+Return      exec kitty
+    bindsym ${modifier}+Return      exec LIBGL_ALWAYS_SOFTWARE=true kitty
     bindsym ${modifier}+Shift+Return      exec konsole
     bindsym ${modifier}+Menu        exec rofi -show drun -display-drun 'run'
     bindsym ${modifier}+Space       exec rofi -show drun -display-drun 'run'

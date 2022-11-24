@@ -1,4 +1,4 @@
-{
+_: {
   home.file.".iex.exs".text = ''
     Application.put_env(:elixir, :ansi_enabled, true)
     IEx.configure(

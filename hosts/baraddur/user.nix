@@ -5,55 +5,39 @@ let
     pkgs = null;
   };
 
-  # scrcpy = pkgs.scrcpy.override {
-  #   platform-tools = pkgs.android-tools;
-  # };
-
-  # scr = pkgs.writeShellScriptBin "scr.sh" ''
-  #   ${scrcpy}/bin/scrcpy  -S -K -M -t
-  # '';
-
 in
 {
-
-  security.pam.services."${vars.user}".fprintAuth = true;
-
-  # services.udev.extraRules = ''
-  #   ACTION=="add", SUBSYSTEM=="usb", ATTR{configuration}=="*adb*", RUN+="${scr}/bin/scr.sh"
-  # '';
-
-  home-manager.users."${vars.user}" = { config, pkgs, inputs, staging, ... }: {
-    imports = [
+  home-manager.users."${vars.username}" = { config, pkgs, inputs, staging, mkImports, ... }: {
+    imports = mkImports "home" [
       nur.repos.rycee.hmModules.theme-base16
 
-      ../../users/modules/profiles/base.nix
-      ../../users/modules/profiles/hdpi.nix
+      ../../modules/profiles/base.nix
+      ../../modules/profiles/sway
 
-      ../../users/modules/services/gpg-agent.nix
-      ../../users/modules/services/kdeconnect.nix
-      ../../users/modules/services/lorri.nix
-      ../../users/modules/services/memory.nix
-      ../../users/modules/services/nm-applet.nix
-      ../../users/modules/services/protonmail-bridge.nix
-      ../../users/modules/services/shadowsocks.nix
-      ../../users/modules/services/ssh-agent.nix
-      ../../users/modules/services/syncthing.nix
-      ../../users/modules/services/spotifyd.nix
-      ../../users/modules/services/udiskie.nix
+      ../../modules/services/gpg-agent.nix
+      ../../modules/services/kdeconnect.nix
+      ../../modules/services/lorri.nix
+      ../../modules/services/memory.nix
+      ../../modules/services/nm-applet.nix
+      ../../modules/services/protonmail-bridge.nix
+      ../../modules/services/shadowsocks.nix
+      ../../modules/services/ssh-agent.nix
+      ../../modules/services/syncthing.nix
+      ../../modules/services/spotifyd.nix
+      ../../modules/services/udiskie.nix
 
-      ../../users/modules/programs/firefox
-      ../../users/modules/programs/zsh
-      ../../users/modules/programs/ncmpcpp
-      ../../users/modules/programs/iex
-      ../../users/modules/programs/tdesktop
-      ../../users/modules/programs/nvim
-      ../../users/modules/programs/kitty
-      ../../users/modules/programs/zathura
-      ../../users/modules/programs/fzf
-      ../../users/modules/programs/bat
-      ../../users/modules/programs/git
-      ../../users/modules/programs/sway
-      ../../users/modules/programs/mpv
+      ../../modules/programs/firefox
+      ../../modules/programs/zsh
+      ../../modules/programs/ncmpcpp
+      ../../modules/programs/iex
+      ../../modules/programs/tdesktop
+      ../../modules/programs/nvim
+      ../../modules/programs/kitty
+      ../../modules/programs/zathura.nix
+      ../../modules/programs/fzf
+      ../../modules/programs/bat.nix
+      ../../modules/programs/git
+      ../../modules/programs/mpv
 
     ];
 
@@ -111,7 +95,7 @@ in
             "${pkg}/share/applications/${name}.desktop"
             "${name}.desktop"
           ];
-          firefox = "skip"; # desktopFiles pkgs.firefox "firefox";
+          firefox = desktopFiles pkgs.firefox "firefox";
         in
         {
           "application/pdf" =
@@ -147,38 +131,13 @@ in
       };
 
       packages = with pkgs; [
-        # Command-line essentials
-        binutils
-        tmux
-        tmate
-        atool
-        unrar
-        unzip
-        bzip2
-        bat
-        exa
-        fd
-        ripgrep
-        htop
-        pv
-        tldr
-        lf
-        file
-        inetutils
-        picocom
-        pass
-        github-cli
-        jq
-        rlwrap
-        gping
-
         ## Compilers/interpreters
         (python3.withPackages (ps:
           with ps; [
             virtualenv
             pip
             tkinter
-            # python-language-server
+            python-lsp-server
             setuptools
             numpy
             scipy
@@ -196,20 +155,6 @@ in
         yarn
         rustup
         rust-analyzer
-        #         (rust-analyzer.override {
-        #           rust-analyzer-unwrapped = rust-analyzer-unwrapped.overrideAttrs
-        #             (old: {
-        #               pname = "rust-analyzer-unwrapped-bumped-recursion";
-        #               patches = [
-        #                 (fetchpatch {
-        #                   url =
-        #                     "https://github.com/QuentinI/rust-analyzer/commit/f6fffc019affcf7b0532f6ebb6ca9c0e84a87e93.patch";
-        #                   sha256 =
-        #                     "sha256-ZwQEjKThPO3Wvlt4nVX9qK6qsSKbTICyNICy4niX8Xg=";
-        #                 })
-        #               ] ++ old.patches;
-        #             });
-        #         })
         sumneko-lua-language-server
         llvm
         llvmPackages.clang-unwrapped
@@ -225,32 +170,10 @@ in
         docker
         docker-compose
 
-        ## Editors and stuff
-        irony-server # TODO move to own package with deps
-
-        ## Games
-        # Stores/launchers
-        # steam
-        # steam-tui
-        # steam-run-native
-        # legendary-gl
-        # heroic
-        # lutris
-        # # Native
-        # xonotic
-        # wesnoth
-        # # Wine
-        # wineWowPackages.waylandFull
-        # winetricks
-        # protontricks
-        # bottles
-        # # Other
-        # mangohud
-
         ## Image editing
         imagemagick
         pinta
-        # ffmpeg
+        ffmpeg
 
         ## Messaging
         armcord
@@ -263,14 +186,13 @@ in
 
         ## Documents
         # texlive.combined.scheme-full
-        zathura
         # libreoffice-unwrapped
         # pdftk
+        zathura
         pandoc
 
         ## Browsing
-        # bitwarden
-        # ungoogled-chromium
+        ungoogled-chromium
 
         ## Download management
         qbittorrent
@@ -295,16 +217,13 @@ in
         ntfs3g
 
         # Nixos housekeeping
-        # TODO: broken
-        # vulnix # NixOS vulnerability scanner
+        vulnix # NixOS vulnerability scanner
         nix-index
         niv
         cachix
 
         # Unsorted. Fuck it.
         # TODO maybe?..
-        xh
-        duf
         blueman
         gnumake
         gnupg
@@ -314,16 +233,13 @@ in
         inotify-tools
         jmtpfs
         networkmanagerapplet
-        patchelf
         playerctl
-        psmisc
         shared-mime-info
         virtmanager
         rnix-lsp
         libsForQt5.qtstyleplugin-kvantum
         gsettings-desktop-schemas
         qt5ct
-        # notion-app-enhanced
 
         # Fixes "failed to commit changes to dconf" issues
         dconf

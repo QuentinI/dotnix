@@ -1,4 +1,4 @@
-inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, hostname, ... }:
+inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, hostname, mkImports, ... }:
 
 {
   nixosConfiguration = nixpkgs.lib.nixosSystem rec {
@@ -6,12 +6,12 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, hostname
 
     # Things in this set are passed to modules and accessible
     # in the top-level arguments (e.g. `{ pkgs, lib, inputs, ... }:`).
-    specialArgs = { inherit inputs vars secrets staging system hostname; };
+    specialArgs = { inherit inputs vars secrets staging system hostname mkImports; };
 
-    modules = [
+    modules = mkImports "nixos" [
       ({ config, lib, pkgs, ... }: {
         config.nixpkgs.overlays = inputs.overlays
-          ++ [ (import ../../overlays/mesa-m1.nix) ];
+          ++ [ (import ../../overlays/apple-silicon.nix) ];
         # Some black magic fuckery to inject specialArgs into HM configuration
         options.home-manager.users = lib.mkOption {
           type = with lib.types;
@@ -43,19 +43,17 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, hostname
       ../../modules/profiles/silent-boot.nix
       ../../modules/profiles/hardened.nix
       ../../modules/profiles/udev/backlight.nix
+      ../../modules/profiles/sway
 
       ../../modules/services/docker.nix
       # ../../modules/services/libvirtd.nix
       ../../modules/services/zerotierone.nix
-      ../../modules/services/wireguard.nix
+      # ../../modules/services/wireguard.nix
       ../../modules/services/yggdrasil.nix
       ../../modules/services/i2p.nix
       ../../modules/services/tor.nix
 
-      ../../modules/programs/sway.nix
     ];
 
   };
-
-  deploy = { };
 }

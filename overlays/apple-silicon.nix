@@ -1,13 +1,13 @@
-# Overlay of mesa with Asahi GPU driver support
-# If by any chance you stumble upon this:
-# PLEASE think twice before using this, there's a reason
-# Lina's driver isn't released yet. If you will still end
-# up using it - PLEASE don't go and complain to Asahi team
-# about your computer exploding or something, I don't want
-# to cause them problems. Don't complain to me either,
-# although you may ask questions.
 _: super:
 rec {
+  # Overlay of mesa with Asahi GPU driver support
+  # If by any chance you stumble upon this:
+  # PLEASE think twice before using this, there's a reason
+  # Lina's driver isn't released yet. If you will still end
+  # up using it - PLEASE don't go and complain to Asahi team
+  # about your computer exploding or something, I don't want
+  # to cause them problems. Don't complain to me either,
+  # although you may ask questions.
   mesa_asahi = super.mesa.overrideAttrs (old: rec {
     version = "22.3.0-rc4-asahi";
     rev = "6c24545f0dd3ba455863da0d98db9b765368ef56";
@@ -24,4 +24,9 @@ rec {
     vulkanDrivers = [ "swrast" ];
     enableGalliumNine = false;
   };
+
+  # https://github.com/sharkdp/fd/issues/1085
+  fd = super.fd.overrideAttrs (_: {
+    JEMALLOC_SYS_WITH_LG_PAGE = 16;
+  });
 }

@@ -62,8 +62,22 @@
     inputs@{ self, master, nixpkgs, stable, home, secrets, naersk, flake-utils, ... }:
     let
       hosts = import ./hosts;
+      mkImports = scope: imports:
+        map
+          (modspec:
+            let mod =
+              if builtins.isPath modspec then
+                import modspec
+              else modspec;
+            in
+            if builtins.isAttrs mod && builtins.hasAttr scope mod then
+              builtins.getAttr scope mod
+            else mod
+          )
+          imports;
       vars = {
-        user = "quentin";
+        username = "quentin";
+        fullname = "Quentin Inkling";
         theme = "dark";
       };
     in
@@ -80,7 +94,7 @@
               staging = import inputs.staging common-cfg;
               stable = import inputs.stable common-cfg;
               master = import inputs.master common-cfg;
-              inherit vars secrets hostname;
+              inherit vars secrets hostname mkImports;
               overlays = [
                 (final: prev: {
                   naersk = final.pkgs.callPackage naersk { };

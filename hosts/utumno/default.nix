@@ -28,13 +28,13 @@ inputs@{ system, master, nixpkgs, stable, home, vars, secrets, ... }:
       ../../modules/profiles/base.nix
       ../../modules/profiles/silent-boot.nix
       ../../modules/profiles/hardened.nix
+      ../../modules/profiles/sway.nix
 
       ../../modules/services/sddm.nix
       ../../modules/services/docker.nix
       ../../modules/services/libvirtd.nix
       ../../modules/services/zerotierone.nix
 
-      ../../modules/programs/sway.nix
     ];
 
   };

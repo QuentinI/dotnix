@@ -1,8 +1,9 @@
-{ config, pkgs, ... }:
-
 {
-  virtualisation.docker = {
-    enable = true;
-    enableOnBoot = false;
-  };
+  nixos = { config, pkgs, ... }:
+    {
+      virtualisation.docker = {
+        enable = true;
+        enableOnBoot = false;
+      };
+    };
 }

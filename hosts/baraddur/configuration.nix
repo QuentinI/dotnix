@@ -1,34 +1,9 @@
 inputs@{ config, pkgs, vars, secrets, ... }:
 
 {
-  users.users."${vars.user}" = {
-    createHome = true;
-    isNormalUser = true;
-    hashedPassword = if builtins.hasAttr "user-password" secrets then
-      secrets.user-password
-    else
-      pkgs.lib.warn "Setting empty password for user ${vars.user}!" "";
-    extraGroups = [
-      "libvirtd"
-      "wheel"
-      "networkmanager"
-      "audio"
-      "video"
-      "docker"
-      "dialout"
-      "cdrom"
-      "wireshark"
-    ];
-    shell = "${pkgs.zsh}/bin/zsh";
-    description = "Quentin Inkling";
-  };
-
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = false;
   system.stateVersion = "22.11";
-
-  services.openvpn.servers =
-    if builtins.hasAttr "vpn" secrets then (secrets.vpn inputs) else { };
 
   time.timeZone = "Europe/Moscow";
 

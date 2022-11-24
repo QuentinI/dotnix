@@ -25,6 +25,7 @@ in
       multi-account-containers
       simple-tab-groups
       terms-of-service-didnt-read
+      tridactyl
       consent-o-matic
     ];
     profiles = {
@@ -114,6 +115,8 @@ in
           "media.gmp-manager.url" = "";
           "network.http.speculative-parallel-limit" = 0;
           "browser.search.update" = false;
+          "browser.search.region" = "US";
+          "browser.search.searchEnginesURL" = "";
 
           # Spoof referrer
           "network.http.referer.spoofSource" = true;

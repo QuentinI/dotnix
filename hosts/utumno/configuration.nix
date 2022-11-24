@@ -1,13 +1,14 @@
 inputs@{ config, pkgs, vars, secrets, ... }:
 
 {
-  users.users."${vars.user}" = {
+  users.users."${vars.username}" = {
     createHome = true;
     isNormalUser = true;
-    hashedPassword = if builtins.hasAttr "user-password" secrets then
-      secrets.user-password
-    else
-      pkgs.lib.warn "Setting empty password for user ${vars.user}!" "";
+    hashedPassword =
+      if builtins.hasAttr "user-password" secrets then
+        secrets.user-password
+      else
+        pkgs.lib.warn "Setting empty password for user ${vars.username}!" "";
     extraGroups = [
       "libvirtd"
       "wheel"

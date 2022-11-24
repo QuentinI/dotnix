@@ -1,0 +1,65 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-family: Fira Code;
+    font-size: 16px;
+    min-height: 0;
+    color: @base05;
+}
+
+window#waybar {
+    background-color: @base01;
+    color: @base05;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+#workspaces button {
+    border-bottom: 3px solid @base01;
+    padding: 0;
+    margin: 0;
+}
+
+#workspaces button.urgent {
+    background-color: @base0C;
+}
+
+#workspaces button.focused {
+    border-bottom: 3px solid @base06;
+}
+
+#workspaces {
+    margin-right: 10px;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#temperature,
+#backlight,
+#network,
+#pulseaudio,
+#custom-media,
+#tray,
+#mode,
+#idle_inhibitor,
+#mpd {
+    padding: 0 7px;
+}
+
+#battery.charging {
+    color: #26A65B;
+}
+
+#battery.critical:not(.charging) {
+    background-color: @base08;
+}
+
+#pulseaudio.muted {
+    color: @base02;
+}

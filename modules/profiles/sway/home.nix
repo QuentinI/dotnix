@@ -1,13 +1,9 @@
-{ config, pkgs, vars, ... }:
+{ config, pkgs, vars, mkImports, ... }:
 
 let
   modifier = "Mod4";
   # mkOpaque = import ../../themes/lib/mkOpaque.nix;
   mkOpaque = x: x;
-  waybar = pkgs.waybar.override {
-    pulseSupport = true;
-    traySupport = true;
-  };
 
   # TODO
   lock = pkgs.writeShellScriptBin "lock.sh" ''
@@ -52,32 +48,13 @@ let
 
 in
 rec {
-  imports = [ ../../programs/rofi ../../services/mako.nix ];
+  imports = mkImports "home" [
+    ./waybar
+    ../wayland.nix
+    ../../programs/rofi.nix
+    ../../services/mako.nix
+  ];
 
-  home.sessionVariables = {
-    MOZ_ENABLE_WAYLAND = 1;
-    QT_QPA_PLATFORM = "wayland";
-    QT_QPA_PLATFORMTHEME = "qt5ct";
-    SDL_VIDEODRIVER = "wayland";
-    GDK_BACKEND = "wayland";
-    _JAVA_AWT_WM_NONREPARENTING = 1;
-    NIXOS_OZONE_WL = 1;
-  };
-
-  xdg.configFile.electron = {
-    target = "electron-flags.conf";
-    text = ''
-      --enable-features=UseOzonePlatform
-      --ozone-platform=wayland
-    '';
-  };
-
-  xdg.configFile.chromium = {
-    target = "chrome-flags.conf";
-    text = ''
-      --ozone-platform-hint=auto
-    '';
-  };
 
   home.packages = [
     pkgs.swaylock
@@ -87,91 +64,12 @@ rec {
     pkgs.pamixer
     pkgs.wob
     pkgs.light
-    waybar
     pkgs.libappindicator
     pkgs.playerctl
     pkgs.xdg-desktop-portal-wlr
     pkgs.kanshi
   ];
 
-  # Waybar works with libappindicator tray icons only
-  xsession.preferStatusNotifierItems = true;
-
-  xdg.configFile.waybar_config = {
-    source = ./waybar_config.json;
-    target = "waybar/config";
-  };
-
-  # TODO: figure out how to use variables in GTK CSS
-  xdg.configFile.waybar_style = {
-    text = ''
-      * {
-          border: none;
-          border-radius: 0;
-          font-family: Fira Code;
-          font-size: 16px;
-          min-height: 0;
-      }
-
-      window#waybar {
-          background-color: #${config.theme.base16.colors.base00.hex.rgb};
-          color: #${config.theme.base16.colors.base05.hex.rgb};
-          transition-property: background-color;
-          transition-duration: .5s;
-      }
-
-      window#waybar.hidden {
-          opacity: 0.2;
-      }
-
-      #workspaces button {
-          border-bottom: 3px solid #${config.theme.base16.colors.base00.hex.rgb};
-          padding: 0;
-          margin: 0;
-      }
-
-      #workspaces button.urgent {
-          background-color: #${config.theme.base16.colors.base0C.hex.rgb};
-      }
-
-      #workspaces button.focused {
-          border-bottom: 3px solid #${config.theme.base16.colors.base06.hex.rgb};
-      }
-
-      #workspaces {
-          margin-right: 10px;
-      }
-
-      #clock,
-      #battery,
-      #cpu,
-      #memory,
-      #temperature,
-      #backlight,
-      #network,
-      #pulseaudio,
-      #custom-media,
-      #tray,
-      #mode,
-      #idle_inhibitor,
-      #mpd {
-          padding: 0 7px;
-      }
-
-      #battery.charging {
-          color: #26A65B;
-      }
-
-      #battery.critical:not(.charging) {
-          background-color: #${config.theme.base16.colors.base08.hex.rgb};
-      }
-
-      #pulseaudio.muted {
-          color: #${config.theme.base16.colors.base02.hex.rgb};
-      }
-    '';
-    target = "waybar/style.css";
-  };
 
   services.kanshi = {
     enable = true;
@@ -201,11 +99,6 @@ rec {
         { class = "xonotic-(glx|sdl)"; }
       ];
     };
-
-    bars = [{
-      command = "${waybar}/bin/waybar";
-      position = "bottom";
-    }];
 
     colors = rec {
       focused = {

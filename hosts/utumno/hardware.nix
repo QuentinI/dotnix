@@ -54,7 +54,7 @@
     #   options = [ "noatime" ];
     # };
 
-    "/home/${vars.user}/Downloads" = {
+    "/home/${vars.username}/Downloads" = {
       device = "/dev/disk/by-uuid/8c048aaa-7568-4ff4-a96c-02f4d8510566";
       fsType = "btrfs";
       options = [ "defaults" "nodev" "nosuid" "noexec" ];

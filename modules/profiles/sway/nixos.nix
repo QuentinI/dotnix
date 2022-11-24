@@ -3,7 +3,8 @@
 let
   sway =
     pkgs.sway.override { extraOptions = [ "--unsupported-gpu" "--verbose" ]; };
-in {
+in
+{
   environment.systemPackages = [ pkgs.qt5.qtwayland sway ];
 
   security.pam.services.swaylock = { };

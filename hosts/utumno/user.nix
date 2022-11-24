@@ -4,26 +4,27 @@ let
     nurpkgs = pkgs;
     pkgs = null;
   };
-in {
+in
+{
 
-  home-manager.users."${vars.user}" = { config, pkgs, inputs, ... }: {
+  home-manager.users."${vars.username}" = { config, pkgs, inputs, ... }: {
     imports = [
       nur.repos.rycee.hmModules.theme-base16
 
-      ../../users/modules/profiles/base.nix
-      ../../users/modules/profiles/hdpi.nix
+      ../../modules/profiles/base.nix
+      ../../modules/profiles/hdpi.nix
 
-      ../../users/modules/services/lorri.nix
-      ../../users/modules/services/kdeconnect.nix
-      ../../users/modules/services/gpg-agent.nix
-      ../../users/modules/services/shadowsocks.nix
-      ../../users/modules/services/nm-applet.nix
-      ../../users/modules/services/udiskie.nix
-      ../../users/modules/services/memory.nix
-      ../../users/modules/services/syncthing.nix
-      ../../users/modules/services/jackett.nix
-      ../../users/modules/services/sonarr.nix
-      ../../users/modules/services/hydroxide.nix
+      ../../modules/services/lorri.nix
+      ../../modules/services/kdeconnect.nix
+      ../../modules/services/gpg-agent.nix
+      ../../modules/services/shadowsocks.nix
+      ../../modules/services/nm-applet.nix
+      ../../modules/services/udiskie.nix
+      ../../modules/services/memory.nix
+      ../../modules/services/syncthing.nix
+      ../../modules/services/jackett.nix
+      ../../modules/services/sonarr.nix
+      ../../modules/services/hydroxide.nix
 
       ../../users/modules/programs/qutebrowser
       ../../users/modules/programs/firefox
@@ -65,20 +66,22 @@ in {
     xdg.dataFile."applications/mimeapps.list".force = true;
     xdg.mimeApps = {
       enable = true;
-      defaultApplications = let
-        desktopFile = pkg: name: "${pkg}/share/applications/${name}.desktop";
-        firefox = desktopFile pkgs.firefox "firefox";
-      in {
-        "application/pdf" =
-          [ (desktopFile pkgs.zathura "org.pwmt.zathura-pdf-mupdf") ];
-        "text/html" = [ firefox ];
-        "text/xml" = [ firefox ];
-        "application/xhtml+xml" = [ firefox ];
-        "application/vnd.mozilla.xul+xml" = [ firefox ];
-        "x-scheme-handler/http" = [ firefox ];
-        "x-scheme-handler/https" = [ firefox ];
-        "x-scheme-handler/ftp" = [ firefox ];
-      };
+      defaultApplications =
+        let
+          desktopFile = pkg: name: "${pkg}/share/applications/${name}.desktop";
+          firefox = desktopFile pkgs.firefox "firefox";
+        in
+        {
+          "application/pdf" =
+            [ (desktopFile pkgs.zathura "org.pwmt.zathura-pdf-mupdf") ];
+          "text/html" = [ firefox ];
+          "text/xml" = [ firefox ];
+          "application/xhtml+xml" = [ firefox ];
+          "application/vnd.mozilla.xul+xml" = [ firefox ];
+          "x-scheme-handler/http" = [ firefox ];
+          "x-scheme-handler/https" = [ firefox ];
+          "x-scheme-handler/ftp" = [ firefox ];
+        };
     };
 
     home = {

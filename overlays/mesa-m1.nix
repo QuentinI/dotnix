@@ -12,16 +12,16 @@ rec {
     version = "22.3.0-rc4-asahi";
     rev = "6c24545f0dd3ba455863da0d98db9b765368ef56";
     src = super.fetchurl {
-        url = "https://gitlab.freedesktop.org/alyssa/mesa/-/archive/${rev}/${rev}.tar.gz";
-        hash = "sha256-UHR49Q0kMV3USNXew74f49gZ3OqfQCHaO2xv3TGKR5g=";
+      url = "https://gitlab.freedesktop.org/alyssa/mesa/-/archive/${rev}/${rev}.tar.gz";
+      hash = "sha256-UHR49Q0kMV3USNXew74f49gZ3OqfQCHaO2xv3TGKR5g=";
     };
-    mesonFlags = builtins.filter 
-                   (flag: builtins.match ".*xvmc.*" flag == null) # No idea why it's problematic
-                   old.mesonFlags;
+    mesonFlags = builtins.filter
+      (flag: builtins.match ".*xvmc.*" flag == null) # No idea why it's problematic
+      old.mesonFlags;
   });
-  mesa = mesa_asahi.override { 
-    galliumDrivers=["asahi" "swrast"];
-    vulkanDrivers=["swrast"];
+  mesa = mesa_asahi.override {
+    galliumDrivers = [ "asahi" "swrast" ];
+    vulkanDrivers = [ "swrast" ];
     enableGalliumNine = false;
- };
+  };
 }

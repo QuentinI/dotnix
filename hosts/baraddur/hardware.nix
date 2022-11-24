@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "usb_storage" "sdhci_pci" ];
@@ -13,13 +14,17 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
+  boot.kernel.sysctl = { "vm.swappiness" = 1; };
+
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/019b6df2-1bc4-40ec-9a44-1f91c08c4b70";
+    {
+      device = "/dev/disk/by-uuid/019b6df2-1bc4-40ec-9a44-1f91c08c4b70";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/22A6-0D1C";
+    {
+      device = "/dev/disk/by-uuid/22A6-0D1C";
       fsType = "vfat";
     };
 
@@ -63,4 +68,8 @@
       };
     };
   };
+
+  services.udev.extraRules = ''
+    ACTION=="add", KERNEL=="hid_apple", ATTR{parameters/fnmode}="2"
+  '';
 }

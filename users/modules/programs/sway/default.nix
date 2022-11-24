@@ -138,6 +138,10 @@ rec {
           border-bottom: 3px solid #${config.theme.base16.colors.base06.hex.rgb};
       }
 
+      #workspaces {
+          margin-right: 10px;
+      }
+
       #clock,
       #battery,
       #cpu,
@@ -179,14 +183,14 @@ rec {
   wayland.windowManager.sway.config = {
     assigns = {
       "1" = [
-        { class = "Firefox"; }
+        { app_id = "firefox"; }
         { class = "Chromium-browser"; }
         { class = "Deluge"; }
       ];
       "2" =
         [{ title = "Atom"; } { class = "jetbrains"; } { class = "Emacs"; }];
       "3" = [
-        { class = "telegram"; }
+        { app_id = "telegramdesktop"; }
         { class = "discord"; }
         { class = "Keybase"; }
         { class = "Daily"; }

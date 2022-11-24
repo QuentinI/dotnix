@@ -42,12 +42,11 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, hostname
       ../../modules/profiles/base.nix
       ../../modules/profiles/silent-boot.nix
       ../../modules/profiles/hardened.nix
+      ../../modules/profiles/udev/backlight.nix
 
       ../../modules/services/docker.nix
       # ../../modules/services/libvirtd.nix
       ../../modules/services/zerotierone.nix
-      ../../modules/services/fprintd.nix
-      ../../modules/services/tlp.nix
       ../../modules/services/wireguard.nix
       ../../modules/services/yggdrasil.nix
       ../../modules/services/i2p.nix

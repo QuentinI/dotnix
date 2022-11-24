@@ -1,63 +1,69 @@
 {
-    "layer": "top",
-    "position": "bottom",
-    "height": 35,
+  "layer": "top",
+  "position": "top",
+  "height": 32,
 
-    "modules-left": ["sway/workspaces", "sway/mode"],
-    "modules-center": ["sway/window"],
-    "modules-right": ["pulseaudio", "backlight", "battery", "clock", "tray"],
+  "modules-left": ["sway/workspaces", "sway/mode", "sway/window"],
+  "modules-center": [],
+  "modules-right": ["sway/language", "pulseaudio", "backlight", "battery", "clock", "tray"],
 
-    "sway/window": {
-        "max-length": 50
-    },
+  "sway/window": {
+      "max-length": 45,
+      "format": "{title}",
+      "icon": true,
+      "rewrite": {
+        "(.*) . Mozilla Firefox": "$1",
+        "Telegram \\(.*\\)": "Telegram"
+      }
+  },
 
-    "sway/workspaces": {
-        "format": "{icon}",
-        "format-icons": {
-            "1": "  ",
-            "2": "  ",
-            "3": "  ",
-            "4": "  ",
-            "5": "  ",
-            "6": "  ",
-            "default": "  "
-        }
-    },
+  "sway/workspaces": {
+      "format": "{icon}",
+      "format-icons": {
+          "1": "  ",
+          "2": "  ",
+          "3": "  ",
+          "4": "  ",
+          "5": "  ",
+          "6": "  ",
+          "default": "  "
+      }
+  },
 
-    "pulseaudio": {
-        "format": "{volume}% {icon}",
-        "format-bluetooth": "{volume}%  [{desc}]",
-        "format-muted": "",
-        "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", ""]
-        },
-        "scroll-step": 1,
-        "on-click": "pavucontrol"
-    },
+  "pulseaudio": {
+      "format": "{volume}% {icon}",
+      "format-bluetooth": "{volume}%  [{desc}]",
+      "format-muted": "",
+      "format-icons": {
+          "headphone": "",
+          "hands-free": "",
+          "headset": "",
+          "phone": "",
+          "portable": "",
+          "car": "",
+          "default": ["", ""]
+      },
+      "scroll-step": 1,
+      "on-click": "pavucontrol"
+  },
 
-    "backlight": {
-        "device": "intel_backlight",
-        "format": "{icon} {percent}%",
-        "format-icons": ["", ""]
-    },
+  "backlight": {
+      "device": "intel_backlight",
+      "format": "{icon} {percent}%",
+      "format-icons": ["", ""]
+  },
 
-    "battery": {
-        "format": "{icon} {capacity}%",
-        "format-icons": ["", "", "", "", ""]
-    },
+  "battery": {
+      "format": "{icon} {capacity}%",
+      "format-icons": ["", "", "", "", ""]
+  },
 
-    "clock": {
-        "format-alt": "  {:%a, %d. %b  %H:%M}"
-    },
+  "clock": {
+      "format-alt": "  {:%a, %d. %b  %H:%M}"
+  },
 
-    "tray": {
-        "icon-size": 20,
-        "spacing": 10
-    }
+  "tray": {
+      "icon-size": 20,
+      "spacing": 10
+  }
 }

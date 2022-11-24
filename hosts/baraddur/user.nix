@@ -5,9 +5,13 @@ let
     pkgs = null;
   };
 
-  #  scr = pkgs.writeShellScriptBin "scr.sh" ''
-  #    ${pkgs.scrcpy}/bin/scrcpy  -S -K -M -t
-  #  '';
+  # scrcpy = pkgs.scrcpy.override {
+  #   platform-tools = pkgs.android-tools;
+  # };
+
+  # scr = pkgs.writeShellScriptBin "scr.sh" ''
+  #   ${scrcpy}/bin/scrcpy  -S -K -M -t
+  # '';
 
 in
 {
@@ -15,7 +19,7 @@ in
   security.pam.services."${vars.user}".fprintAuth = true;
 
   # services.udev.extraRules = ''
-  #   ACTION=="add", ATTRS{idVendor}=="2717", ATTRS{idProduct}=="ff08", RUN+="${scr}/bin/scr.sh"
+  #   ACTION=="add", SUBSYSTEM=="usb", ATTR{configuration}=="*adb*", RUN+="${scr}/bin/scr.sh"
   # '';
 
   home-manager.users."${vars.user}" = { config, pkgs, inputs, staging, ... }: {
@@ -249,16 +253,13 @@ in
         # ffmpeg
 
         ## Messaging
-        # discord
+        armcord
         thunderbird
-        # slack
-        # zoom-us
 
         ## Media
         feh
-        # pulseeffects
         sox
-        # spotify
+        spotify-tui
 
         ## Documents
         # texlive.combined.scheme-full

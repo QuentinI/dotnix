@@ -52,6 +52,7 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, hostname
       ../../modules/services/yggdrasil.nix
       ../../modules/services/i2p.nix
       ../../modules/services/tor.nix
+      ../../modules/services/udiskie.nix
 
     ];
 

@@ -100,6 +100,7 @@ in
           "browser.newtabpage.activity-stream.section.highlights.includePocket" =
             false;
           "browser.newtabpage.activity-stream.showSponsored" = false;
+          "browser.newtabpage.activity-stream.discoverystream.enabled" = false;
           "browser.newtabpage.activity-stream.feeds.discoverystreamfeed" =
             false;
           "extensions.shield-recipe-client.enabled" = false;

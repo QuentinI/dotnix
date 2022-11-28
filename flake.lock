@@ -270,6 +270,29 @@
         "type": "github"
       }
     },
+    "nvim": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1669612914,
+        "narHash": "sha256-pWN0hqaBEgIizjEomcVz9E16c/J41+jB6nqhiLD35R8=",
+        "owner": "QuentinI",
+        "repo": "nvim",
+        "rev": "aeb05892e55890064581f1d9303f5b4a1fdce7e6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "QuentinI",
+        "repo": "nvim",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "base16-nord-scheme": "base16-nord-scheme",
@@ -287,6 +310,7 @@
         "nixpkgs-mozilla": "nixpkgs-mozilla",
         "nord-dircolors": "nord-dircolors",
         "nur": "nur",
+        "nvim": "nvim",
         "secrets": "secrets",
         "stable": "stable",
         "staging": "staging",

@@ -31,7 +31,6 @@ in
       ../../modules/programs/ncmpcpp
       ../../modules/programs/iex
       ../../modules/programs/tdesktop
-      ../../modules/programs/nvim
       ../../modules/programs/kitty
       ../../modules/programs/zathura.nix
       ../../modules/programs/fzf

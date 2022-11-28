@@ -7,6 +7,11 @@
     stable.url = "nixpkgs/release-21.11";
     home.url = "github:nix-community/home-manager/master";
     flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
+    nvim = {
+      url = "github:QuentinI/nvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
     nur = {
       flake = false; # NUR's flake support is... suboptimal
       url = "github:nix-community/NUR";
@@ -113,6 +118,7 @@
                     };
                 })
                 (import ./packages)
+                inputs.nvim.overlay."${system}"
               ];
             })).nixosConfiguration)
           hosts;

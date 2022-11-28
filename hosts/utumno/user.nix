@@ -33,7 +33,6 @@ in
       ../../users/modules/programs/ncmpcpp
       ../../users/modules/programs/iex
       ../../users/modules/programs/tdesktop
-      ../../users/modules/programs/nvim
       ../../users/modules/programs/kitty
       ../../users/modules/programs/zathura
       ../../users/modules/programs/beets

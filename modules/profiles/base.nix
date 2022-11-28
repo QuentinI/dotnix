@@ -1,5 +1,5 @@
 {
-  nixos = { pkgs, vars, secrets, ... }:
+  nixos = { pkgs, vars, secrets, inputs, ... }:
     {
       imports = [ ../programs/nix.nix ];
 
@@ -96,4 +96,5 @@
     '';
   };
 }
+
 

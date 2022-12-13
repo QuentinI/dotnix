@@ -31,14 +31,14 @@ let
       rec {
         inherit stdenv lib;
 
-        version = "6.1.0-rc5-asahi";
+        version = "6.1.0-asahi";
         modDirVersion = version;
 
         src = fetchFromGitHub {
           owner = "AsahiLinux";
           repo = "linux";
-          rev = "1087f668f666a257db411fd6655de488c8578543";
-          hash = "sha256-o/Ey8YAgo4TAamUBr+oxTzSVFBhFpeTKVzAb+4iqZ5c=";
+          rev = "6100c58272d25355ea7b9606e8785c3175ffedaf";
+          hash = "sha256-GfEPJY+mCFcCx1fo0La+4A7Tsj0v4S19ZbROrntdLEQ=";
         };
 
         kernelPatches = [
@@ -46,14 +46,6 @@ let
             name = "ignore-notch";
             patch = ./ignore-notch.patch;
           }
-        ] ++ lib.optionals _4KBuild [
-          # thanks to Sven Peter
-          # https://lore.kernel.org/linux-iommu/20211019163737.46269-1-sven@svenpeter.dev/
-          {
-            name = "sven-iommu-4k";
-            patch = ./sven-iommu-4k.patch;
-          }
-        ] ++ lib.optionals (!_4KBuild) [
           # patch the kernel to set the default size to 16k instead of modifying
           # the config so we don't need to convert our config to the nixos
           # infrastructure or patch it and thus introduce a dependency on the host

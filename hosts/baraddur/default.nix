@@ -1,4 +1,4 @@
-inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, hostname, mkImports, ... }:
+inputs@{ system, nixpkgs, home, vars, secrets, hostname, mkImports, ... }:
 
 {
   nixosConfiguration = nixpkgs.lib.nixosSystem rec {
@@ -6,7 +6,7 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, hostname
 
     # Things in this set are passed to modules and accessible
     # in the top-level arguments (e.g. `{ pkgs, lib, inputs, ... }:`).
-    specialArgs = { inherit inputs vars secrets staging system hostname mkImports; };
+    specialArgs = { inherit inputs vars secrets system hostname mkImports; };
 
     modules = mkImports "nixos" [
       ({ config, lib, pkgs, ... }: {
@@ -23,16 +23,7 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, hostname
       })
       home.nixosModules.home-manager
 
-      # This is https://github.com/tpwrules/nixos-m1
-      # patched to support Lina and Alyssa's ongoing
-      # GPU work.
-      # If by any chance you stumble upon this:
-      # PLEASE think twice before using this, there's a reason
-      # Lina's driver isn't released yet. If you will still end
-      # up using it - PLEASE don't go and complain to Asahi team
-      # about your computer exploding or something, I don't want
-      # to cause them problems. Don't complain to me either,
-      # although you may ask questions.
+      # adapted from https://github.com/tpwrules/nixos-m1
       ./m1-support
 
       ./hardware.nix
@@ -42,11 +33,12 @@ inputs@{ system, master, nixpkgs, stable, staging, home, vars, secrets, hostname
       ../../modules/profiles/base.nix
       ../../modules/profiles/silent-boot.nix
       ../../modules/profiles/hardened.nix
+      ../../modules/profiles/audio.nix
       ../../modules/profiles/udev/backlight.nix
       ../../modules/profiles/sway
 
       ../../modules/services/docker.nix
-      # ../../modules/services/libvirtd.nix
+      ../../modules/services/libvirtd.nix
       ../../modules/services/zerotierone.nix
       # ../../modules/services/wireguard.nix
       ../../modules/services/yggdrasil.nix

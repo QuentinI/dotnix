@@ -10,10 +10,10 @@ rec {
   # although you may ask questions.
   mesa_asahi = super.mesa.overrideAttrs (old: rec {
     version = "22.3.0-rc4-asahi";
-    rev = "6c24545f0dd3ba455863da0d98db9b765368ef56";
+    rev = "3fc6e787ce9da1b5e323974ca134647d69dd2573";
     src = super.fetchurl {
-      url = "https://gitlab.freedesktop.org/alyssa/mesa/-/archive/${rev}/${rev}.tar.gz";
-      hash = "sha256-UHR49Q0kMV3USNXew74f49gZ3OqfQCHaO2xv3TGKR5g=";
+      url = "https://gitlab.freedesktop.org/asahi/mesa/-/archive/${rev}/${rev}.tar.gz";
+      hash = "sha512-g/ZiqkAqaPbyNrrRi2yj8aTxmpogzmo4VgKzDgrzcXqzDgrpOH3ObO4UFTVDh3ZAOBXS61Pbj+GOw2AnAYEkWQ==";
     };
     mesonFlags = builtins.filter
       (flag: builtins.match ".*xvmc.*" flag == null) # No idea why it's problematic

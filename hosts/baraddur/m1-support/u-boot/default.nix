@@ -3,19 +3,21 @@
 , pkgs
 , pkgsCross
 , m1n1
-}: let
+}:
+let
   # u-boot's buildInputs get a different hash and don't build right if we try to
   # cross-build for aarch64 on itself for whatever reason
   buildPkgs = if pkgs.stdenv.system == "aarch64-linux" then pkgs else pkgsCross.aarch64-multiplatform;
-in (buildPkgs.buildUBoot rec {
+in
+(buildPkgs.buildUBoot rec {
   src = fetchFromGitHub {
     # tracking: https://github.com/AsahiLinux/PKGBUILDs/blob/main/uboot-asahi/PKGBUILD
     owner = "AsahiLinux";
     repo = "u-boot";
-    rev = "asahi-v2022.07-3";
-    hash = "sha256-Je8h8kstWTBfrITsOrSAPzHjiSe7pIDKPLKoWUAK9ZE=";
+    rev = "asahi-v2022.10-1";
+    hash = "sha256-/dtTJ+GxC2GFlqduAa2WWPGwktLjM7tUKus6/aUyPNQ=";
   };
-  version = "2022.07_rc100.asahi3";
+  version = "2022.10-1";
 
   defconfig = "apple_m1_defconfig";
   extraMeta.platforms = [ "aarch64-linux" ];

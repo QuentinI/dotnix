@@ -175,9 +175,6 @@ in
         docker
         docker_compose
 
-        ## Editors and stuff
-        irony-server # TODO move to own package with deps
-
         ## Games
         xonotic
         wesnoth

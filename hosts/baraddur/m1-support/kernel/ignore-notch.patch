@@ -8,9 +8,9 @@ diff --git a/nix/store/m8fa4vmavh40r1dsmds933xsqdk891lx-source/drivers/gpu/drm/a
 -		if (dcp->notch_height > 0)
 -			req->swap.dst_rect[l].y += dcp->notch_height;
 -
- 		req->surf_iova[l] = drm_fb_dma_get_gem_addr(fb, new_state, 0);
- 
- 		req->surf[l] = (struct dcp_surface){
+		/* the obvious helper call drm_fb_dma_get_gem_addr() adjusts
+		 * the address for source x/y offsets. Since IOMFB has a direct
+		 * support source position prefer that.
 diff --git a/nix/store/m8fa4vmavh40r1dsmds933xsqdk891lx-source/drivers/gpu/drm/apple/parser.c b/./drivers/gpu/drm/apple/parser.c
 index bc3603d..3ab03a7 100644
 --- a/nix/store/m8fa4vmavh40r1dsmds933xsqdk891lx-source/drivers/gpu/drm/apple/parser.c

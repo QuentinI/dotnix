@@ -1,25 +1,22 @@
 {
 
   inputs = {
-    staging.url = "nixpkgs/staging";
-    master.url = "nixpkgs/master";
-    nixpkgs.url = "nixpkgs/nixos-unstable";
-    stable.url = "nixpkgs/release-21.11";
-    home.url = "github:nix-community/home-manager/master";
     flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
+
+    # Repos
+    nixpkgs.url = "nixpkgs/nixos-unstable";
+    master.url = "github:NixOS/nixpkgs/master";
+    home.url = "github:nix-community/home-manager/master";
+    nur.url = "github:nix-community/NUR";
+
+    # Neovim configuration
     nvim = {
       url = "github:QuentinI/nvim";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
-    nur = {
-      flake = false; # NUR's flake support is... suboptimal
-      url = "github:nix-community/NUR";
-    };
-    vim-plug = {
-      flake = false;
-      url = "github:junegunn/vim-plug";
-    };
+
+    # Themes
     base16-nord-scheme = {
       flake = false;
       url = "github:spejamchr/base16-nord-scheme/master";
@@ -32,6 +29,9 @@
       flake = false;
       url = "github:arzg/base16-solarized-scheme/master";
     };
+
+
+    # various MPV scripts
     mpv-scripts = {
       flake = false;
       url = "github:wiiaboo/mpv-scripts/master";
@@ -52,6 +52,8 @@
       flake = false;
       url = "github:CogentRedTester/mpv-scroll-list/master";
     };
+
+    # Rustiness
     naersk = {
       url = "github:nmattia/naersk";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -60,11 +62,13 @@
       url = "github:mozilla/nixpkgs-mozilla";
       flake = false;
     };
+
+    # Manually substituted for actual secrets
     secrets.url = "github:QuentinI/dummy-flake";
   };
 
   outputs =
-    inputs@{ self, master, nixpkgs, stable, home, secrets, naersk, flake-utils, ... }:
+    inputs@{ self, nixpkgs, master, nur, home, secrets, naersk, flake-utils, ... }:
     let
       hosts = import ./hosts;
       mkImports = scope: imports:
@@ -87,41 +91,23 @@
       };
     in
     flake-utils.lib.eachDefaultSystem (system: rec {
-      packages = {
-        nixosConfigurations = builtins.mapAttrs
-          (hostname: config:
-            (config (inputs // rec {
-              common-cfg = {
-                inherit system;
-                config.allowUnfree = true;
-              };
+      packages.nixosConfigurations = builtins.mapAttrs
+        (hostname: config:
+          (config (inputs // rec {
+            common-cfg = {
               inherit system;
-              staging = import inputs.staging common-cfg;
-              stable = import inputs.stable common-cfg;
-              master = import inputs.master common-cfg;
-              inherit vars secrets hostname mkImports;
-              overlays = [
-                (final: prev: {
-                  naersk = final.pkgs.callPackage naersk { };
-                  naerskUnstable =
-                    let
-                      nmo = import inputs.nixpkgs-mozilla final prev;
-                      rust = (nmo.rustChannelOf {
-                        date = "2022-04-06";
-                        channel = "nightly";
-                        sha256 = "vOGzOgpFAWqSlXEs9IgMG7jWwhsmouGHSRHwAcHyccs=";
-                      }).rust;
-                    in
-                    naersk.lib.${system}.override {
-                      cargo = rust;
-                      rustc = rust;
-                    };
-                })
-                (import ./packages)
-                inputs.nvim.overlay."${system}"
-              ];
-            })).nixosConfiguration)
-          hosts;
-      };
+              config.allowUnfree = true;
+            };
+            inherit system;
+            inherit vars secrets hostname mkImports;
+            overlays = [
+              (final: prev: {
+                master = import master common-cfg;
+              })
+              (import ./packages)
+              inputs.nvim.overlay."${system}"
+            ];
+          })).nixosConfiguration)
+        hosts;
     });
 }

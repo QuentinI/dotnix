@@ -240,13 +240,15 @@ rec {
     bindsym ${modifier}+Space       exec rofi -show drun -display-drun 'run'
     bindsym Control_R               exec rofi -show drun -display-drun 'run'
 
-    bindsym Print                      exec grim ~/Pictures/Screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
-    bindsym Control+Print              exec grim - | wl-copy -p -o -t image/png
-    bindsym ${modifier}+Print          exec grim -g "$(slurp -b '#ffffff00' -c '#${config.theme.base16.colors.base06.hex.rgb}ff')" ~/Pictures/Screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
-    bindsym ${modifier}+Control+Print  exec grim -g "$(slurp -b '#ffffff00' -c '#${config.theme.base16.colors.base06.hex.rgb}ff')" - | wl-copy -p -o -t image/png
+    bindsym XF86LaunchA                      exec grim ~/Pictures/Screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
+    bindsym Control+XF86LaunchA              exec grim - | wl-copy -p -o -t image/png
+    bindsym ${modifier}+XF86LaunchA          exec grim -g "$(slurp -b '#ffffff00' -c '#${config.theme.base16.colors.base06.hex.rgb}ff')" ~/Pictures/Screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
+    bindsym ${modifier}+Control+XF86LaunchA  exec grim -g "$(slurp -b '#ffffff00' -c '#${config.theme.base16.colors.base06.hex.rgb}ff')" - | wl-copy -p -o -t image/png
 
-    bindsym XF86KbdBrightnessUp     exec ${pkgs.light}/bin/light -s sysfs/leds/asus::kbd_backlight -A 1 && ${pkgs.light}/bin/light -s sysfs/leds/asus::kbd_backlight -G | cut -d'.' -f1 > $SWAYSOCK.wob
-    bindsym XF86KbdBrightnessDown   exec ${pkgs.light}/bin/light -s sysfs/leds/asus::kbd_backlight -U 1 && ${pkgs.light}/bin/light -s sysfs/leds/asus::kbd_backlight -G | cut -d'.' -f1 > $SWAYSOCK.wob
+    bindsym XF86KbdBrightnessUp     exec ${pkgs.light}/bin/light -s sysfs/leds/kbd_backlight -A 1 && ${pkgs.light}/bin/light -s sysfs/leds/kbd_backlight -G | cut -d'.' -f1 > $SWAYSOCK.wob
+    bindsym XF86KbdBrightnessDown   exec ${pkgs.light}/bin/light -s sysfs/leds/kbd_backlight -U 1 && ${pkgs.light}/bin/light -s sysfs/leds/kbd_backlight -G | cut -d'.' -f1 > $SWAYSOCK.wob
+    bindsym Shift+XF86MonBrightnessUp     exec ${pkgs.light}/bin/light -s sysfs/leds/kbd_backlight -A 1 && ${pkgs.light}/bin/light -s sysfs/leds/kbd_backlight -G | cut -d'.' -f1 > $SWAYSOCK.wob
+    bindsym Shift+XF86MonBrightnessDown   exec ${pkgs.light}/bin/light -s sysfs/leds/kbd_backlight -U 1 && ${pkgs.light}/bin/light -s sysfs/leds/kbd_backlight -G | cut -d'.' -f1 > $SWAYSOCK.wob
 
     bindsym ${modifier}+F3          exec echo $(expr $(cat /sys/devices/platform/asus-nb-wmi/hwmon/hwmon3/pwm1) - 3) > /sys/devices/platform/asus-nb-wmi/hwmon/hwmon3/pwm1
     bindsym ${modifier}+F4          exec echo $(expr $(cat /sys/devices/platform/asus-nb-wmi/hwmon/hwmon3/pwm1) + 3) > /sys/devices/platform/asus-nb-wmi/hwmon/hwmon3/pwm1

@@ -2,9 +2,7 @@
 let
   nur = import inputs.nur {
     nurpkgs = pkgs;
-    pkgs = null;
   };
-
 in
 {
   home-manager.users."${vars.username}" = { config, pkgs, inputs, staging, mkImports, ... }: {
@@ -131,7 +129,7 @@ in
 
       packages = with pkgs; [
         ## Compilers/interpreters
-        (python3.withPackages (ps:
+        (master.python3.withPackages (ps:
           with ps; [
             virtualenv
             pip
@@ -191,7 +189,7 @@ in
         pandoc
 
         ## Browsing
-        ungoogled-chromium
+        # ungoogled-chromium
 
         ## Download management
         qbittorrent
@@ -239,6 +237,7 @@ in
         libsForQt5.qtstyleplugin-kvantum
         gsettings-desktop-schemas
         qt5ct
+        box64
 
         # Fixes "failed to commit changes to dconf" issues
         dconf

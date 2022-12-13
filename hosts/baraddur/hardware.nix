@@ -45,29 +45,6 @@
   hardware.video.hidpi.enable = true;
 
   hardware.bluetooth.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-    media-session = {
-      config = {
-        bluez-monitor = {
-          rules = [{
-            # Matches all cards
-            matches = [{ "device.name" = "~bluez_card.*"; }];
-            actions = {
-              "update-props" = {
-                "bluez5.msbc-support" = true;
-                "bluez5.sbc-xq-support" = true;
-              };
-            };
-          }];
-        };
-      };
-    };
-  };
 
   services.udev.extraRules = ''
     ACTION=="add", KERNEL=="hid_apple", ATTR{parameters/fnmode}="2"

@@ -21,8 +21,11 @@ inputs@{ config, pkgs, vars, secrets, ... }:
   networking.networkmanager.wifi.macAddress = "random";
   networking.networkmanager.unmanaged =
     [ "interface-name:wl*u*" ]; # Any USB adapters
-  networking.firewall.enable = true;
+  networking.firewall.enable = false;
   networking.hostName = "baraddur";
+  environment.systemPackages = [
+    pkgs.wireguard-tools
+  ];
   services.printing.enable = true;
   sound.enable = true;
   programs.firejail.enable = true;

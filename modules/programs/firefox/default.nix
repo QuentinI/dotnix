@@ -16,24 +16,23 @@ in
   programs.firefox = {
     enable = true;
     extensions = with nur.repos.rycee.firefox-addons; [
-      ublock-origin
       bitwarden
-      polkadot-js
+      consent-o-matic
+      foxyproxy-standard
       metamask
+      multi-account-containers
+      polkadot-js
+      simple-tab-groups
       sponsorblock
       stylus
-      multi-account-containers
-      simple-tab-groups
       terms-of-service-didnt-read
       tridactyl
-      consent-o-matic
+      ublock-origin
     ];
     profiles = {
       default = {
         id = 0;
         isDefault = true;
-
-        search.default = "DuckDuckGo";
 
         # Hardening cherry-picked from https://github.com/pyllyukko/user.js
         settings = {
@@ -45,15 +44,14 @@ in
           "dom.battery.enabled" = false;
           "dom.enable_performance" = false;
           "dom.enable_user_timing" = false;
-          "dom.event.contextmenu.enabled" =
-            false; # This may actually break some sites, but I hate RMB highjacking
+
           "dom.gamepad.enabled" = false;
           "dom.netinfo.enabled" = false;
           "dom.network.enabled" = false;
           "dom.telephony.enabled" = false;
           "dom.vr.enabled" = false;
-          "dom.vibrator.enabled" =
-            false; # Not working with my vibrator. 0/10 would disable again.
+          # Not working with my vibrator. 0/10 would disable again.
+          "dom.vibrator.enabled" = false;
           "dom.webnotifications.enabled" = false;
           "media.webspeech.recognition.enable" = false;
 

@@ -54,10 +54,13 @@ in
       text = vars.theme;
     };
 
-    theme.base16 = config.lib.theme.base16.fromYamlFile
-      (if vars.theme == "light"
-      then "${inputs.base16-solarized-scheme}/solarized-light.yaml"
-      else "${inputs.base16-nord-scheme}/nord.yaml");
+    theme.base16.colors = builtins.mapAttrs
+      (_: v: {
+        hex.r = builtins.substring 0 2 v;
+        hex.g = builtins.substring 2 2 v;
+        hex.b = builtins.substring 4 2 v;
+      })
+      (import ../../themes/remix.nix);
 
     gtk = {
       enable = true;
@@ -159,6 +162,7 @@ in
         shellcheck
         nixfmt
         gcc
+        (mkNeovim { inherit pkgs; theme = config.theme.base16.colors; })
 
         # TODO:
         # jetbrains.jdk # Jetbrains JDK is more convinient generally
@@ -183,8 +187,8 @@ in
 
         ## Documents
         # texlive.combined.scheme-full
-        # libreoffice-unwrapped
         # pdftk
+        libreoffice
         zathura
         pandoc
 
@@ -238,6 +242,8 @@ in
         gsettings-desktop-schemas
         qt5ct
         box64
+
+        nasc
 
         # Fixes "failed to commit changes to dconf" issues
         dconf

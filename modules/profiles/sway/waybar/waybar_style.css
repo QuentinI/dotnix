@@ -1,4 +1,4 @@
-* {
+window {
     border: none;
     border-radius: 0;
     font-family: Fira Code;
@@ -8,7 +8,7 @@
 }
 
 window#waybar {
-    background-color: @base01;
+    background-color: @base00;
     color: @base05;
     transition-property: background-color;
     transition-duration: .5s;
@@ -19,7 +19,6 @@ window#waybar.hidden {
 }
 
 #workspaces button {
-    border-bottom: 3px solid @base01;
     padding: 0;
     margin: 0;
 }
@@ -29,7 +28,7 @@ window#waybar.hidden {
 }
 
 #workspaces button.focused {
-    border-bottom: 3px solid @base06;
+    color: @base0B;
 }
 
 #workspaces {
@@ -53,7 +52,7 @@ window#waybar.hidden {
 }
 
 #battery.charging {
-    color: #26A65B;
+    color: @base0B;
 }
 
 #battery.critical:not(.charging) {

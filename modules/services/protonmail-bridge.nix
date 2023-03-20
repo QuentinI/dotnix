@@ -1,11 +1,10 @@
 {
   home = { config, pkgs, ... }:
-
     let
       startScript = pkgs.writeShellScriptBin "bridge.sh" ''
-        HTTPS_PROXY=socks5://127.0.0.1:1080 protonmail-bridge
+        export HTTPS_PROXY=socks5://127.0.0.1:1080
+        ${pkgs.protonmail-bridge}/bin/protonmail-bridge
       '';
-
     in
     {
       home.packages = with pkgs; [ pass protonmail-bridge ];

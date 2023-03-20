@@ -8,18 +8,15 @@ let
       "");
 
   startScript = pkgs.writeShellScriptBin "shadowsocks.sh" ''
-    SS=${pkgs.shadowsocks-libev}/bin/ss-local
-    PASS=${pkgs.pass}/bin/pass
-    HEAD=${pkgs.coreutils}/bin/head
-    TAIL=${pkgs.coreutils}/bin/tail
-    $SS -c ${cfg}
+    ${pkgs.shadowsocks-rust}/bin/sslocal -c ${cfg}
   '';
 
-in {
+in
+{
   systemd.user.services.shadowsocks = {
     Install = { WantedBy = [ "graphical-session.target" ]; };
+    Unit = { After = [ "network.target" ]; };
     Service = {
-      After = [ "network.target" ];
       ExecStart = "${startScript}/bin/shadowsocks.sh";
       Restart = "on-failure";
     };

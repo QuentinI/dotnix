@@ -31,11 +31,14 @@
   },
 
   "sway/language": {
+      "format": " {shortDescription}",
+      "tooltip-format": "{long}",
+      "on-click": "swaymsg input $(swaymsg -t get_inputs | jq 'map(select(.type==\"keyboard\")) | .[0].identifier') xkb_switch_layout next"
   },
 
   "pulseaudio": {
-      "format": "{volume}% {icon}",
-      "format-bluetooth": "{volume}%  [{desc}]",
+      "format": " {icon} {volume}%",
+      "format-bluetooth": "  {volume}% [{desc}]",
       "format-muted": "",
       "format-icons": {
           "headphone": "",
@@ -63,8 +66,8 @@
 
   "clock": {
       "interval": 1,
-      "format": "  {:%H:%M:%S}",
-      "format-alt": "  {:%a, %d. %b  %H:%M}"
+      "format": " {:%a %H:%M:%S}",
+      "format-alt": " {:%a, %d. %b  %H:%M:%S}"
   },
 
   "tray": {

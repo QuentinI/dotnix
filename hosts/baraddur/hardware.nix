@@ -18,8 +18,8 @@
 
   fileSystems."/" =
     {
-      device = "/dev/disk/by-uuid/019b6df2-1bc4-40ec-9a44-1f91c08c4b70";
-      fsType = "ext4";
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
     };
 
   fileSystems."/boot" =
@@ -28,9 +28,26 @@
       fsType = "vfat";
     };
 
-  swapDevices = [ ];
+  fileSystems."/swap" =
+    {
+      device = "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
+      options = [
+        "subvol=@swap"
+      ];
+    };
+
+  swapDevices = [
+    {
+      device = "/swap/swapfile";
+    }
+  ];
 
   hardware.asahi.peripheralFirmwareDirectory = inputs.secrets.m1-firmware;
+  hardware.opengl = {
+    enable = true;
+    package = pkgs.mesa_asahi.drivers;
+  };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -45,6 +62,7 @@
   hardware.video.hidpi.enable = true;
 
   hardware.bluetooth.enable = true;
+  hardware.bluetooth.settings = { General = { Enable = "Source,Sink,Media,Socket"; }; };
 
   services.udev.extraRules = ''
     ACTION=="add", KERNEL=="hid_apple", ATTR{parameters/fnmode}="2"

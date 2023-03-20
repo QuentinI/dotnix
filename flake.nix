@@ -17,6 +17,10 @@
     };
 
     # Themes
+    base16-unclaimed-schemes = {
+      flake = false;
+      url = "github:chriskempson/base16-unclaimed-schemes";
+    };
     base16-nord-scheme = {
       flake = false;
       url = "github:spejamchr/base16-nord-scheme/master";

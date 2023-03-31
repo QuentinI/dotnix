@@ -4,10 +4,15 @@
     flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
 
     # Repos
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:/NixOS/nixpkgs/1603d11595a232205f03d46e635d919d1e1ec5b9";
     master.url = "github:NixOS/nixpkgs/master";
     home.url = "github:nix-community/home-manager/master";
     nur.url = "github:nix-community/NUR";
+
+    apple-silicon = {
+      url = "github:tpwrules/nixos-apple-silicon";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Neovim configuration
     nvim = {
@@ -31,7 +36,7 @@
     };
     base16-solarized-scheme = {
       flake = false;
-      url = "github:arzg/base16-solarized-scheme/master";
+      url = "github:mk12/base16-solarized-scheme/main";
     };
 
 
@@ -109,7 +114,7 @@
                 master = import master common-cfg;
               })
               (import ./packages)
-              inputs.nvim.overlay."${system}"
+              inputs.nvim.overlays."${system}".default
             ];
           })).nixosConfiguration)
         hosts;

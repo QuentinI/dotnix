@@ -17,7 +17,7 @@ in
       ../../modules/services/lorri.nix
       ../../modules/services/memory.nix
       ../../modules/services/nm-applet.nix
-      ../../modules/services/protonmail-bridge.nix
+      #../../modules/services/protonmail-bridge.nix
       ../../modules/services/shadowsocks.nix
       ../../modules/services/ssh-agent.nix
       ../../modules/services/syncthing.nix
@@ -28,7 +28,7 @@ in
       ../../modules/programs/zsh
       ../../modules/programs/ncmpcpp
       ../../modules/programs/iex
-      ../../modules/programs/tdesktop
+      # ../../modules/programs/tdesktop
       ../../modules/programs/kitty
       ../../modules/programs/zathura.nix
       ../../modules/programs/fzf
@@ -42,7 +42,7 @@ in
       default = {
         outputs = [
           {
-            criteria = "eDP-1";
+            criteria = "Unknown-1";
             position = "0,0";
             scale = 2.0;
           }
@@ -242,8 +242,6 @@ in
         gsettings-desktop-schemas
         qt5ct
         box64
-
-        nasc
 
         # Fixes "failed to commit changes to dconf" issues
         dconf

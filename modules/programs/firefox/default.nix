@@ -15,24 +15,25 @@ in
 
   programs.firefox = {
     enable = true;
-    extensions = with nur.repos.rycee.firefox-addons; [
-      bitwarden
-      consent-o-matic
-      foxyproxy-standard
-      metamask
-      multi-account-containers
-      polkadot-js
-      simple-tab-groups
-      sponsorblock
-      stylus
-      terms-of-service-didnt-read
-      tridactyl
-      ublock-origin
-    ];
     profiles = {
       default = {
         id = 0;
         isDefault = true;
+
+        extensions = with nur.repos.rycee.firefox-addons; [
+          bitwarden
+          consent-o-matic
+          foxyproxy-standard
+          metamask
+          multi-account-containers
+          polkadot-js
+          simple-tab-groups
+          sponsorblock
+          stylus
+          terms-of-service-didnt-read
+          tridactyl
+          ublock-origin
+        ];
 
         # Hardening cherry-picked from https://github.com/pyllyukko/user.js
         settings = {

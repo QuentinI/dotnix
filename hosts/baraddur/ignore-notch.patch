@@ -1,5 +1,5 @@
-diff --git a/nix/store/m8fa4vmavh40r1dsmds933xsqdk891lx-source/drivers/gpu/drm/apple/iomfb.c b/./drivers/gpu/drm/apple/iomfb.c
---- a/nix/store/m8fa4vmavh40r1dsmds933xsqdk891lx-source/drivers/gpu/drm/apple/iomfb.c
+diff --git a/./drivers/gpu/drm/apple/iomfb.c b/./drivers/gpu/drm/apple/iomfb.c
+--- a/./drivers/gpu/drm/apple/iomfb.c
 +++ b/./drivers/gpu/drm/apple/iomfb.c
 @@ -1616,9 +1616,6 @@ void dcp_flush(struct drm_crtc *crtc, struct drm_atomic_state *state)
  		req->swap.src_rect[l] = drm_to_dcp_rect(&src_rect);
@@ -11,9 +11,9 @@ diff --git a/nix/store/m8fa4vmavh40r1dsmds933xsqdk891lx-source/drivers/gpu/drm/a
 		/* the obvious helper call drm_fb_dma_get_gem_addr() adjusts
 		 * the address for source x/y offsets. Since IOMFB has a direct
 		 * support source position prefer that.
-diff --git a/nix/store/m8fa4vmavh40r1dsmds933xsqdk891lx-source/drivers/gpu/drm/apple/parser.c b/./drivers/gpu/drm/apple/parser.c
+diff --git a/./drivers/gpu/drm/apple/parser.c b/./drivers/gpu/drm/apple/parser.c
 index bc3603d..3ab03a7 100644
---- a/nix/store/m8fa4vmavh40r1dsmds933xsqdk891lx-source/drivers/gpu/drm/apple/parser.c
+--- a/./drivers/gpu/drm/apple/parser.c
 +++ b/./drivers/gpu/drm/apple/parser.c
 @@ -365,9 +365,6 @@ static int parse_mode(struct dcp_parse_ctx *handle,
  	     (horiz.active == 3456 && vert.active == 2234)))

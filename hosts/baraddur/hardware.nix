@@ -10,9 +10,11 @@
     ];
 
   boot.initrd.availableKernelModules = [ "usb_storage" "sdhci_pci" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
+
+  boot.kernelPatches = [{
+    name = "ignore-notch";
+    patch = ./ignore-notch.patch;
+  }];
 
   boot.kernel.sysctl = { "vm.swappiness" = 1; };
 
@@ -44,10 +46,9 @@
   ];
 
   hardware.asahi.peripheralFirmwareDirectory = inputs.secrets.m1-firmware;
-  hardware.opengl = {
-    enable = true;
-    package = pkgs.mesa_asahi.drivers;
-  };
+  hardware.asahi.useExperimentalGPUDriver = true;
+  hardware.asahi.experimentalGPUInstallMode = "driver";
+  hardware.opengl.enable = true;
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -58,8 +59,6 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
-  # high-resolution display
-  hardware.video.hidpi.enable = true;
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.settings = { General = { Enable = "Source,Sink,Media,Socket"; }; };

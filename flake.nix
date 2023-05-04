@@ -4,13 +4,13 @@
     flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
 
     # Repos
-    nixpkgs.url = "github:/NixOS/nixpkgs/1603d11595a232205f03d46e635d919d1e1ec5b9";
+    nixpkgs.url = "github:NixOS/nixpkgs";
     master.url = "github:NixOS/nixpkgs/master";
     home.url = "github:nix-community/home-manager/master";
     nur.url = "github:nix-community/NUR";
 
     apple-silicon = {
-      url = "github:tpwrules/nixos-apple-silicon";
+      url = "github:QuentinI/nixos-apple-silicon/dev";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -20,6 +20,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+
+    helix = { url = "github:pinelang/helix-tree-explorer/tree_explore"; };
 
     # Themes
     base16-unclaimed-schemes = {

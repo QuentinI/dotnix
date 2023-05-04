@@ -27,6 +27,7 @@ in
           metamask
           multi-account-containers
           polkadot-js
+          refined-github
           simple-tab-groups
           sponsorblock
           stylus

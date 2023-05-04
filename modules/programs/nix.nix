@@ -3,7 +3,7 @@
 {
 
   nix = {
-    extraOptions = "experimental-features = nix-command flakes";
+    extraOptions = "experimental-features = nix-command flakes ca-derivations";
     package = pkgs.nixFlakes;
     registry.nixpkgs.flake = inputs.nixpkgs;
     settings = {

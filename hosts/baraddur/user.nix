@@ -28,7 +28,8 @@ in
       ../../modules/programs/zsh
       ../../modules/programs/ncmpcpp
       ../../modules/programs/iex
-      # ../../modules/programs/tdesktop
+      ../../modules/programs/tdesktop
+      ../../modules/programs/helix.nix
       ../../modules/programs/kitty
       ../../modules/programs/zathura.nix
       ../../modules/programs/fzf
@@ -42,7 +43,7 @@ in
       default = {
         outputs = [
           {
-            criteria = "Unknown-1";
+            criteria = "eDP-1";
             position = "0,0";
             scale = 2.0;
           }

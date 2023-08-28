@@ -37,6 +37,7 @@
               "dialout"
               "cdrom"
               "wireshark"
+              "uinput"
             ];
             shell = "${pkgs.zsh}/bin/zsh";
             description = vars.fullname;

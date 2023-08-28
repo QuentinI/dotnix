@@ -34,6 +34,8 @@ inputs@{ config, pkgs, vars, secrets, ... }:
     HandlePowerKey=ignore
   '';
 
+  hardware.uinput.enable = true;
+
   services.xserver.enable = true;
   services.xserver.libinput.enable = true;
 

@@ -1,21 +1,20 @@
-diff --git a/./drivers/gpu/drm/apple/iomfb.c b/./drivers/gpu/drm/apple/iomfb.c
---- a/./drivers/gpu/drm/apple/iomfb.c
-+++ b/./drivers/gpu/drm/apple/iomfb.c
-@@ -1616,9 +1616,6 @@ void dcp_flush(struct drm_crtc *crtc, struct drm_atomic_state *state)
+diff --git a/./drivers/gpu/drm/apple/iomfb_template.c b/./drivers/gpu/drm/apple/iomfb_template.c
+--- a/./drivers/gpu/drm/apple/iomfb_template.c
++++ b/./drivers/gpu/drm/apple/iomfb_template.c
+@@ -1229,9 +1229,6 @@ void DCP_FW_NAME(iomfb_flush)(struct apple_dcp *dcp, struct drm_crtc *crtc, stru
  		req->swap.src_rect[l] = drm_to_dcp_rect(&src_rect);
  		req->swap.dst_rect[l] = drm_to_dcp_rect(&new_state->dst);
  
 -		if (dcp->notch_height > 0)
 -			req->swap.dst_rect[l].y += dcp->notch_height;
 -
-		/* the obvious helper call drm_fb_dma_get_gem_addr() adjusts
-		 * the address for source x/y offsets. Since IOMFB has a direct
-		 * support source position prefer that.
+ 		/* the obvious helper call drm_fb_dma_get_gem_addr() adjusts
+ 		 * the address for source x/y offsets. Since IOMFB has a direct
+ 		 * support source position prefer that.
 diff --git a/./drivers/gpu/drm/apple/parser.c b/./drivers/gpu/drm/apple/parser.c
-index bc3603d..3ab03a7 100644
 --- a/./drivers/gpu/drm/apple/parser.c
 +++ b/./drivers/gpu/drm/apple/parser.c
-@@ -365,9 +365,6 @@ static int parse_mode(struct dcp_parse_ctx *handle,
+@@ -421,9 +421,6 @@ static int parse_mode(struct dcp_parse_ctx *handle,
  	     (horiz.active == 3456 && vert.active == 2234)))
  		return -EINVAL;
  

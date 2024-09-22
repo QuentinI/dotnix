@@ -8,6 +8,7 @@
 
   boot.initrd.availableKernelModules = [ "usb_storage" "sdhci_pci" ];
 
+  boot.kernelParams = ["brcmfmac.feature_disable=0x82000"];
   boot.kernelPatches = [{
     name = "ignore-notch";
     patch = ./ignore-notch.patch;
@@ -44,8 +45,7 @@
 
   hardware.asahi.peripheralFirmwareDirectory = inputs.secrets.m1-firmware;
   hardware.asahi.useExperimentalGPUDriver = true;
-  hardware.asahi.experimentalGPUInstallMode = "driver";
-  hardware.asahi.addEdgeKernelConfig = true;
+  hardware.asahi.experimentalGPUInstallMode = "replace";
   hardware.opengl.enable = true;
 
   networking.useDHCP = lib.mkDefault true;

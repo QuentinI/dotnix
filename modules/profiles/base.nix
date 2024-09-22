@@ -54,7 +54,7 @@
           binutils
           bzip2
           duf
-          exa
+          eza
           fd
           file
           git

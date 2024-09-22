@@ -155,7 +155,7 @@ in
         nodejs
         yarn
         rustup
-        rust-analyzer
+        # rust-analyzer
         sumneko-lua-language-server
         llvm
         llvmPackages.clang-unwrapped
@@ -184,7 +184,7 @@ in
         ## Media
         feh
         sox
-        spotify-tui
+        # spotify-tui
 
         ## Documents
         # texlive.combined.scheme-full
@@ -237,8 +237,8 @@ in
         networkmanagerapplet
         playerctl
         shared-mime-info
-        virtmanager
-        rnix-lsp
+        virt-manager
+        # rnix-lsp
         libsForQt5.qtstyleplugin-kvantum
         gsettings-desktop-schemas
         qt5ct

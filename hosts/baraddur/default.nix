@@ -11,7 +11,7 @@ inputs@{ system, nixpkgs, home, vars, secrets, hostname, mkImports, ... }:
     modules = mkImports "nixos" [
       ({ config, lib, pkgs, ... }: {
         config.nixpkgs.overlays = inputs.overlays
-          ++ [ inputs.apple-silicon.overlays.default ]
+          ++ [ inputs.apple-silicon.overlays.apple-silicon-overlay ]
           ++ [ (import ../../overlays/default.nix) ];
         # Some black magic fuckery to inject specialArgs into HM configuration
         options.home-manager.users = lib.mkOption {
@@ -24,7 +24,7 @@ inputs@{ system, nixpkgs, home, vars, secrets, hostname, mkImports, ... }:
       })
       home.nixosModules.home-manager
 
-      inputs.apple-silicon.nixosModules.default
+      inputs.apple-silicon.nixosModules.apple-silicon-support
 
       ./hardware.nix
       ./configuration.nix

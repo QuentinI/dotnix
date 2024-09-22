@@ -4,13 +4,13 @@
     flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
 
     # Repos
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     master.url = "github:NixOS/nixpkgs/master";
     home.url = "github:nix-community/home-manager/master";
     nur.url = "github:nix-community/NUR";
 
     apple-silicon = {
-      url = "github:QuentinI/nixos-apple-silicon/dev";
+      url = "github:damien-biasotto/nixos-apple-silicon/bugfix/wifi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

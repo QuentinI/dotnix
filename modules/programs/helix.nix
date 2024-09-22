@@ -3,7 +3,7 @@
 {
   programs.helix = {
     enable = true;
-    package = inputs.helix.packages."${system}".helix-dev;
+    package = inputs.helix.packages."${system}".helix;
     settings = {
       theme = "base16_hm";
       editor = {
@@ -32,8 +32,8 @@
         };
       };
     };
-    languages = [
-      {
+    languages = {
+      rust = {
         name = "rust";
         config = {
           inlayHints.bindingModeHints.enable = true;
@@ -44,8 +44,8 @@
           inlayHints.discriminantHints.enable = "fieldless";
           inlayHints.lifetimeElisionHints.enable = "skip_trivial";
         };
-      }
-    ];
+      };
+    };
     themes = with config.theme.base16.colors; {
       base16_hm = {
         "attributes" = "#${base09.hex.rgb}";

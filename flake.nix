@@ -1,18 +1,29 @@
 {
 
   inputs = {
-    flake-utils.url = "github:numtide/flake-utils/flatten-tree-system";
+    systems.url = "github:nix-systems/default";
+
+    flake-utils.url = "github:numtide/flake-utils";
+    flake-utils.inputs.systems.follows = "systems";
+
 
     # Repos
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     master.url = "github:NixOS/nixpkgs/master";
-    home.url = "github:nix-community/home-manager/master";
+    home.url = "github:QuentinI/home-manager/master";
     nur.url = "github:nix-community/NUR";
 
     apple-silicon = {
       url = "github:damien-biasotto/nixos-apple-silicon/bugfix/wifi";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-darwin = {
+       url = "github:LnL7/nix-darwin";
+       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixpkgs-firefox-darwin.url = "github:bandithedoge/nixpkgs-firefox-darwin";
 
     # Neovim configuration
     nvim = {
@@ -100,17 +111,19 @@
         fullname = "Quentin Inkling";
         theme = "dark";
       };
-    in
-    flake-utils.lib.eachDefaultSystem (system: rec {
-      packages.nixosConfigurations = builtins.mapAttrs
+      eachHostname = system: attrName: builtins.mapAttrs
         (hostname: config:
           (config (inputs // rec {
             common-cfg = {
               inherit system;
               config.allowUnfree = true;
             };
-            inherit system;
-            inherit vars secrets hostname mkImports;
+            pkgs = import inputs.nixpkgs common-cfg;
+            nur = import inputs.nur {
+              nurpkgs = pkgs;
+              inherit pkgs;
+            };
+            inherit inputs system vars secrets hostname mkImports;
             overlays = [
               (final: prev: {
                 master = import master common-cfg;
@@ -118,7 +131,11 @@
               (import ./packages)
               inputs.nvim.overlays."${system}".default
             ];
-          })).nixosConfiguration)
+          })).${attrName})
         hosts;
+    in
+    flake-utils.lib.eachDefaultSystem (system: rec {
+      packages.darwinConfigurations = eachHostname system "darwinConfiguration";
+      packages.nixosConfigurations = eachHostname system "nixosConfiguration";
     });
 }

@@ -9,3 +9,7 @@
 #TabsToolbar > .titlebar-buttonbox-container {
 	display: none !important;
 }
+
+#TabsToolbar {
+	display: none !important;
+}

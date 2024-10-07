@@ -1,12 +1,40 @@
-{
+let
+  defaultPackages = pkgs: [
+    # Rust evangelism strike force
+    pkgs.helix pkgs.bat pkgs.duf pkgs.fd pkgs.ripgrep pkgs.xh pkgs.eza
+
+    # Archive management
+    pkgs.atool pkgs.unar pkgs.unzip pkgs.bzip2
+
+    # Git
+    pkgs.git pkgs.github-cli
+
+    # Data wrangling
+    pkgs.as-tree pkgs.jq pkgs.dsq pkgs.difftastic
+
+    # Multiplexing
+    pkgs.zellij pkgs.tmate pkgs.tmux
+
+    # A little bit of everything
+    pkgs.binutils pkgs.coreutils pkgs.file pkgs.age pkgs.gping pkgs.pass
+    pkgs.patchelf pkgs.picocom pkgs.pv pkgs.rlwrap pkgs.tldr pkgs.direnv pkgs.progress
+  ];
+in {
+
+  darwin = { pkgs, ... }: {
+      nixpkgs.config.allowUnfree = true;
+      environment.systemPackages = defaultPackages pkgs;
+  };
+
   nixos = { pkgs, vars, secrets, inputs, ... }:
     {
       imports = [ ../programs/nix.nix ];
 
       nixpkgs.config.allowUnfree = true;
-
-      # Doesn't make sense with flakes
       system.autoUpgrade.enable = false;
+      environment.systemPackages = (defaultPackages pkgs) ++ [
+    	pkgs.busybox pkgs.inetutils pkgs.usbutils pkgs.lshw pkgs.htop pkgs.psmisc
+      ];
 
       users =
         {
@@ -44,43 +72,6 @@
           };
 
         };
-
-      # Packages I definitely want on any system
-      environment.systemPackages = with pkgs;
-        [
-          age
-          atool
-          bat
-          binutils
-          bzip2
-          duf
-          eza
-          fd
-          file
-          git
-          github-cli
-          gping
-          htop
-          inetutils
-          jq
-          lf
-          neovim
-          pass
-          patchelf
-          picocom
-          psmisc
-          pv
-          ripgrep
-          rlwrap
-          tldr
-          tmate
-          tmux
-          unrar
-          unzip
-          usbutils
-          xh
-        ];
-
     };
 
   home = { pkgs, ... }: {
@@ -96,6 +87,7 @@
       fi
     '';
   };
+
 }
 
 

@@ -1,67 +1,56 @@
-From 68ac6b2df3e21cf0f78212398e1e268bdf86479e Mon Sep 17 00:00:00 2001
-From: Quentin Inkling <mbee@protonmail.ch>
-Date: Thu, 24 Mar 2022 03:08:12 +0300
-Subject: [PATCH] Fix UX
-
----
- Telegram/SourceFiles/dialogs/dialogs_widget.cpp     | 9 ++++++++-
- Telegram/SourceFiles/window/window_filters_menu.cpp | 4 +++-
- 2 files changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/Telegram/SourceFiles/dialogs/dialogs_widget.cpp b/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
-index 5c3caaae0..7944ce719 100644
---- a/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
-+++ b/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
-@@ -47,6 +47,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
- #include "data/data_folder.h"
- #include "data/data_histories.h"
- #include "data/data_changes.h"
-+#include "data/data_chat_filters.h"
- #include "data/data_download_manager.h"
- #include "info/downloads/info_downloads_widget.h"
- #include "info/info_memento.h"
-@@ -822,7 +823,13 @@ void Widget::escape() {
-        if (controller()->activeChatEntryCurrent().key) {
-            controller()->content()->dialogsCancelled();
-        } else if (controller()->activeChatsFilterCurrent()) {
--			controller()->setActiveChatsFilter(FilterId(0));
-+            const auto filters = &controller()->session().data().chatsFilters();
-+            if (filters->list().empty()) {
-+                controller()->setActiveChatsFilter(FilterId(0));
-+
-+            } else {
-+                controller()->setActiveChatsFilter(filters->list()[0].id());
-+            }
-        }
-    } else if (!_searchInChat && !controller()->selectingPeer()) {
-        if (controller()->activeChatEntryCurrent().key) {
-diff --git a/Telegram/SourceFiles/window/window_filters_menu.cpp b/Telegram/SourceFiles/window/window_filters_menu.cpp
-index 36ccdcfc5..8c03e4679 100644
---- a/Telegram/SourceFiles/window/window_filters_menu.cpp
-+++ b/Telegram/SourceFiles/window/window_filters_menu.cpp
-@@ -197,6 +197,7 @@ void FiltersMenu::refresh() {
-                Ui::ComputeFilterIcon(filter)));
-    }
-    _filters = std::move(now);
-+    _session->setActiveChatsFilter(filters->list()[0].id());
-    _reorder->start();
- 
-    _container->resizeToWidth(_outer.width());
-@@ -209,12 +210,13 @@ void FiltersMenu::refresh() {
+diff -ur a/Telegram/SourceFiles/data/components/sponsored_messages.cpp b/Telegram/SourceFiles/data/components/sponsored_messages.cpp
+--- a/Telegram/SourceFiles/data/components/sponsored_messages.cpp	1970-01-01 01:00:01
++++ b/Telegram/SourceFiles/data/components/sponsored_messages.cpp	2024-10-07 21:25:44
+@@ -183,11 +183,11 @@
+ 			entryIt->sponsored.textWithEntities,
+ 			(*lastViewIt)->data());
+ 		entryIt->item.reset(makedMessage.get());
+-		history->addNewInTheMiddle(
+-			makedMessage.get(),
+-			std::distance(begin(history->blocks), blockIt),
+-			std::distance(begin(messages()), lastViewIt) + 1);
+-		messages().back().get()->setPendingResize();
++		// history->addNewInTheMiddle(
++		// 	makedMessage.get(),
++		// 	std::distance(begin(history->blocks), blockIt),
++		// 	std::distance(begin(messages()), lastViewIt) + 1);
++		// messages().back().get()->setPendingResize();
+ 		list.injectedCount++;
+ 	}
  }
+diff -ur a/Telegram/SourceFiles/dialogs/dialogs_widget.cpp b/Telegram/SourceFiles/dialogs/dialogs_widget.cpp
+--- a/Telegram/SourceFiles/dialogs/dialogs_widget.cpp	1970-01-01 01:00:01
++++ b/Telegram/SourceFiles/dialogs/dialogs_widget.cpp	2024-10-07 22:10:39
+@@ -1881,7 +1881,12 @@
+ 		} else if (controller()->isPrimary()) {
+ 			const auto filters = &session().data().chatsFilters();
+ 			const auto &list = filters->list();
+-			const auto first = list.empty() ? FilterId() : list.front().id();
++			auto first = FilterId();
++            if (list.size() == 1) {
++                first = list.front().id();
++            } else if (list.size() > 1) {
++                first = list[1].id();
++            };
+ 			if (controller()->activeChatsFilterCurrent() != first) {
+ 				controller()->setActiveChatsFilter(first);
+ 			}
+diff -ur a/Telegram/SourceFiles/window/window_filters_menu.cpp b/Telegram/SourceFiles/window/window_filters_menu.cpp
+--- a/Telegram/SourceFiles/window/window_filters_menu.cpp	1970-01-01 01:00:01
++++ b/Telegram/SourceFiles/window/window_filters_menu.cpp	2024-10-08 17:02:41
+@@ -234,6 +234,15 @@
+ 		now.emplace(filter.id(), std::move(button));
+ 	}
+ 	_filters = std::move(now);
++    FilterId filter;
++    if (filters->list().size() == 0) {
++        filter = FilterId();
++    } else if (filters->list().size() == 1) {
++        filter = filters->list()[0].id();
++    } else {
++        filter = filters->list()[1].id();
++    }
++    _session->setActiveChatsFilter(filter);
+ 	_reorder->start();
  
- void FiltersMenu::setupList() {
-+    _list = _container->add(object_ptr<Ui::VerticalLayout>(_container));
-+
-    _all = prepareButton(
-        _container,
-        0,
-        tr::lng_filters_all(tr::now),
-        Ui::FilterIcon::All);
--	_list = _container->add(object_ptr<Ui::VerticalLayout>(_container));
-    _setup = prepareButton(
-        _container,
-        -1,
--- 
-2.34.1
-
+ 	_container->resizeToWidth(_outer.width());

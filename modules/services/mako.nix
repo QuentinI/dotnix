@@ -24,7 +24,9 @@
       };
 
       systemd.user.services.mako = {
-        Install = { WantedBy = [ "graphical-session.target" ]; };
+        Install = {
+          WantedBy = [ "graphical-session.target" ];
+        };
         Service = {
           ExecStart = "${pkgs.mako}/bin/mako";
           Restart = "on-abort";

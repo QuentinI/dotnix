@@ -1,4 +1,10 @@
-{ config, pkgs, inputs, system, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  system,
+  ...
+}:
 
 {
   programs.helix = {
@@ -12,9 +18,22 @@
         bufferline = "multiple";
         color-modes = true;
         statusline = {
-          left = [ "mode" "version-control" "spacer" "spinner" "file-name" "file-modification-indicator" ];
+          left = [
+            "mode"
+            "version-control"
+            "spacer"
+            "spinner"
+            "file-name"
+            "file-modification-indicator"
+          ];
           center = [ ];
-          right = [ "diagnostics" "workspace-diagnostics" "selections" "position" "file-encoding" ];
+          right = [
+            "diagnostics"
+            "workspace-diagnostics"
+            "selections"
+            "position"
+            "file-encoding"
+          ];
         };
         lsp = {
           display-inlay-hints = true;
@@ -98,16 +117,24 @@
           modifiers = [ "crossed_out" ];
         };
         "diagnostic.hint" = {
-          underline = { style = "curl"; };
+          underline = {
+            style = "curl";
+          };
         };
         "diagnostic.info" = {
-          underline = { style = "curl"; };
+          underline = {
+            style = "curl";
+          };
         };
         "diagnostic.warning" = {
-          underline = { style = "curl"; };
+          underline = {
+            style = "curl";
+          };
         };
         "diagnostic.error" = {
-          underline = { style = "curl"; };
+          underline = {
+            style = "curl";
+          };
         };
         "ui.bufferline" = {
           fg = "#${base04.hex.rgb}";
@@ -208,7 +235,10 @@
         };
         "ui.virtual.inlay-hint" = {
           fg = "#${base03.hex.rgb}";
-          modifiers = [ "dim" "italic" ];
+          modifiers = [
+            "dim"
+            "italic"
+          ];
         };
         "ui.virtual.whitespace" = {
           fg = "#${base01.hex.rgb}";

@@ -1,4 +1,10 @@
-{ config, pkgs, vars, mkImports, ... }:
+{
+  config,
+  pkgs,
+  vars,
+  mkImports,
+  ...
+}:
 
 let
   modifier = "Mod4";
@@ -55,7 +61,6 @@ rec {
     ../../services/mako.nix
   ];
 
-
   home.packages = [
     pkgs.swaylock
     pkgs.grim
@@ -70,14 +75,16 @@ rec {
     pkgs.kanshi
   ];
 
-
   services.kanshi = {
     enable = true;
     profiles = pkgs.lib.mkDefault (pkgs.lib.warn "Sway is enabled, but no kanshi profiles are set" { });
   };
 
   wayland.windowManager.sway.enable = true;
-  wayland.windowManager.sway.extraOptions = [ "--unsupported-gpu" "--verbose" ];
+  wayland.windowManager.sway.extraOptions = [
+    "--unsupported-gpu"
+    "--verbose"
+  ];
   wayland.windowManager.sway.config = {
     assigns = {
       "1" = [
@@ -85,8 +92,11 @@ rec {
         { class = "Chromium-browser"; }
         { class = "Deluge"; }
       ];
-      "2" =
-        [{ title = "Atom"; } { class = "jetbrains"; } { class = "Emacs"; }];
+      "2" = [
+        { title = "Atom"; }
+        { class = "jetbrains"; }
+        { class = "Emacs"; }
+      ];
       "3" = [
         { app_id = "telegramdesktop"; }
         { class = "discord"; }
@@ -141,7 +151,9 @@ rec {
       smartBorders = "on";
     };
 
-    fonts = { names = [ "Fira Code 10" ]; };
+    fonts = {
+      names = [ "Fira Code 10" ];
+    };
 
     keybindings = { };
 
@@ -158,8 +170,7 @@ rec {
 
     output = {
       "*" = {
-        background =
-          "#${config.theme.base16.colors.base00.hex.rgb} solid_color";
+        background = "#${config.theme.base16.colors.base00.hex.rgb} solid_color";
       };
     };
 

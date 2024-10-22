@@ -1,5 +1,6 @@
 {
-  home = { config, pkgs, ... }:
+  home =
+    { config, pkgs, ... }:
 
     let
       memoryWatcher = pkgs.writeShellScriptBin "memory.sh" ''
@@ -44,9 +45,15 @@
 
     in
     {
-      home.packages = with pkgs; [ gawk procps notify-desktop ];
+      home.packages = with pkgs; [
+        gawk
+        procps
+        notify-desktop
+      ];
       systemd.user.services.memory = {
-        Install = { WantedBy = [ "graphical-session.target" ]; };
+        Install = {
+          WantedBy = [ "graphical-session.target" ];
+        };
         Service = {
           ExecStart = "${memoryWatcher}/bin/memory.sh";
           Restart = "on-abort";

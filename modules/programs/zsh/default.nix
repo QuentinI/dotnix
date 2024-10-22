@@ -44,37 +44,48 @@ let
     ZSH_AUTOSUGGEST_STRATEGY=(atuin completion)
     source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
   '';
-  installed = pkgs: [ pkgs.atuin pkgs.zoxide pkgs.starship pkgs.direnv pkgs.nix-index ];
-in {
-  darwin = { pkgs, ... }: {
-    programs.zsh = {
-      enable = true;
-      shellInit = init pkgs;
+  installed = pkgs: [
+    pkgs.atuin
+    pkgs.zoxide
+    pkgs.starship
+    pkgs.direnv
+    pkgs.nix-index
+  ];
+in
+{
+  darwin =
+    { pkgs, ... }:
+    {
+      programs.zsh = {
+        enable = true;
+        shellInit = init pkgs;
+      };
+
+      environment.shellAliases = aliases pkgs;
+      environment.loginShell = "${pkgs.zsh}";
+      environment.shells = [ pkgs.zsh ];
     };
 
-    environment.shellAliases = aliases pkgs;
-    environment.loginShell = "${pkgs.zsh}";
-    environment.shells = [ pkgs.zsh ];
-  };
+  home =
+    { pkgs, ... }:
+    {
+      home.packages = installed pkgs;
 
-  home = { pkgs, ... }:  {
-    home.packages = installed pkgs;
-  
-    xdg.configFile.starship = {
-      target = "starship.toml";
-      source = ./starship.toml;
-    };
-  
-    xdg.configFile.atuin = {
-      target = "atuin/config.toml";
-      source = ./atuin.toml;
-    };
-  
-    programs.zsh = {
-      enable = true;
-      shellAliases = aliases pkgs;
-      initExtra = init pkgs;
-    };
+      xdg.configFile.starship = {
+        target = "starship.toml";
+        source = ./starship.toml;
+      };
 
-  };
+      xdg.configFile.atuin = {
+        target = "atuin/config.toml";
+        source = ./atuin.toml;
+      };
+
+      programs.zsh = {
+        enable = true;
+        shellAliases = aliases pkgs;
+        initExtra = init pkgs;
+      };
+
+    };
 }

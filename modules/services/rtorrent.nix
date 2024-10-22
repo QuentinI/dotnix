@@ -1,5 +1,6 @@
 {
-  home = { config, pkgs, ... }:
+  home =
+    { config, pkgs, ... }:
     {
       programs.rtorrent = {
         enable = true;

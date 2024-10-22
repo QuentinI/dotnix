@@ -1,4 +1,9 @@
-{ config, pkgs, vars, ... }:
+{
+  config,
+  pkgs,
+  vars,
+  ...
+}:
 
 {
   services.xserver = {
@@ -6,7 +11,9 @@
     libinput.enable = true;
     displayManager = {
       defaultSession = "sway";
-      lightdm = { enable = true; };
+      lightdm = {
+        enable = true;
+      };
     };
     config = "";
     layout = "us,ru";

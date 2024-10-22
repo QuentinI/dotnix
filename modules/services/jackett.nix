@@ -1,5 +1,6 @@
 {
-  home = { config, pkgs, ... }:
+  home =
+    { config, pkgs, ... }:
 
     let
       startScript = pkgs.writeShellScriptBin "jackett.sh" ''
@@ -10,7 +11,9 @@
     {
       home.packages = with pkgs; [ jackett ];
       systemd.user.services.jackett = {
-        Install = { WantedBy = [ "graphical-session.target" ]; };
+        Install = {
+          WantedBy = [ "graphical-session.target" ];
+        };
         Service = {
           ExecStart = "${startScript}/bin/jackett.sh";
           Restart = "on-abort";

@@ -1,4 +1,9 @@
-{ vars, lib, pkgs, ... }:
+{
+  vars,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   boot = {
@@ -14,9 +19,15 @@
     ];
 
     # Graphics card-related
-    kernelModules = [ "kvm-intel" "nouveau" "v4l2loopback" ];
-    extraModulePackages =
-      [ pkgs.xorg.xf86videonouveau pkgs.linuxPackages.v4l2loopback ];
+    kernelModules = [
+      "kvm-intel"
+      "nouveau"
+      "v4l2loopback"
+    ];
+    extraModulePackages = [
+      pkgs.xorg.xf86videonouveau
+      pkgs.linuxPackages.v4l2loopback
+    ];
     kernelParams = [
       "acpi_osi=!"
       ''acpi_osi="Windows 2009"''
@@ -25,7 +36,9 @@
     ];
 
     # I have plenty of RAM and I'd hate to swap to SSD
-    kernel.sysctl = { "vm.swappiness" = 1; };
+    kernel.sysctl = {
+      "vm.swappiness" = 1;
+    };
 
     # Don't really remember why I need that
     loader.efi.canTouchEfiVariables = true;
@@ -57,7 +70,12 @@
     "/home/${vars.username}/Downloads" = {
       device = "/dev/disk/by-uuid/8c048aaa-7568-4ff4-a96c-02f4d8510566";
       fsType = "btrfs";
-      options = [ "defaults" "nodev" "nosuid" "noexec" ];
+      options = [
+        "defaults"
+        "nodev"
+        "nosuid"
+        "noexec"
+      ];
     };
   };
 
@@ -109,16 +127,18 @@
     media-session = {
       config = {
         bluez-monitor = {
-          rules = [{
-            # Matches all cards
-            matches = [{ "device.name" = "~bluez_card.*"; }];
-            actions = {
-              "update-props" = {
-                "bluez5.msbc-support" = true;
-                "bluez5.sbc-xq-support" = true;
+          rules = [
+            {
+              # Matches all cards
+              matches = [ { "device.name" = "~bluez_card.*"; } ];
+              actions = {
+                "update-props" = {
+                  "bluez5.msbc-support" = true;
+                  "bluez5.sbc-xq-support" = true;
+                };
               };
-            };
-          }];
+            }
+          ];
         };
       };
     };

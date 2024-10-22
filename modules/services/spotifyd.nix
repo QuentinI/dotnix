@@ -1,4 +1,9 @@
-{ vars, secrets, hostname, ... }:
+{
+  vars,
+  secrets,
+  hostname,
+  ...
+}:
 {
   services.spotifyd = {
     enable = true;

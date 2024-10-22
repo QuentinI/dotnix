@@ -1,5 +1,6 @@
 {
-  home = { pkgs, ... }:
+  home =
+    { pkgs, ... }:
 
     {
       home.packages = [ pkgs.keybase-gui ];

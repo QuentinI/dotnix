@@ -1,5 +1,6 @@
 {
-  nixos = { config, pkgs, ... }:
+  nixos =
+    { config, pkgs, ... }:
     {
       virtualisation.docker = {
         enable = true;

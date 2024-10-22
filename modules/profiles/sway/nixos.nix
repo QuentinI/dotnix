@@ -1,11 +1,23 @@
-{ config, pkgs, vars, ... }:
+{
+  config,
+  pkgs,
+  vars,
+  ...
+}:
 
 let
-  sway =
-    pkgs.sway.override { extraOptions = [ "--unsupported-gpu" "--verbose" ]; };
+  sway = pkgs.sway.override {
+    extraOptions = [
+      "--unsupported-gpu"
+      "--verbose"
+    ];
+  };
 in
 {
-  environment.systemPackages = [ pkgs.qt5.qtwayland sway ];
+  environment.systemPackages = [
+    pkgs.qt5.qtwayland
+    sway
+  ];
 
   security.pam.services.swaylock = { };
 

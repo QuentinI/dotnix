@@ -1,32 +1,54 @@
 {
-system = "aarch64-darwin";
-configuration = 
-{ flake-inputs, system, vars, secrets, hostname, mkImports, nur, pkgs-stable, ... }:
+  system = "aarch64-darwin";
+  configuration =
+    {
+      flake-inputs,
+      system,
+      vars,
+      secrets,
+      hostname,
+      mkImports,
+      nur,
+      pkgs-stable,
+      ...
+    }:
 
-flake-inputs.nix-darwin.lib.darwinSystem rec {
-    inherit system;
+    flake-inputs.nix-darwin.lib.darwinSystem rec {
+      inherit system;
 
-    modules = [
-      { nixpkgs.overlays = [ flake-inputs.nixpkgs-firefox-darwin.overlay ]; }
+      modules =
+        [
+          { nixpkgs.overlays = [ flake-inputs.nixpkgs-firefox-darwin.overlay ]; }
 
-      flake-inputs.lix-module.nixosModules.default
-      flake-inputs.home.darwinModules.home-manager
+          flake-inputs.lix-module.nixosModules.default
+          flake-inputs.home.darwinModules.home-manager
 
-      ./configuration.nix
-      ./user.nix
+          ./configuration.nix
+          ./user.nix
 
+        ]
+        ++ mkImports "darwin" [
 
-    ] ++ mkImports "darwin" [
+          ../../modules/profiles/base.nix
+          ../../modules/programs/nix.nix
+          ../../modules/programs/firefox
+          ../../modules/programs/zsh/default.nix
 
-      ../../modules/profiles/base.nix
-      ../../modules/programs/nix.nix
-      ../../modules/programs/firefox
-      ../../modules/programs/zsh/default.nix
+        ];
 
-    ];
-
-    # Things in this set are passed to modules and accessible
-    # in the top-level arguments (e.g. `{ pkgs, lib, inputs, ... }:`).
-    specialArgs = { inherit flake-inputs vars secrets system hostname mkImports nur pkgs-stable; };
-};
+      # Things in this set are passed to modules and accessible
+      # in the top-level arguments (e.g. `{ pkgs, lib, inputs, ... }:`).
+      specialArgs = {
+        inherit
+          flake-inputs
+          vars
+          secrets
+          system
+          hostname
+          mkImports
+          nur
+          pkgs-stable
+          ;
+      };
+    };
 }

@@ -1,18 +1,19 @@
-{ lib
-, fetchFromGitHub
-, naerskUnstable
-, makeWrapper
-, pkg-config
-, perl
-, openssl
-, python3
-, runCommand
-, napalm
-, nodejs_latest
-, libsForQt5
-, xdg-utils
-, stdenv
-, cargo
+{
+  lib,
+  fetchFromGitHub,
+  naerskUnstable,
+  makeWrapper,
+  pkg-config,
+  perl,
+  openssl,
+  python3,
+  runCommand,
+  napalm,
+  nodejs_latest,
+  libsForQt5,
+  xdg-utils,
+  stdenv,
+  cargo,
 }@inputs:
 
 let
@@ -166,12 +167,14 @@ rec {
         makeWrapper
       ];
 
-      postFixup = attrs.postFixup or "" + ''
-        wrapProgram "$out/bin/aw-server" \
-          --prefix XDG_DATA_DIRS : "$out/share"
-        mkdir -p "$out/share/aw-server"
-        ln -s "${aw-webui}" "$out/share/aw-server/static"
-      '';
+      postFixup =
+        attrs.postFixup or ""
+        + ''
+          wrapProgram "$out/bin/aw-server" \
+            --prefix XDG_DATA_DIRS : "$out/share"
+          mkdir -p "$out/share/aw-server"
+          ln -s "${aw-webui}" "$out/share/aw-server/static"
+        '';
     };
 
     meta = with lib; {

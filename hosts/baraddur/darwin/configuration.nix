@@ -1,4 +1,11 @@
-inputs@{ config, pkgs, vars, secrets, system, ... }:
+inputs@{
+  config,
+  pkgs,
+  vars,
+  secrets,
+  system,
+  ...
+}:
 
 {
   fonts.packages = [
@@ -55,11 +62,11 @@ inputs@{ config, pkgs, vars, secrets, system, ... }:
     enable = true;
     enableScriptingAddition = true;
     config = {
-    	layout = "stack";
-	window_shadow = "float";
-        window_opacity = "on";
-        active_window_opacity = 1.0;
-        normal_window_opacity = 0.9;
+      layout = "stack";
+      window_shadow = "float";
+      window_opacity = "on";
+      active_window_opacity = 1.0;
+      normal_window_opacity = 0.9;
     };
   };
 
@@ -70,4 +77,3 @@ inputs@{ config, pkgs, vars, secrets, system, ... }:
 
   system.stateVersion = 4;
 }
-

@@ -27,8 +27,8 @@
     };
 
     nix-darwin = {
-       url = "github:LnL7/nix-darwin";
-       inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nixpkgs-firefox-darwin.url = "github:bandithedoge/nixpkgs-firefox-darwin";
@@ -40,7 +40,9 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
-    helix = { url = "github:pinelang/helix-tree-explorer/tree_explore"; };
+    helix = {
+      url = "github:pinelang/helix-tree-explorer/tree_explore";
+    };
 
     # Themes
     base16-unclaimed-schemes = {
@@ -59,7 +61,6 @@
       flake = false;
       url = "github:mk12/base16-solarized-scheme/main";
     };
-
 
     # various MPV scripts
     mpv-scripts = {
@@ -98,65 +99,90 @@
   };
 
   outputs =
-    inputs@{ self, nixpkgs, nixpkgs-stable, master, nur, home, secrets, naersk, flake-utils, ... }:
+    inputs@{
+      self,
+      nixpkgs,
+      nixpkgs-stable,
+      master,
+      nur,
+      home,
+      secrets,
+      naersk,
+      flake-utils,
+      ...
+    }:
     let
       hostnames = builtins.attrNames (builtins.readDir ./hosts);
-      findSystem = path: system:
-      let
-      	file = nixpkgs.lib.path.append path "${system}.nix";
-      	dir = nixpkgs.lib.path.append path "${system}/default.nix";
-      in if (builtins.pathExists file) then
-        import file
-      else if (builtins.pathExists dir)
-      then
-	import dir
-      else null;
+      findSystem =
+        path: system:
+        let
+          file = nixpkgs.lib.path.append path "${system}.nix";
+          dir = nixpkgs.lib.path.append path "${system}/default.nix";
+        in
+        if (builtins.pathExists file) then
+          import file
+        else if (builtins.pathExists dir) then
+          import dir
+        else
+          null;
       filterNull = attrs: nixpkgs.lib.filterAttrsRecursive (n: v: v != null) attrs;
-      hosts = filterNull (builtins.foldl' nixpkgs.lib.recursiveUpdate {} (map (hostname: {
-        darwinConfigurations.${hostname} = findSystem ./hosts/${hostname} "darwin";
-        nixosConfigurations.${hostname} = findSystem ./hosts/${hostname} "linux";
-      }) hostnames));
-      configurations = nixpkgs.lib.mapAttrsRecursiveCond (as: !(as ? "system")) (path: value: value.configuration rec {
-        system = value.system;
-	hostname = nixpkgs.lib.last path;
-        common-cfg = {
-          inherit system;
-          config.allowUnfree = true;
-        };
-        pkgs = import inputs.nixpkgs common-cfg;
-        pkgs-stable = import inputs.nixpkgs-stable common-cfg;
-        nur = import inputs.nur {
-          nurpkgs = pkgs;
-          inherit pkgs;
-        };
-	flake-inputs = inputs;
-        inherit vars secrets mkImports;
-        overlays = [
-          (final: prev: {
-            master = import master common-cfg;
-          })
-          (import ./packages)
-          inputs.nvim.overlays."${system}".default
-        ];
-      }) hosts;
-      mkImports = scope: imports:
-        map
-          (modspec:
-            let mod =
-              if builtins.isPath modspec then
-                import modspec
-              else modspec;
-            in
-            if builtins.isAttrs mod && builtins.hasAttr scope mod then
-              builtins.getAttr scope mod
-            else mod
-          )
-          imports;
+      hosts = filterNull (
+        builtins.foldl' nixpkgs.lib.recursiveUpdate { } (
+          map (hostname: {
+            darwinConfigurations.${hostname} = findSystem ./hosts/${hostname} "darwin";
+            nixosConfigurations.${hostname} = findSystem ./hosts/${hostname} "linux";
+          }) hostnames
+        )
+      );
+      configurations = nixpkgs.lib.mapAttrsRecursiveCond (as: !(as ? "system")) (
+        path: value:
+        value.configuration rec {
+          system = value.system;
+          hostname = nixpkgs.lib.last path;
+          common-cfg = {
+            inherit system;
+            config.allowUnfree = true;
+          };
+          pkgs = import inputs.nixpkgs common-cfg;
+          pkgs-stable = import inputs.nixpkgs-stable common-cfg;
+          nur = import inputs.nur {
+            nurpkgs = pkgs;
+            inherit pkgs;
+          };
+          flake-inputs = inputs;
+          inherit vars secrets mkImports;
+          overlays = [
+            (final: prev: {
+              master = import master common-cfg;
+            })
+            (import ./packages)
+            inputs.nvim.overlays."${system}".default
+          ];
+        }
+      ) hosts;
+      mkImports =
+        scope: imports:
+        map (
+          modspec:
+          let
+            mod = if builtins.isPath modspec then import modspec else modspec;
+          in
+          if builtins.isAttrs mod && builtins.hasAttr scope mod then builtins.getAttr scope mod else mod
+        ) imports;
       vars = {
         username = "quentin";
         fullname = "Quentin Inkling";
         theme = "dark";
       };
     in
-    configurations;
+    configurations
+    // flake-utils.lib.eachDefaultSystem (
+      system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+      in
+      {
+        formatter = pkgs.nixfmt-rfc-style;
+      }
+    );
 }

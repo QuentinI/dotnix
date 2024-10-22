@@ -1,11 +1,16 @@
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 let
   scripts = "mpv/scripts";
   modules = "mpv/script-modules";
 
 in
 {
-  home.packages = with pkgs; [ mpv ]; #python3Packages.subliminal ];
+  home.packages = with pkgs; [ mpv ]; # python3Packages.subliminal ];
 
   xdg.configFile.mpv_conf = {
     source = ./mpv.conf;

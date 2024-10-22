@@ -11,7 +11,9 @@
     {
       home.packages = with pkgs; [ hydroxide ];
       systemd.user.services.hydroxide = {
-        Install = { WantedBy = [ "graphical-session.target" ]; };
+        Install = {
+          WantedBy = [ "graphical-session.target" ];
+        };
         Service = {
           ExecStart = "${startScript}/bin/hydroxide.sh";
           Restart = "on-abort";

@@ -1,4 +1,10 @@
-inputs@{ config, pkgs, vars, secrets, ... }:
+inputs@{
+  config,
+  pkgs,
+  vars,
+  secrets,
+  ...
+}:
 
 {
   boot.loader.systemd-boot.enable = true;
@@ -29,9 +35,9 @@ inputs@{ config, pkgs, vars, secrets, ... }:
     extraPortals = [ pkgs.xdg-desktop-portal-wlr ];
     config = {
       preferred = {
-          default = ["gtk"];
-          "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
-          "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+        default = [ "gtk" ];
+        "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
+        "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
       };
     };
   };
@@ -39,8 +45,7 @@ inputs@{ config, pkgs, vars, secrets, ... }:
   services.blueman.enable = true;
   networking.networkmanager.enable = true;
   # networking.networkmanager.wifi.macAddress = "random";
-  networking.networkmanager.unmanaged =
-    [ "interface-name:wl*u*" ]; # Any USB adapters
+  networking.networkmanager.unmanaged = [ "interface-name:wl*u*" ]; # Any USB adapters
   networking.firewall.enable = false;
   networking.hostName = "baraddur";
   environment.systemPackages = [
@@ -62,7 +67,12 @@ inputs@{ config, pkgs, vars, secrets, ... }:
   services.colord.enable = true;
 
   fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "Iosevka" ]; })
+    (nerdfonts.override {
+      fonts = [
+        "FiraCode"
+        "Iosevka"
+      ];
+    })
     font-awesome_4
     noto-fonts
     noto-fonts-cjk
@@ -74,4 +84,3 @@ inputs@{ config, pkgs, vars, secrets, ... }:
   ];
 
 }
-

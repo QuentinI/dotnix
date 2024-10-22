@@ -5,10 +5,13 @@ let
     ${pkgs.sonarr}/bin/NzbDrone
   '';
 
-in {
+in
+{
   home.packages = with pkgs; [ sonarr ];
   systemd.user.services.sonarr = {
-    Install = { WantedBy = [ "graphical-session.target" ]; };
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
     Service = {
       ExecStart = "${startScript}/bin/sonarr.sh";
       Restart = "on-abort";

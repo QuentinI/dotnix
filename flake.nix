@@ -116,7 +116,7 @@
         darwinConfigurations.${hostname} = findSystem ./hosts/${hostname} "darwin";
         nixosConfigurations.${hostname} = findSystem ./hosts/${hostname} "linux";
       }) hostnames));
-      configurations = nixpkgs.lib.mapAttrsRecursiveCond (as: !(as ? "system")) (path: value: { ${value.system} = value.configuration rec {
+      configurations = nixpkgs.lib.mapAttrsRecursiveCond (as: !(as ? "system")) (path: value: value.configuration rec {
         system = value.system;
 	hostname = nixpkgs.lib.last path;
         common-cfg = {
@@ -138,7 +138,7 @@
           (import ./packages)
           inputs.nvim.overlays."${system}".default
         ];
-      }; }) hosts;
+      }) hosts;
       mkImports = scope: imports:
         map
           (modspec:

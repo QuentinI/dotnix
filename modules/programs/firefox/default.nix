@@ -1,4 +1,15 @@
-{ config, pkgs, nur, ... }:
+{
+darwin = { ... }: {
+  launchd.agents.FirefoxEnv = {
+    serviceConfig.ProgramArguments = [
+      "/bin/sh"
+      "-c"
+      "launchctl setenv MOZ_LEGACY_PROFILES 1; launchctl setenv MOZ_ALLOW_DOWNGRADE 1"
+    ];
+    serviceConfig.RunAtLoad = true;
+  };
+};
+home = { config, pkgs, nur, ... }:
 let
   package = pkgs.librewolf;
 in
@@ -13,8 +24,10 @@ in
   programs.librewolf = {
     enable = true;
     package = package;
+    profileVersion = null;
     profiles = {
       default = {
+        id = 0;
         isDefault = true;
 
         extensions = with nur.repos.rycee.firefox-addons; [
@@ -91,4 +104,5 @@ in
       };
     };
   };
+};
 }

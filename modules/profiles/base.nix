@@ -18,6 +18,9 @@ let
     # A little bit of everything
     pkgs.binutils pkgs.coreutils pkgs.file pkgs.age pkgs.gping pkgs.pass
     pkgs.patchelf pkgs.picocom pkgs.pv pkgs.rlwrap pkgs.tldr pkgs.direnv pkgs.progress
+
+    # Languages
+    pkgs.nixd
   ];
 in {
 

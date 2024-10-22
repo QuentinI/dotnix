@@ -1,4 +1,4 @@
-{ config, vars, pkgs, inputs, secrets, naersk, napalm, mkImports, nur, ... }:
+{ config, vars, pkgs, inputs, secrets, naersk, napalm, mkImports, nur, pkgs-stable, ... }:
 
 {
   home-manager.users."${vars.username}" = { system, config, pkgs, inputs, staging, ... }: {
@@ -13,10 +13,11 @@
       pkgs.qbittorrent
       pkgs.mpv
       pkgs.mr
+      pkgs.nushellFull
       (pkgs.hiPrio pkgs.rustup)
     ];
 
-    _module.args = { inherit nur; };
+    _module.args = { inherit nur pkgs-stable; };
 
     imports = [
       nur.repos.rycee.hmModules.theme-base16

@@ -3,12 +3,20 @@
   inputs = {
     systems.url = "github:nix-systems/default";
 
-    flake-utils.url = "github:numtide/flake-utils";
-    flake-utils.inputs.systems.follows = "systems";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
 
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.lix.url = "https://git.lix.systems/jade/lix/archive/jade/macos-lowdown.tar.gz";
+    };
 
     # Repos
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     master.url = "github:NixOS/nixpkgs/master";
     home.url = "github:QuentinI/home-manager/master";
     nur.url = "github:nix-community/NUR";
@@ -90,7 +98,7 @@
   };
 
   outputs =
-    inputs@{ self, nixpkgs, master, nur, home, secrets, naersk, flake-utils, ... }:
+    inputs@{ self, nixpkgs, nixpkgs-stable, master, nur, home, secrets, naersk, flake-utils, ... }:
     let
       hosts = import ./hosts;
       mkImports = scope: imports:
@@ -119,6 +127,7 @@
               config.allowUnfree = true;
             };
             pkgs = import inputs.nixpkgs common-cfg;
+            pkgs-stable = import inputs.nixpkgs-stable common-cfg;
             nur = import inputs.nur {
               nurpkgs = pkgs;
               inherit pkgs;

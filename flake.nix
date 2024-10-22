@@ -100,7 +100,45 @@
   outputs =
     inputs@{ self, nixpkgs, nixpkgs-stable, master, nur, home, secrets, naersk, flake-utils, ... }:
     let
-      hosts = import ./hosts;
+      hostnames = builtins.attrNames (builtins.readDir ./hosts);
+      findSystem = path: system:
+      let
+      	file = nixpkgs.lib.path.append path "${system}.nix";
+      	dir = nixpkgs.lib.path.append path "${system}/default.nix";
+      in if (builtins.pathExists file) then
+        import file
+      else if (builtins.pathExists dir)
+      then
+	import dir
+      else null;
+      filterNull = attrs: nixpkgs.lib.filterAttrsRecursive (n: v: v != null) attrs;
+      hosts = filterNull (builtins.foldl' nixpkgs.lib.recursiveUpdate {} (map (hostname: {
+        darwinConfigurations.${hostname} = findSystem ./hosts/${hostname} "darwin";
+        nixosConfigurations.${hostname} = findSystem ./hosts/${hostname} "linux";
+      }) hostnames));
+      configurations = nixpkgs.lib.mapAttrsRecursiveCond (as: !(as ? "system")) (path: value: { ${value.system} = value.configuration rec {
+        system = value.system;
+	hostname = nixpkgs.lib.last path;
+        common-cfg = {
+          inherit system;
+          config.allowUnfree = true;
+        };
+        pkgs = import inputs.nixpkgs common-cfg;
+        pkgs-stable = import inputs.nixpkgs-stable common-cfg;
+        nur = import inputs.nur {
+          nurpkgs = pkgs;
+          inherit pkgs;
+        };
+	flake-inputs = inputs;
+        inherit vars secrets mkImports;
+        overlays = [
+          (final: prev: {
+            master = import master common-cfg;
+          })
+          (import ./packages)
+          inputs.nvim.overlays."${system}".default
+        ];
+      }; }) hosts;
       mkImports = scope: imports:
         map
           (modspec:
@@ -119,32 +157,6 @@
         fullname = "Quentin Inkling";
         theme = "dark";
       };
-      eachHostname = system: attrName: builtins.mapAttrs
-        (hostname: config:
-          (config (inputs // rec {
-            common-cfg = {
-              inherit system;
-              config.allowUnfree = true;
-            };
-            pkgs = import inputs.nixpkgs common-cfg;
-            pkgs-stable = import inputs.nixpkgs-stable common-cfg;
-            nur = import inputs.nur {
-              nurpkgs = pkgs;
-              inherit pkgs;
-            };
-            inherit inputs system vars secrets hostname mkImports;
-            overlays = [
-              (final: prev: {
-                master = import master common-cfg;
-              })
-              (import ./packages)
-              inputs.nvim.overlays."${system}".default
-            ];
-          })).${attrName})
-        hosts;
     in
-    flake-utils.lib.eachDefaultSystem (system: rec {
-      packages.darwinConfigurations = eachHostname system "darwinConfiguration";
-      packages.nixosConfigurations = eachHostname system "nixosConfiguration";
-    });
+    configurations;
 }

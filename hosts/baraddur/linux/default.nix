@@ -1,7 +1,8 @@
-inputs@{ system, nixpkgs, home, vars, secrets, hostname, mkImports, ... }:
-
 {
-  nixosConfiguration = nixpkgs.lib.nixosSystem rec {
+system = "aarch64-linux";
+configuration = inputs@{ system, nixpkgs, home, vars, secrets, hostname, mkImports, ... }:
+
+nixpkgs.lib.nixosSystem rec {
     inherit system;
 
     # Things in this set are passed to modules and accessible
@@ -47,6 +48,5 @@ inputs@{ system, nixpkgs, home, vars, secrets, hostname, mkImports, ... }:
       ../../modules/services/udiskie.nix
 
     ];
-
-  };
+};
 }

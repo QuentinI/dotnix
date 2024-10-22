@@ -1,11 +1,11 @@
-{ config, pkgs, inputs, vars, ... }:
+{ config, pkgs, flake-inputs, vars, ... }:
 
 {
 
   nix = {
     extraOptions = "experimental-features = nix-command flakes ca-derivations";
     package = pkgs.nixFlakes;
-    registry.nixpkgs.flake = inputs.nixpkgs;
+    registry.nixpkgs.flake = flake-inputs.nixpkgs;
     settings = {
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="

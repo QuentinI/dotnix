@@ -1,7 +1,8 @@
-inputs@{ system, master, nixpkgs, stable, home, vars, secrets, ... }:
-
 {
-  nixosConfiguration = nixpkgs.lib.nixosSystem rec {
+system = "x86_64-linux";
+configuration = 
+inputs@{ system, master, nixpkgs, stable, home, vars, secrets, ... }:
+  nixpkgs.lib.nixosSystem rec {
     inherit system;
 
     # Things in this set are passed to modules and accessible
@@ -38,6 +39,4 @@ inputs@{ system, master, nixpkgs, stable, home, vars, secrets, ... }:
     ];
 
   };
-
-  deploy = { };
 }

@@ -23,13 +23,13 @@
       nur.repos.rycee.hmModules.theme-base16
     ] ++
     mkImports "home" [
-      ../../modules/profiles/base.nix
+      ../../../modules/profiles/base.nix
 
-      ../../modules/programs/git
-      ../../modules/programs/zsh
-      ../../modules/programs/tdesktop
-      ../../modules/programs/firefox
-      ../../modules/services/syncthing.nix
+      ../../../modules/programs/git
+      ../../../modules/programs/zsh
+      ../../../modules/programs/tdesktop
+      ../../../modules/programs/firefox
+      ../../../modules/services/syncthing.nix
     ];
 
 
@@ -60,6 +60,6 @@
         hex.g = builtins.substring 2 2 v;
         hex.b = builtins.substring 4 2 v;
       })
-      (import ../../themes/remix.nix);
+      (import ../../../themes/remix.nix);
   };
 }

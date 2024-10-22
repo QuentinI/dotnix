@@ -1,7 +1,9 @@
+{
+system = "aarch64-darwin";
+configuration = 
 { inputs, system, nixpkgs, home, vars, secrets, hostname, mkImports, nix-darwin, nur, lix-module, pkgs-stable, ... }:
 
-{
-  darwinConfiguration = nix-darwin.lib.darwinSystem rec {
+nix-darwin.lib.darwinSystem rec {
     inherit system;
 
     modules = [
@@ -26,5 +28,5 @@
     # Things in this set are passed to modules and accessible
     # in the top-level arguments (e.g. `{ pkgs, lib, inputs, ... }:`).
     specialArgs = { inherit inputs vars secrets system hostname mkImports nur pkgs-stable; };
-  };
+};
 }

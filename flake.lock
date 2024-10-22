@@ -269,11 +269,11 @@
         "narHash": "sha256-+0hi4wVQJLSVT0ivb4jfWlKFxqIRdJ+zQHxO1OuVFes=",
         "rev": "f5a2fc5f8deb75b16fe0312b9c2b48d8203ea8c2",
         "type": "tarball",
-        "url": "https://git.lix.systems/api/v1/repos/jade/lix/archive/f5a2fc5f8deb75b16fe0312b9c2b48d8203ea8c2.tar.gz?rev=f5a2fc5f8deb75b16fe0312b9c2b48d8203ea8c2"
+        "url": "https://git.lix.systems/api/v1/repos/jade/lix/archive/f5a2fc5f8deb75b16fe0312b9c2b48d8203ea8c2.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://git.lix.systems/lix-project/lix/archive/2.91.0.tar.gz"
+        "url": "https://git.lix.systems/jade/lix/archive/jade/macos-lowdown.tar.gz"
       }
     },
     "lix-module": {

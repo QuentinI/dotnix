@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  secrets,
-  ...
-}:
+{ pkgs, secrets, ... }:
 
 let
   cfg = pkgs.writeText "config.json" (

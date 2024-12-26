@@ -1,7 +1,6 @@
 let
   defaultPackages = pkgs: [
     # Rust evangelism strike force
-    pkgs.helix
     pkgs.bat
     pkgs.duf
     pkgs.fd
@@ -44,9 +43,12 @@ let
     pkgs.tldr
     pkgs.direnv
     pkgs.progress
+    pkgs.htop
 
     # Languages
-    pkgs.nixd
+    pkgs.nil
+    pkgs.go
+    pkgs.gopls
   ];
 in
 {
@@ -63,7 +65,6 @@ in
       pkgs,
       vars,
       secrets,
-      inputs,
       ...
     }:
     {
@@ -124,6 +125,10 @@ in
         home-manager.enable = true;
         home-manager.path = "https://github.com/rycee/home-manager/archive/master.tar.gz";
       };
+
+      home.packages = [
+        (pkgs.runCommandNoCC "applications-workaround" {} "mkdir -p $out/share/applications")
+      ];
 
       home.extraProfileCommands = ''
         if [[ -d "$out/share/applications" ]] ; then

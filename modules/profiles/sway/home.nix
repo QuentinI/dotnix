@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  vars,
   mkImports,
   ...
 }:
@@ -52,8 +51,7 @@ let
     $SWAYMSG unmark __moving
   '';
 
-in
-rec {
+in {
   imports = mkImports "home" [
     ./waybar
     ../wayland.nix

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 let
   profile = pkgs.writeText "qutebrowser" ''

@@ -1,6 +1,6 @@
 {
   nixos =
-    { pkgs, inputs, ... }:
+    { inputs, ... }:
     {
       imports = [
         "${inputs.nixpkgs}/nixos/modules/profiles/hardened.nix"

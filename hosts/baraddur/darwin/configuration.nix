@@ -1,11 +1,4 @@
-inputs@{
-  config,
-  pkgs,
-  vars,
-  secrets,
-  system,
-  ...
-}:
+{ pkgs, vars, ... }:
 
 {
   fonts.packages = [

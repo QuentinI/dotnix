@@ -1,10 +1,5 @@
 # TODO theme
-{
-  config,
-  pkgs,
-  inputs,
-  ...
-}:
+{ config, pkgs, ... }:
 
 {
   programs.rofi = {

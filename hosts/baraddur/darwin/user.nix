@@ -1,11 +1,5 @@
 {
-  config,
   vars,
-  pkgs,
-  inputs,
-  secrets,
-  naersk,
-  napalm,
   mkImports,
   nur,
   pkgs-stable,
@@ -62,18 +56,17 @@
 
       home.file.".hammerspoon/init.lua" = {
         text = ''
-                  for num = 1, 9 do
-          	  local name = tostring(num)
-                    hs.hotkey.bind("cmd", name, function()
+          for num = 1, 9 do
+            local name = tostring(num)
+              hs.hotkey.bind("cmd", name, function()
           	    local command = "${pkgs.yabai}/bin/yabai -m space --focus " .. name
-          	     hs.execute(command)
-                    end)
-                    hs.hotkey.bind({"cmd", "shift"}, name, function()
-                      local win = hs.window.focusedWindow()
-                      local spaces = hs.spaces.spacesForScreen()
-                      hs.spaces.moveWindowToSpace(win, spaces[num], true)
-                    end)
-                  end
+                hs.execute(command)
+             end)
+             hs.hotkey.bind({"cmd", "shift"}, name, function()
+           	    local command = "${pkgs.yabai}/bin/yabai -m window --space " .. name
+           	    hs.execute(command)
+             end)
+          end
         '';
       };
 

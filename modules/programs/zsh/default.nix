@@ -62,7 +62,6 @@ in
       };
 
       environment.shellAliases = aliases pkgs;
-      environment.loginShell = "${pkgs.zsh}";
       environment.shells = [ pkgs.zsh ];
     };
 

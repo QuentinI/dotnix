@@ -1,6 +1,6 @@
 {
   home =
-    { config, pkgs, ... }:
+    { pkgs, ... }:
 
     let
       startScript = pkgs.writeShellScriptBin "jackett.sh" ''

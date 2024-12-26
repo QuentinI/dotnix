@@ -1,25 +1,18 @@
 {
-  config,
   vars,
-  pkgs,
-  inputs,
-  secrets,
-  naersk,
-  napalm,
+  flake-inputs,
   mkImports,
   nur,
   pkgs-stable,
+  system,
   ...
 }:
 
 {
+  home-manager.extraSpecialArgs = { inherit flake-inputs system; };
   home-manager.users."${vars.username}" =
     {
-      system,
-      config,
       pkgs,
-      inputs,
-      staging,
       ...
     }:
     {
@@ -35,6 +28,12 @@
         pkgs.mpv
         pkgs.mr
         pkgs.nushell
+	      pkgs.docker
+	      pkgs.docker-compose
+	      pkgs.colima
+	      pkgs.lazygit
+			  flake-inputs.mergiraf.packages.${system}.mergiraf
+			  pkgs.drawio
         (pkgs.hiPrio pkgs.rustup)
       ];
 
@@ -51,6 +50,7 @@
 
           ../../modules/programs/git
           ../../modules/programs/zsh
+          ../../modules/programs/helix
           ../../modules/programs/tdesktop
           ../../modules/programs/firefox
           ../../modules/services/syncthing.nix
@@ -62,18 +62,18 @@
 
       home.file.".hammerspoon/init.lua" = {
         text = ''
-                  for num = 1, 9 do
+            for num = 1, 9 do
           	  local name = tostring(num)
-                    hs.hotkey.bind("cmd", name, function()
+              hs.hotkey.bind("cmd", name, function()
           	    local command = "${pkgs.yabai}/bin/yabai -m space --focus " .. name
-          	     hs.execute(command)
-                    end)
-                    hs.hotkey.bind({"cmd", "shift"}, name, function()
-                      local win = hs.window.focusedWindow()
-                      local spaces = hs.spaces.spacesForScreen()
-                      hs.spaces.moveWindowToSpace(win, spaces[num], true)
-                    end)
-                  end
+          	    hs.execute(command)
+              end)
+              hs.hotkey.bind({"cmd", "shift"}, name, function()
+                local win = hs.window.focusedWindow()
+                local spaces = hs.spaces.spacesForScreen()
+                hs.spaces.moveWindowToSpace(win, spaces[num], true)
+              end)
+            end
         '';
       };
 

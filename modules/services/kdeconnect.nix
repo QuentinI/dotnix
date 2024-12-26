@@ -1,6 +1,6 @@
 {
   home =
-    { config, pkgs, ... }:
+    { ... }:
 
     {
       services.kdeconnect = {

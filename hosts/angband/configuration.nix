@@ -1,11 +1,4 @@
-inputs@{
-  config,
-  pkgs,
-  vars,
-  secrets,
-  system,
-  ...
-}:
+{ pkgs, vars, ... }:
 
 {
   fonts.packages = [
@@ -16,7 +9,6 @@ inputs@{
     pkgs.roboto-slab
     pkgs.roboto-mono
     pkgs.material-icons
-    pkgs.yabai
   ];
 
   homebrew = {

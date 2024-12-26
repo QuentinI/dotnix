@@ -1,10 +1,4 @@
-inputs@{
-  config,
-  pkgs,
-  vars,
-  secrets,
-  ...
-}:
+{ pkgs, ... }:
 
 {
   boot.loader.systemd-boot.enable = true;

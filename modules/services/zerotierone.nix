@@ -1,9 +1,4 @@
-{
-  secrets,
-  config,
-  pkgs,
-  ...
-}:
+{ secrets, ... }:
 
 {
   services.zerotierone = {

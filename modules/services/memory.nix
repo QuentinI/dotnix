@@ -1,6 +1,6 @@
 {
   home =
-    { config, pkgs, ... }:
+    { pkgs, ... }:
 
     let
       memoryWatcher = pkgs.writeShellScriptBin "memory.sh" ''

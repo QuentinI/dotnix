@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 
-rec {
+{
   home.packages = [ pkgs.kitty ];
 
   # TODO: what are those color{0..15} thingies and why do i have them
@@ -24,7 +24,7 @@ rec {
 
       # Colors
       foreground            #${config.theme.base16.colors.base04.hex.rgb}
-      background            #${config.theme.base16.colors.base00.hex.rgb} 
+      background            #${config.theme.base16.colors.base00.hex.rgb}
       selection_foreground  #${config.theme.base16.colors.base04.hex.rgb}
       selection_background  #${config.theme.base16.colors.base01.hex.rgb}
 

@@ -1,70 +1,64 @@
-{
-  config,
-  pkgs,
-  inputs,
-  system,
-  ...
-}:
+{ config, flake-inputs, system, ... }:
 
 {
   programs.helix = {
     enable = true;
-    package = inputs.helix.packages."${system}".helix;
-    settings = {
-      theme = "base16_hm";
-      editor = {
-        line-number = "relative";
-        auto-save = true;
-        bufferline = "multiple";
-        color-modes = true;
-        statusline = {
-          left = [
-            "mode"
-            "version-control"
-            "spacer"
-            "spinner"
-            "file-name"
-            "file-modification-indicator"
-          ];
-          center = [ ];
-          right = [
-            "diagnostics"
-            "workspace-diagnostics"
-            "selections"
-            "position"
-            "file-encoding"
-          ];
-        };
-        lsp = {
-          display-inlay-hints = true;
-        };
-        cursor-shape.insert = "bar";
-        whitespace.render.tab = "all";
-        whitespace.characters.tab = "→";
-        indent-guides.render = true;
-        soft-wrap.enable = true;
-      };
-      keys = {
-        normal = {
-          "C-j" = ":buffer-next";
-          "C-k" = ":buffer-previous";
-        };
-      };
-    };
-    languages = {
-      rust = {
-        name = "rust";
-        config = {
-          inlayHints.bindingModeHints.enable = true;
-          inlayHints.closingBraceHints.minLines = 10;
-          inlayHints.closureReturnTypeHints.enable = "with_block";
-          inlayHints.expressionAdjustmentHints.enable = true;
-          inlayHints.expressionAdjustmentHints.hideOutsideUnsafe = true;
-          inlayHints.discriminantHints.enable = "fieldless";
-          inlayHints.lifetimeElisionHints.enable = "skip_trivial";
-        };
-      };
-    };
+    # package = flake-inputs.helix.packages."${system}".helix;
+    # settings = {
+    #   theme = "base16_hm";
+    #   editor = {
+    #     line-number = "relative";
+    #     auto-save = true;
+    #     bufferline = "multiple";
+    #     color-modes = true;
+    #     statusline = {
+    #       left = [
+    #         "mode"
+    #         "version-control"
+    #         "spacer"
+    #         "spinner"
+    #         "file-name"
+    #         "file-modification-indicator"
+    #       ];
+    #       center = [ ];
+    #       right = [
+    #         "diagnostics"
+    #         "workspace-diagnostics"
+    #         "selections"
+    #         "position"
+    #         "file-encoding"
+    #       ];
+    #     };
+    #     lsp = {
+    #       display-inlay-hints = true;
+    #     };
+    #     cursor-shape.insert = "bar";
+    #     whitespace.render.tab = "all";
+    #     whitespace.characters.tab = "→";
+    #     indent-guides.render = true;
+    #     soft-wrap.enable = true;
+    #   };
+    #   keys = {
+    #     normal = {
+    #       "C-j" = ":buffer-next";
+    #       "C-k" = ":buffer-previous";
+    #     };
+    #   };
+    # };
+    # languages = {
+    #   rust = {
+    #     name = "rust";
+    #     config = {
+    #       inlayHints.bindingModeHints.enable = true;
+    #       inlayHints.closingBraceHints.minLines = 10;
+    #       inlayHints.closureReturnTypeHints.enable = "with_block";
+    #       inlayHints.expressionAdjustmentHints.enable = true;
+    #       inlayHints.expressionAdjustmentHints.hideOutsideUnsafe = true;
+    #       inlayHints.discriminantHints.enable = "fieldless";
+    #       inlayHints.lifetimeElisionHints.enable = "skip_trivial";
+    #     };
+    #   };
+    # };
     themes = with config.theme.base16.colors; {
       base16_hm = {
         "attributes" = "#${base09.hex.rgb}";

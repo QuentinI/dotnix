@@ -4,7 +4,6 @@
   pkgs,
   inputs,
   secrets,
-  naersk,
   napalm,
   ...
 }:

@@ -1,11 +1,7 @@
 {
   home =
     {
-      config,
-      pkgs,
-      system,
-      staging,
-      ...
+      pkgs, ...
     }:
     {
       home.packages = [ pkgs.delta ];
@@ -20,9 +16,14 @@
           key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJpRgKD6LSnGjc2lid5nOzdWrst6Ri6mqJ1B3LFQaDzl";
         };
         extraConfig = {
+          merge.mergiraf = {
+            name = "mergiraf";
+            driver = "mergiraf merge --git %O %A %B -s %S -x %X -y %Y -p %P";
+          };
           diff.algorithm = "histogram";
           diff.colorMoved = "default";
           core.pager = "delta";
+          core.editor = "nvim";
 
           interactive.diffFilter = "delta --color-only";
           delta.navigate = true;

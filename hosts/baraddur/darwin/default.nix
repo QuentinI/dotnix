@@ -10,7 +10,7 @@ rec {
       mkImports,
       ...
     }:
-    flake-inputs.nix-darwin.lib.darwinSystem rec {
+    flake-inputs.nix-darwin.lib.darwinSystem {
       inherit system;
 
       modules =

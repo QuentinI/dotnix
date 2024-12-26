@@ -9,16 +9,16 @@
     };
 
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.lix.url = "https://git.lix.systems/jade/lix/archive/jade/macos-lowdown.tar.gz";
+      #inputs.lix.url = "https://git.lix.systems/jade/lix/archive/jade/macos-lowdown.tar.gz";
     };
 
     # Repos
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     master.url = "github:NixOS/nixpkgs/master";
-    home.url = "github:QuentinI/home-manager/master";
+    home.url = "github:QuentinI/home-manager/librewolf";
     nur.url = "github:nix-community/NUR";
 
     apple-silicon = {
@@ -31,6 +31,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    mergiraf = {
+      url = "https://codeberg.org/mergiraf/mergiraf/archive/main.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixpkgs-firefox-darwin.url = "github:bandithedoge/nixpkgs-firefox-darwin";
 
     # Neovim configuration
@@ -40,8 +45,8 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
-    helix = {
-      url = "github:pinelang/helix-tree-explorer/tree_explore";
+    telegram-desktop-patched = {
+      url = "github:shwewo/telegram-desktop-patched";
     };
 
     # Themes
@@ -84,16 +89,6 @@
       url = "github:CogentRedTester/mpv-scroll-list/master";
     };
 
-    # Rustiness
-    naersk = {
-      url = "github:nmattia/naersk";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixpkgs-mozilla = {
-      url = "github:mozilla/nixpkgs-mozilla";
-      flake = false;
-    };
-
     # Manually substituted for actual secrets
     secrets.url = "github:QuentinI/dummy-flake";
   };
@@ -107,7 +102,6 @@
       nur,
       home,
       secrets,
-      naersk,
       flake-utils,
       ...
     }:

@@ -1,6 +1,6 @@
 {
   home =
-    { config, pkgs, ... }:
+    { pkgs, ... }:
 
     {
       services.lorri.enable = true;

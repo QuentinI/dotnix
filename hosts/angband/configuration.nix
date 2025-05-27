@@ -3,7 +3,7 @@
 {
   fonts.packages = [
     pkgs.font-awesome_4
-    pkgs.fira-code-nerdfont
+    pkgs.nerd-fonts.fira-code
     pkgs.fira-code-symbols
     pkgs.roboto
     pkgs.roboto-slab
@@ -48,8 +48,6 @@
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;
 
-  security.pam.enableSudoTouchIdAuth = true;
-
   services.yabai = {
     enable = true;
     enableScriptingAddition = true;
@@ -62,7 +60,6 @@
     };
   };
 
-  services.nix-daemon.enable = true;
   # services.karabiner-elements = {
   #   enable = true;
   # };

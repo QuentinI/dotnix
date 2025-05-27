@@ -32,7 +32,7 @@
 	      pkgs.docker-compose
 	      pkgs.colima
 	      pkgs.lazygit
-			  flake-inputs.mergiraf.packages.${system}.mergiraf
+	      pkgs.mergiraf
 			  pkgs.drawio
         (pkgs.hiPrio pkgs.rustup)
       ];

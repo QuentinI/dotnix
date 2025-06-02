@@ -36,6 +36,7 @@
     pkgs.zsh
   ];
 
+  system.primaryUser = "${vars.username}";
   users.users."${vars.username}" = {
     home = "/Users/${vars.username}";
   };

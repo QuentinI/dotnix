@@ -19,6 +19,7 @@
       ...
     }:
     let
+      # https://github.com/nix-community/home-manager/issues/6955#issuecomment-2878146879
       package = pkgs.librewolf;
     in
     {
@@ -31,14 +32,16 @@
 
       programs.librewolf = {
         enable = true;
-        package = package;
+        package = package.overrideAttrs (_: {
+          override = _: package;
+        });
         profileVersion = null;
         profiles = {
           default = {
             id = 0;
             isDefault = true;
 
-            extensions = with nur.repos.rycee.firefox-addons; [
+            extensions.packages = with nur.repos.rycee.firefox-addons; [
               # Anti-Ad
               ublock-origin
               sponsorblock

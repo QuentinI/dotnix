@@ -9,16 +9,15 @@
     };
 
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
-      #inputs.lix.url = "https://git.lix.systems/jade/lix/archive/jade/macos-lowdown.tar.gz";
     };
 
     # Repos
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-25.05";
     master.url = "github:NixOS/nixpkgs/master";
-    home.url = "github:QuentinI/home-manager/librewolf";
+    home.url = "github:nix-community/home-manager/master";
     nur.url = "github:nix-community/NUR";
 
     apple-silicon = {

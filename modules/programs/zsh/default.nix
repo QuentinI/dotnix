@@ -83,7 +83,7 @@ in
       programs.zsh = {
         enable = true;
         shellAliases = aliases pkgs;
-        initExtra = init pkgs;
+        initContent = init pkgs;
       };
 
     };

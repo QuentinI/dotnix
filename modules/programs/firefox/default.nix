@@ -74,6 +74,7 @@
               "privacy.clearOnShutdown.cookies" = false;
               "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
               "privacy.resistFingerprinting" = false;
+              "privacy.fingerprintingProtection.overrides" = "+AllTargets,-CSSPrefersColorScheme,-MediaDevices";
               "webgl.disabled" = false;
               "extensions.autoDisableScopes" = 0;
               "browser.aboutConfig.showWarning" = false;
@@ -89,10 +90,10 @@
               "pdfjs.disabled" = true;
 
               # Theme
-              "ui.systemUsesDarkTheme" = if config.theme.base16.kind == "dark" then 1 else 0;
-              "devtools.theme" = "${config.theme.base16.kind}";
+              # "ui.systemUsesDarkTheme" = if config.theme.base16.kind == "dark" then 1 else 0;
+              # "devtools.theme" = "${config.theme.base16.kind}";
               # HiDPi
-              "layout.css.devPixelsPerPx" = "2";
+              "layout.css.devPixelsPerPx" = "-1";
 
               # Homepage
               "browser.startup.homepage" = "duckduckgo.com";
@@ -107,6 +108,7 @@
 
               # Okay, Mozilla, this one was a real shit move
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+
             };
             # UI styling
             userChrome = builtins.readFile ./userChrome.css;

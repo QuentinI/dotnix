@@ -32,7 +32,7 @@ let
 
     $SWAYMSG mark __moving
 
-    read -r X Y W H G ID < <($SLURP -b '#ffffff00' -c '#${config.theme.base16.colors.base06.hex.rgb}ff' -f '%x %y %w %h %g %i')
+    read -r X Y W H G ID < <($SLURP -b '#ffffff00' -c '#${config.lib.stylix.colors.base05}ff' -f '%x %y %w %h %g %i')
 
     if [ -z "$X" ]; then
       $SWAYMSG unmark __moving
@@ -108,37 +108,37 @@ in {
       ];
     };
 
-    colors = rec {
-      focused = {
-        background = "#${config.theme.base16.colors.base00.hex.rgb}";
-        border = "#${config.theme.base16.colors.base00.hex.rgb}";
-        childBorder = "#${config.theme.base16.colors.base06.hex.rgb}";
-        indicator = "#2e9ef4"; # TODO
-        text = "#${config.theme.base16.colors.base04.hex.rgb}";
-      };
-      focusedInactive = {
-        background = mkOpaque "#${config.theme.base16.colors.base00.hex.rgb}";
-        border = mkOpaque "#${config.theme.base16.colors.base00.hex.rgb}";
-        childBorder = mkOpaque "#${config.theme.base16.colors.base00.hex.rgb}";
-        indicator = "#484e50";
-        text = "#${config.theme.base16.colors.base04.hex.rgb}";
-      };
-      placeholder = {
-        background = "#0000005a";
-        border = "#0000005a";
-        childBorder = "#0c0c0c";
-        indicator = "#000000";
-        text = "#ffffff";
-      };
-      unfocused = {
-        background = mkOpaque "#${config.theme.base16.colors.base01.hex.rgb}";
-        border = mkOpaque "#${config.theme.base16.colors.base01.hex.rgb}";
-        childBorder = "#${config.theme.base16.colors.base00.hex.rgb}";
-        indicator = "#484e50";
-        text = "#${config.theme.base16.colors.base04.hex.rgb}";
-      };
-      urgent = placeholder;
-    };
+    # colors = rec {
+    #   focused = {
+    #     background = "#${config.theme.base16.colors.base00.hex.rgb}";
+    #     border = "#${config.theme.base16.colors.base00.hex.rgb}";
+    #     childBorder = "#${config.theme.base16.colors.base06.hex.rgb}";
+    #     indicator = "#2e9ef4"; # TODO
+    #     text = "#${config.theme.base16.colors.base04.hex.rgb}";
+    #   };
+    #   focusedInactive = {
+    #     background = mkOpaque "#${config.theme.base16.colors.base00.hex.rgb}";
+    #     border = mkOpaque "#${config.theme.base16.colors.base00.hex.rgb}";
+    #     childBorder = mkOpaque "#${config.theme.base16.colors.base00.hex.rgb}";
+    #     indicator = "#484e50";
+    #     text = "#${config.theme.base16.colors.base04.hex.rgb}";
+    #   };
+    #   placeholder = {
+    #     background = "#0000005a";
+    #     border = "#0000005a";
+    #     childBorder = "#0c0c0c";
+    #     indicator = "#000000";
+    #     text = "#ffffff";
+    #   };
+    #   unfocused = {
+    #     background = mkOpaque "#${config.theme.base16.colors.base01.hex.rgb}";
+    #     border = mkOpaque "#${config.theme.base16.colors.base01.hex.rgb}";
+    #     childBorder = "#${config.theme.base16.colors.base00.hex.rgb}";
+    #     indicator = "#484e50";
+    #     text = "#${config.theme.base16.colors.base04.hex.rgb}";
+    #   };
+    #   urgent = placeholder;
+    # };
 
     inherit modifier;
     floating.modifier = modifier;
@@ -168,7 +168,7 @@ in {
 
     output = {
       "*" = {
-        background = "#${config.theme.base16.colors.base00.hex.rgb} solid_color";
+        background = "#${config.lib.stylix.colors.base00} solid_color";
       };
     };
 
@@ -251,8 +251,8 @@ in {
 
     bindsym XF86LaunchA                      exec grim ~/Pictures/Screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
     bindsym Control+XF86LaunchA              exec grim - | wl-copy -p -o -t image/png
-    bindsym ${modifier}+XF86LaunchA          exec grim -g "$(slurp -b '#ffffff00' -c '#${config.theme.base16.colors.base06.hex.rgb}ff')" ~/Pictures/Screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
-    bindsym ${modifier}+Control+XF86LaunchA  exec grim -g "$(slurp -b '#ffffff00' -c '#${config.theme.base16.colors.base06.hex.rgb}ff')" - | wl-copy -p -o -t image/png
+    bindsym ${modifier}+XF86LaunchA          exec grim -g "$(slurp -b '#ffffff00' -c '#${config.lib.stylix.colors.base06}ff')" ~/Pictures/Screenshots/$(date +\"%Y-%m-%d_%H:%M:%S\").png
+    bindsym ${modifier}+Control+XF86LaunchA  exec grim -g "$(slurp -b '#ffffff00' -c '#${config.lib.stylix.colors.base06}ff')" - | wl-copy -p -o -t image/png
 
     bindsym XF86KbdBrightnessUp     exec ${pkgs.light}/bin/light -s sysfs/leds/kbd_backlight -A 1 && ${pkgs.light}/bin/light -s sysfs/leds/kbd_backlight -G | cut -d'.' -f1 > $SWAYSOCK.wob
     bindsym XF86KbdBrightnessDown   exec ${pkgs.light}/bin/light -s sysfs/leds/kbd_backlight -U 1 && ${pkgs.light}/bin/light -s sysfs/leds/kbd_backlight -G | cut -d'.' -f1 > $SWAYSOCK.wob

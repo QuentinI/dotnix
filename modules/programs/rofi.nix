@@ -17,7 +17,5 @@
       icon-theme = config.gtk.iconTheme.name;
       kb-row-tab = "shift+Tab";
     };
-
-    enableBase16Theme = true;
   };
 }

@@ -90,8 +90,10 @@
               "pdfjs.disabled" = true;
 
               # Theme
+              # TODO:
               # "ui.systemUsesDarkTheme" = if config.theme.base16.kind == "dark" then 1 else 0;
               # "devtools.theme" = "${config.theme.base16.kind}";
+
               # HiDPi
               "layout.css.devPixelsPerPx" = "-1";
 

@@ -2,16 +2,12 @@
   config,
   vars,
   pkgs,
-  inputs,
   secrets,
   napalm,
+  nur,
+      flake-inputs,
   ...
 }:
-let
-  nur = import inputs.nur {
-    nurpkgs = pkgs;
-  };
-in
 {
   home-manager.users."${vars.username}" =
     {
@@ -23,38 +19,41 @@ in
       ...
     }:
     {
+      _module.args = { inherit nur; };
+
       imports = mkImports "home" [
-        nur.repos.rycee.hmModules.theme-base16
+      #flake-inputs.stylix.homeManagerModules.stylix
 
-        ../../modules/profiles/base.nix
-        ../../modules/profiles/sway
+         ../../../modules/profiles/base.nix
+         ../../../modules/profiles/sway
 
-        ../../modules/services/gpg-agent.nix
-        ../../modules/services/kdeconnect.nix
-        ../../modules/services/lorri.nix
-        ../../modules/services/memory.nix
-        ../../modules/services/nm-applet.nix
-        #../../modules/services/protonmail-bridge.nix
-        ../../modules/services/shadowsocks.nix
-        ../../modules/services/ssh-agent.nix
-        ../../modules/services/syncthing.nix
-        ../../modules/services/spotifyd.nix
-        ../../modules/services/udiskie.nix
+      ../../../modules/services/gpg-agent.nix
+      ../../../modules/services/kdeconnect.nix
+      ../../../modules/services/lorri.nix
+      ../../../modules/services/memory.nix
+      ../../../modules/services/nm-applet.nix
+      #../../../modules/services/protonmail-bridge.nix
+      ../../../modules/services/shadowsocks.nix
+      ../../../modules/services/ssh-agent.nix
+      ../../../modules/services/syncthing.nix
+      ../../../modules/services/spotifyd.nix
+      ../../../modules/services/udiskie.nix
 
-        ../../modules/programs/firefox
-        ../../modules/programs/zsh
-        ../../modules/programs/ncmpcpp
-        ../../modules/programs/iex
-        ../../modules/programs/tdesktop
-        ../../modules/programs/helix.nix
-        ../../modules/programs/kitty
-        ../../modules/programs/zathura.nix
-        ../../modules/programs/fzf
-        ../../modules/programs/bat.nix
-        ../../modules/programs/git
-        ../../modules/programs/mpv
+      ../../../modules/programs/firefox
+      ../../../modules/programs/zsh
+      ../../../modules/programs/ncmpcpp
+      ../../../modules/programs/iex
+      ../../../modules/programs/tdesktop
+      #../../../modules/programs/helix.nix
+      ../../../modules/programs/kitty
+      ../../../modules/programs/zathura.nix
+      ../../../modules/programs/fzf
+      ../../../modules/programs/bat.nix
+      ../../../modules/programs/git
+      ../../../modules/programs/mpv
 
       ];
+      stylix.autoEnable = false;
 
       services.kanshi.profiles = {
         default = {
@@ -72,20 +71,14 @@ in
         text = vars.theme;
       };
 
-      theme.base16.colors = builtins.mapAttrs (_: v: {
-        hex.r = builtins.substring 0 2 v;
-        hex.g = builtins.substring 2 2 v;
-        hex.b = builtins.substring 4 2 v;
-      }) (import ../../themes/remix.nix);
-
       gtk = {
         enable = true;
         iconTheme = {
-          name = "Papirus-${if config.theme.base16.kind == "light" then "Light" else "Dark"}";
+          name = "Papirus-light";
           package = pkgs.papirus-icon-theme;
         };
         theme = {
-          name = "Canta-${config.theme.base16.kind}";
+          name = "Canta-dark";
           package = pkgs.canta-theme;
         };
       };
@@ -126,7 +119,7 @@ in
       home = {
 
         file."dircolors" = {
-          source = "${inputs.nord-dircolors}/src/dir_colors";
+          source = "${flake-inputs.nord-dircolors}/src/dir_colors";
           target = ".dir_colors";
         };
 
@@ -178,7 +171,7 @@ in
           gcc
           (mkNeovim {
             inherit pkgs;
-            theme = config.theme.base16.colors;
+            #theme = config.theme.base16.colors;
           })
 
           # TODO:
@@ -194,7 +187,7 @@ in
           ffmpeg
 
           ## Messaging
-          armcord
+          legcord
           thunderbird
 
           ## Media
@@ -256,15 +249,15 @@ in
           virt-manager
           # rnix-lsp
           libsForQt5.qtstyleplugin-kvantum
+          libsForQt5.qt5ct
           gsettings-desktop-schemas
-          qt5ct
           box64
 
           # Fixes "failed to commit changes to dconf" issues
           dconf
 
           # Fallback
-          gnome.adwaita-icon-theme
+          adwaita-icon-theme
         ];
         stateVersion = "22.11";
       };

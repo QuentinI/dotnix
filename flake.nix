@@ -2,6 +2,7 @@
 
   inputs = {
     systems.url = "github:nix-systems/default";
+    stylix.url = "github:danth/stylix";
 
     flake-utils = {
       url = "github:numtide/flake-utils";
@@ -21,7 +22,7 @@
     nur.url = "github:nix-community/NUR";
 
     apple-silicon = {
-      url = "github:damien-biasotto/nixos-apple-silicon/bugfix/wifi";
+      url = "github:tpwrules/nixos-apple-silicon";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

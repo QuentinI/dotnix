@@ -3,7 +3,7 @@
     { inputs, ... }:
     {
       imports = [
-        "${inputs.nixpkgs}/nixos/modules/profiles/hardened.nix"
+        "${inputs.flake-inputs.nixpkgs}/nixos/modules/profiles/hardened.nix"
       ];
 
       environment.memoryAllocator.provider = "libc";

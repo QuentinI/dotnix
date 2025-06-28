@@ -37,7 +37,6 @@ let
     pkgs.gping
     pkgs.pass
     pkgs.patchelf
-    pkgs.picocom
     pkgs.pv
     pkgs.rlwrap
     pkgs.tldr

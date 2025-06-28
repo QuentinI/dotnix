@@ -61,15 +61,11 @@
   services.colord.enable = true;
 
   fonts.fonts = with pkgs; [
-    (nerdfonts.override {
-      fonts = [
-        "FiraCode"
-        "Iosevka"
-      ];
-    })
+  nerd-fonts.fira-code
+  nerd-fonts.iosevka
     font-awesome_4
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
     roboto
     roboto-slab

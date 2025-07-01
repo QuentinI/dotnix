@@ -46,9 +46,7 @@
   };
             config.stylix.autoEnable = false;
             config.nixpkgs.overlays =
-              inputs.overlays
-              ++ [ flake-inputs.apple-silicon.overlays.apple-silicon-overlay ]
-              ++ [ (import ../../../overlays/default.nix) ];
+              inputs.overlays ++ [ (import ../../../overlays/default.nix) ];
             # Some black magic fuckery to inject specialArgs into HM configuration
             options.home-manager.users = lib.mkOption {
               type =

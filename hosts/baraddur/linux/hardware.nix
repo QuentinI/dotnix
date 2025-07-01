@@ -1,4 +1,4 @@
-{ lib, modulesPath, inputs, ... }:
+{ lib, modulesPath, inputs, config, ... }:
 
 {
   imports = [
@@ -10,7 +10,7 @@
     "sdhci_pci"
   ];
 
-  boot.kernelParams = [ "brcmfmac.feature_disable=0x82000" ];
+  # boot.kernelParams = [ "brcmfmac.feature_disable=0x82000" ];
   boot.kernelPatches = [
     {
       name = "ignore-notch";
@@ -28,7 +28,7 @@
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/22A6-0D1C";
+    device = "/dev/disk/by-label/EFI\\x20-\\x20NIXOS";
     fsType = "vfat";
   };
 
@@ -46,10 +46,14 @@
     }
   ];
 
-  hardware.asahi.peripheralFirmwareDirectory = inputs.secrets.m1-firmware;
-  hardware.asahi.useExperimentalGPUDriver = true;
-  hardware.asahi.experimentalGPUInstallMode = "replace";
-  hardware.opengl.enable = true;
+
+  hardware.asahi = {
+    enable = true;
+    peripheralFirmwareDirectory = inputs.secrets.m1-firmware;
+    useExperimentalGPUDriver = true;
+  };
+  hardware.graphics.enable = true;
+
 
   networking.useDHCP = lib.mkDefault true;
 

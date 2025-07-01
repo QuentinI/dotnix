@@ -10,7 +10,7 @@
     };
 
     lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.0.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.2-1.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -22,7 +22,12 @@
     nur.url = "github:nix-community/NUR";
 
     apple-silicon = {
-      url = "github:tpwrules/nixos-apple-silicon";
+      url = "github:nix-community/nixos-apple-silicon";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixos-muvm-fex = {
+      url = "github:pauljako/nixos-muvm-fex";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -146,6 +151,7 @@
             })
             (import ./packages)
             inputs.nvim.overlays."${system}".default
+	        inputs.nixos-muvm-fex.overlays.default
           ];
         }
       ) hosts;

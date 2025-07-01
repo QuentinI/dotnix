@@ -14,7 +14,7 @@
       kb-row-select = "ctrl+shift+space";
       kb-cancel = "Menu,Escape,alt+r";
       show-icons = true;
-      icon-theme = config.gtk.iconTheme.name;
+      # icon-theme = config.gtk.iconTheme.name;
       kb-row-tab = "shift+Tab";
     };
   };

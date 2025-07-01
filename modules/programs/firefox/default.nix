@@ -32,9 +32,7 @@
 
       programs.librewolf = {
         enable = true;
-        package = package.overrideAttrs (_: {
-          override = _: package;
-        });
+        package = package;
         profileVersion = null;
         profiles = {
           default = {

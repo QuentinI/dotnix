@@ -25,7 +25,8 @@
       #flake-inputs.stylix.homeManagerModules.stylix
 
          ../../../modules/profiles/base.nix
-         ../../../modules/profiles/sway
+# ../../../modules/profiles/gaming.nix
+         ../../../modules/profiles/hyprland.nix
 
       ../../../modules/services/gpg-agent.nix
       ../../../modules/services/kdeconnect.nix
@@ -73,10 +74,10 @@
 
       gtk = {
         enable = true;
-        iconTheme = {
-          name = "Papirus-light";
-          package = pkgs.papirus-icon-theme;
-        };
+        # iconTheme = {
+        #   name = "Papirus-light";
+        #   package = pkgs.papirus-icon-theme;
+        # };
         theme = {
           name = "Canta-dark";
           package = pkgs.canta-theme;
@@ -171,6 +172,7 @@
           gcc
           (mkNeovim {
             inherit pkgs;
+	    withLanguageServers = false;
             #theme = config.theme.base16.colors;
           })
 

@@ -87,7 +87,6 @@ in
           isSystemUser = true;
           group = "root";
           password = null;
-          shell = null;
         };
 
         users."${vars.username}" = {
@@ -109,6 +108,7 @@ in
             "cdrom"
             "wireshark"
             "uinput"
+            "render"
           ];
           shell = "${pkgs.zsh}/bin/zsh";
           description = vars.fullname;

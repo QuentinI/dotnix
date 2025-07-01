@@ -1,6 +1,7 @@
 { pkgs, ... }:
 
 {
+  home-manager.useGlobalPkgs = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = false;
   system.stateVersion = "22.11";
@@ -37,13 +38,19 @@
   };
   services.flatpak.enable = true;
   services.blueman.enable = true;
-  networking.networkmanager.enable = true;
+  networking.wireless.iwd.enable = true;
+  # networking.networkmanager.enable = true;
+  # networking.networkmanager.wifi.backend = "iwd";
   # networking.networkmanager.wifi.macAddress = "random";
-  networking.networkmanager.unmanaged = [ "interface-name:wl*u*" ]; # Any USB adapters
+  # networking.networkmanager.unmanaged = [ "interface-name:wl*u*" ]; # Any USB adapters
   networking.firewall.enable = false;
   networking.hostName = "baraddur";
   environment.systemPackages = [
+    pkgs.muvm
+    pkgs.steam-asahi
+    # pkgs.crossSteam.steam
     pkgs.wireguard-tools
+    pkgs.glxinfo
   ];
   services.printing.enable = true;
   # sound.enable = true;

@@ -3,7 +3,7 @@
 {
 
   nix = {
-    extraOptions = "experimental-features = nix-command flakes ca-derivations";
+    extraOptions = "experimental-features = nix-command flakes";
     optimise.automatic = true;
     package = pkgs.nixVersions.stable;
     registry.nixpkgs.flake = flake-inputs.nixpkgs;
@@ -22,7 +22,7 @@
     };
   };
 
-  nixpkgs.overlays = [ ];
+  #nixpkgs.overlays = [ ];
 
   home-manager.useGlobalPkgs = true;
   home-manager.useUserPackages = true;

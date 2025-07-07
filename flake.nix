@@ -128,31 +128,25 @@
           }) hostnames
         )
       );
+
+      common-cfg = system: {
+        inherit system;
+        config.allowUnfree = true;
+      };
+
       configurations = nixpkgs.lib.mapAttrsRecursiveCond (as: !(as ? "system")) (
         path: value:
         value.configuration rec {
           system = value.system;
           hostname = nixpkgs.lib.last path;
-          common-cfg = {
-            inherit system;
-            config.allowUnfree = true;
-          };
-          pkgs = import inputs.nixpkgs common-cfg;
-          pkgs-stable = import inputs.nixpkgs-stable common-cfg;
+          pkgs = import inputs.nixpkgs (common-cfg  system);
+          pkgs-stable = import inputs.nixpkgs-stable common-cfg (common-cfg  system);
           nur = import inputs.nur {
             nurpkgs = pkgs;
             inherit pkgs;
           };
           flake-inputs = inputs;
           inherit vars secrets mkImports;
-          overlays = [
-            (final: prev: {
-              master = import master common-cfg;
-            })
-            (import ./packages)
-            inputs.nvim.overlays."${system}".default
-	        inputs.nixos-muvm-fex.overlays.default
-          ];
         }
       ) hosts;
       mkImports =
@@ -174,7 +168,7 @@
     // flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import inputs.nixpkgs (common-cfg system);
       in
       {
         formatter = pkgs.nixfmt-rfc-style;

@@ -48,6 +48,16 @@ let
     pkgs.nil
     pkgs.go
     pkgs.gopls
+
+    (pkgs.python3.withPackages (ps: [
+      ps.llm
+      ps.llm-gemini
+      ps.llm-jq
+      ps.llm-ollama
+      ps.llm-cmd
+      ps.llm-anthropic
+      ps.llm-cerebras
+    ]))
   ];
 in
 {
@@ -126,7 +136,7 @@ in
       };
 
       home.packages = [
-        (pkgs.runCommandNoCC "applications-workaround" {} "mkdir -p $out/share/applications")
+        (pkgs.runCommandNoCC "applications-workaround" { } "mkdir -p $out/share/applications")
       ];
 
       home.extraProfileCommands = ''

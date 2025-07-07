@@ -18,7 +18,13 @@
 
       modules =
         [
-          { nixpkgs.overlays = [ flake-inputs.nixpkgs-firefox-darwin.overlay ]; }
+          {
+            nixpkgs.overlays = [
+              flake-inputs.nvim.overlays."${system}".default
+              flake-inputs.nixpkgs-firefox-darwin.overlay
+              (import ../../overlays)
+            ];
+          }
 
           flake-inputs.lix-module.nixosModules.default
           flake-inputs.home.darwinModules.home-manager

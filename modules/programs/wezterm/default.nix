@@ -24,7 +24,7 @@
 
       config.window_frame = {
         font_size = 14.0,
-        density = 'Comfortable',
+        -- density = 'Comfortable',
       }
       config.window_decorations = "RESIZE"
       config.window_padding = {

@@ -20,15 +20,17 @@
     }:
     let
       # https://github.com/nix-community/home-manager/issues/6955#issuecomment-2878146879
-      package = pkgs.librewolf;
+      package = if pkgs.stdenv.isDarwin then
+       pkgs.librewolf.overrideAttrs (_: {
+          override = _: pkgs.librewolf;
+        })
+      else pkgs.librewolf;
     in
     {
       xdg.configFile.tridactylrc = {
         source = ./tridactylrc;
         target = "tridactyl/tridactylrc";
       };
-
-      home.packages = [ package ];
 
       programs.librewolf = {
         enable = true;
@@ -61,6 +63,8 @@
               bitwarden
               metamask
               multi-account-containers
+
+              tridactyl
             ];
 
             settings = {
